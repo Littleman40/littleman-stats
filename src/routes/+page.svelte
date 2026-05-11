@@ -33,6 +33,15 @@
 
 <!-- Hero -->
 <section class="hero">
+  <video
+    class="hero-video"
+    src="/vid/LMBackgroundVideo.mp4"
+    autoplay
+    loop
+    muted
+    playsinline
+    preload="auto"
+  ></video>
   <div class="hero-content">
     <h1>The No Hesi Stats Hub</h1>
     <p>Track players, explore leaderboards, and dig into the data behind every run.</p>
@@ -58,7 +67,7 @@
 
 <style>
   .hero {
-    min-height: 100vh;
+    min-height: calc(100vh - var(--navbar-height));
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -70,6 +79,17 @@
     background-position: center;
     text-align: center;
     padding: 2rem var(--page-padding);
+    overflow: hidden;
+  }
+
+  .hero-video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 0;
+    pointer-events: none;
   }
 
   .hero::before {
@@ -78,11 +98,12 @@
     inset: 0;
     background: rgba(0, 0, 0, 0.55);
     pointer-events: none;
+    z-index: 1;
   }
 
   .hero-content {
     position: relative;
-    z-index: 1;
+    z-index: 2;
     max-width: 640px;
   }
 
@@ -123,7 +144,7 @@
     color: var(--color-muted);
     font-size: 0.8rem;
     letter-spacing: 0.05em;
-    z-index: 1;
+    z-index: 2;
   }
 
   .features {
