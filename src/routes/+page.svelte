@@ -3,19 +3,19 @@
     {
       href: '/user-search',
       title: 'User Search',
-      description: 'Look up any player by their Steam ID or Nohesi username. See their personal best stats, ranking, tier, and full run history with charts.',
+      description: 'Look up any player by their Steam ID or No Hesi username. See their personal best stats, ranking, tier, and full run history with charts.',
       image: '/images/feature-user-search.jpg'
     },
     {
       href: '/leaderboard',
       title: 'Leaderboard',
-      description: 'Browse the global No Hesi leaderboard. Filter by crew, solo, or realistic physics. Switch to statistics mode for aggregate charts.',
+      description: 'Browse the global No Hesi leaderboard. Filter by crew, solo, or realistic physics. Switch to statistics mode for charts regarding everything.',
       image: '/images/feature-leaderboard.jpg'
     },
     {
       href: '/littleman-timing',
       title: 'LittleMan Timing',
-      description: 'A dedicated timing and lap tracker — coming soon.',
+      description: 'A dedicated timing app for routes around No Hesi',
       image: '/images/feature-timing.jpg'
     },
     {
@@ -166,7 +166,6 @@
     background-color: var(--color-card-raised);
     background-size: cover;
     background-position: center;
-    /* Shows a subtle placeholder when no image is set */
     background-image: linear-gradient(135deg, #1e1e1e 0%, #242424 100%);
   }
 
