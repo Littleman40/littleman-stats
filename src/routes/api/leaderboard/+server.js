@@ -31,6 +31,7 @@ export async function GET({ url }) {                                            
   return json({                                                                // returns json will the following properties
     records: slice,
     page,
+    startRank: startIdx + 1,
     hasNext: entry.complete ? endIdx < entry.records.length : true,
     hasPrev: page > 1,
     total: entry.complete ? entry.records.length : null
