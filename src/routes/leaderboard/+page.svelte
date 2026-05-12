@@ -6,78 +6,78 @@
   import PaginationControls from '$lib/components/PaginationControls.svelte';
 
   let activeFilter = $state('all');
-  let currentPage = $state(1);
+  let currentPageNumber = $state(1);
 
-  let records = $state([]);
+  let leaderboardRecords = $state([]);
   let startRank = $state(1);
-  let hasNext = $state(false);
-  let hasPrev = $state(false);
-  let loading = $state(false);
-  let error = $state(null);
+  let canGoNext = $state(false);
+  let canGoPrev = $state(false);
+  let isLoading = $state(false);
+  let loadError = $state(null);
 
-  $effect(() => {
-    const params = $page.url.searchParams;
-    const f = params.get('filter') ?? 'all';
-    const p = parseInt(params.get('page') ?? '1', 10);
+  $effect(() => {                                                            // watches the URL — when ?filter or ?page changes (e.g. back/forward nav), reload
+    const urlParams = $page.url.searchParams;
+    const filterFromUrl = urlParams.get('filter') ?? 'all';
+    const pageFromUrl = parseInt(urlParams.get('page') ?? '1', 10);
 
-    if (f !== activeFilter || p !== currentPage) {
-      activeFilter = f;
-      currentPage = p;
-      loadData();
+    if (filterFromUrl !== activeFilter || pageFromUrl !== currentPageNumber) {
+      activeFilter = filterFromUrl;
+      currentPageNumber = pageFromUrl;
+      fnLoadLeaderboardData();
     }
   });
 
-  function syncUrl() {
-    const params = new URLSearchParams();
-    params.set('filter', activeFilter);
-    params.set('page', String(currentPage));
-    goto(`/leaderboard?${params}`, { replaceState: false, keepFocus: true, noScroll: true });
+  function fnSyncUrl() { // called from fnHandleFilterChange + fnHandleReset + fnHandlePrev + fnHandleNext below
+    const urlParams = new URLSearchParams();
+    urlParams.set('filter', activeFilter);
+    urlParams.set('page', String(currentPageNumber));
+    goto(`/leaderboard?${urlParams}`, { replaceState: false, keepFocus: true, noScroll: true });
   }
 
-  async function loadData() {
-    loading = true;
-    error = null;
-    records = [];
+  async function fnLoadLeaderboardData() { // called from the URL-watch $effect above, the on-mount $effect below, and the Retry button in the template
+    isLoading = true;
+    loadError = null;
+    leaderboardRecords = [];
 
     try {
-      const res = await fetch(`/api/leaderboard?filter=${activeFilter}&page=${currentPage}`);
-      if (!res.ok) throw new Error('API error');
-      const data = await res.json();
-      records = data.records ?? [];
-      startRank = data.startRank ?? 1;
-      hasNext = data.hasNext ?? false;
-      hasPrev = data.hasPrev ?? false;
+      const apiResponse = await fetch(`/api/leaderboard?filter=${activeFilter}&page=${currentPageNumber}`);
+      if (!apiResponse.ok) throw new Error('API error');
+      const responseBody = await apiResponse.json();
+      leaderboardRecords = responseBody.records ?? [];
+      startRank = responseBody.startRank ?? 1;
+      canGoNext = responseBody.hasNext ?? false;
+      canGoPrev = responseBody.hasPrev ?? false;
     } catch {
-      error = 'Failed to load data. Please try again.';
+      loadError = 'Failed to load data. Please try again.';
     } finally {
-      loading = false;
+      isLoading = false;
     }
   }
 
-  function handleFilterChange(f) {
-    activeFilter = f;
-    currentPage = 1;
-    syncUrl();
+  function fnHandleFilterChange(selectedFilter) { // called from FilterBar onfilterchange in the template below
+    activeFilter = selectedFilter;
+    currentPageNumber = 1;
+    fnSyncUrl();
   }
 
-  function handleReset() {
+  function fnHandleReset() { // called from FilterBar onreset in the template below
     activeFilter = 'all';
-    currentPage = 1;
-    syncUrl();
+    currentPageNumber = 1;
+    fnSyncUrl();
   }
 
-  function handlePrev() {
-    currentPage = Math.max(1, currentPage - 1);
-    syncUrl();
+  function fnHandlePrev() { // called from PaginationControls onprev in the template below
+    currentPageNumber = Math.max(1, currentPageNumber - 1);
+    fnSyncUrl();
   }
 
-  function handleNext() {
-    currentPage = currentPage + 1;
-    syncUrl();
+  function fnHandleNext() { // called from PaginationControls onnext in the template below
+    currentPageNumber = currentPageNumber + 1;
+    fnSyncUrl();
   }
 
-  $effect(() => {
-    loadData();
+  $effect(() => {                                                            // initial-mount fetch
+    fnLoadLeaderboardData();
   });
 </script>
 
@@ -94,41 +94,41 @@
   <FilterBar
     {activeFilter}
     activeView="leaderboard"
-    onfilterchange={handleFilterChange}
-    onreset={handleReset}
+    onfilterchange={fnHandleFilterChange}
+    onreset={fnHandleReset}
   />
 
-  {#if loading}
+  {#if isLoading}
     <div class="scroll-wrap">
       <LeaderboardTable records={[]} {activeFilter} {startRank} />
       <div class="skeleton-wrap">
-        {#each Array(20) as _, i}
-          <div class="skeleton-row" style="opacity: {1 - i * 0.15}"></div>
+        {#each Array(20) as _, skeletonIndex}
+          <div class="skeleton-row" style="opacity: {1 - skeletonIndex * 0.15}"></div>
         {/each}
       </div>
     </div>
-  {:else if error}
+  {:else if loadError}
     <div class="scroll-wrap">
-      <LeaderboardTable {records} {activeFilter} {startRank} />
+      <LeaderboardTable records={leaderboardRecords} {activeFilter} {startRank} />
     </div>
     <div class="error-state">
-      <p>{error}</p>
-      <button class="retry-btn" onclick={loadData}>Retry</button>
+      <p>{loadError}</p>
+      <button class="retry-btn" onclick={fnLoadLeaderboardData}>Retry</button>
     </div>
-  {:else if records.length === 0}
+  {:else if leaderboardRecords.length === 0}
     <div class="empty-state">
       <p>No results found for this filter.</p>
     </div>
   {:else}
     <div class="scroll-wrap">
-      <LeaderboardTable {records} {activeFilter} {startRank} />
+      <LeaderboardTable records={leaderboardRecords} {activeFilter} {startRank} />
     </div>
     <PaginationControls
-      page={currentPage}
-      {hasNext}
-      {hasPrev}
-      onprev={handlePrev}
-      onnext={handleNext}
+      page={currentPageNumber}
+      hasNext={canGoNext}
+      hasPrev={canGoPrev}
+      onprev={fnHandlePrev}
+      onnext={fnHandleNext}
     />
   {/if}
 </div>
@@ -173,7 +173,7 @@
     border-top: 1px solid var(--color-border);
     border-left: 1px solid var(--color-border);
     border-right: 1px solid var(--color-border);
-    
+
     animation: pulse 1.5s ease-in-out infinite;
   }
 

@@ -1,119 +1,119 @@
-const LEADERBOARD_URL = 'https://leaderboard-06nkmjf5r0.nohesi.gg/scores';    // a constant holding for the api endpoint
-const PAGE_SIZE = 100;                                                        // the amount of records per api call, as per pagination
-const CACHE_TTL_MS = 5 * 60 * 1000;                                           // 5 minutes in milliseconds for the amount of time before it refreshes the data
+const LEADERBOARD_API_URL = 'https://leaderboard-06nkmjf5r0.nohesi.gg/scores';    // upstream api endpoint
+const API_PAGE_SIZE = 100;                                                        // records per upstream api call, as per its pagination
+const CACHE_TTL_MS = 5 * 60 * 1000;                                               // 5 minutes — how long a cached filter is reused before refetching
+const RESPONSE_PAGE_SIZE = 20;                                                    // records returned to the client per response page
+const POLL_INTERVAL_MS = 150;                                                     // how long fnWaitForPage sleeps between record-count checks
 
-const cache = new Map();                                                     
+const cacheByFilter = new Map();
 
-export function applyFilter(record, filter) {                                 // This applies the filter to raw data for filtering
-  switch (filter) {
-    case 'crew': return record.mode === 'team';                               // if team is the mode, then assign it as crew filter
-    case 'solo': return record.mode === 'solo';                               // if solo is the mode, then assign it as solo filter
-    case 'realistic':                                                         // if the car model has the word realistic inside it, then assign it as realistic filter
-      return record.mode === 'solo' && record.car_model?.toLowerCase().includes('realistic'); // since crew can have both realistic and non realistic cars, we only take solo runs
-    default: return true;                                                     // default to no filter if they dont fit any - which should be impossible anyway
+export function fnApplyFilter(rawRecord, filterName) { // called from fnFetchAllInBackground below for every upstream record
+  switch (filterName) {
+    case 'crew': return rawRecord.mode === 'team';                                // 'crew' = team mode
+    case 'solo': return rawRecord.mode === 'solo';                                // 'solo' = solo mode
+    case 'realistic':                                                             // 'realistic' = solo runs in a car whose model name contains 'realistic'
+      return rawRecord.mode === 'solo' && rawRecord.car_model?.toLowerCase().includes('realistic');
+    default: return true;                                                         // 'all' / unknown — keep everything
   }
 }
 
-function mapRecord(raw) {                                                     // takes the raw data from the api and reshapes it into a clean object
-  const base = {
-    nohesi_name: raw.nohesi_name,
-    nohesi_pfp: raw.nohesi_pfp,
-    score: raw.score,
-    combo: raw.combo,
-    map: raw.map,
-    traffic_type: raw.traffic_type,
-    mode: raw.mode,
-    car_model: raw.car_model,
-    input: raw.input,
-    camera_type: raw.camera_type,
-    rank_position: raw.ranking?.position,
-    tier_name: raw.ranking?.tier_name,
-    team_names: raw.mode === 'team'                                         // takes the different player names if its a team run - just how the api from no hesi is given to us
-      ? (raw.team ?? []).map(m => m.nohesi_name)
+function fnMapRecord(rawRecord) { // called from fnFetchAllInBackground below — reshapes upstream record into our flat shape
+  return {
+    nohesi_name: rawRecord.nohesi_name,
+    nohesi_pfp: rawRecord.nohesi_pfp,
+    score: rawRecord.score,
+    combo: rawRecord.combo,
+    map: rawRecord.map,
+    traffic_type: rawRecord.traffic_type,
+    mode: rawRecord.mode,
+    car_model: rawRecord.car_model,
+    input: rawRecord.input,
+    camera_type: rawRecord.camera_type,
+    rank_position: rawRecord.ranking?.position,
+    tier_name: rawRecord.ranking?.tier_name,
+    team_names: rawRecord.mode === 'team'                                         // for team runs collect every teammate's name
+      ? (rawRecord.team ?? []).map((teammate) => teammate.nohesi_name)
       : []
   };
-  return base;
 }
 
-function isStale(entry) {                                                   // checks whether a cached entry has expired from the TTL above
-  return Date.now() - entry.timestamp > CACHE_TTL_MS;
+function fnIsCacheEntryStale(cacheEntry) { // called from fnGetOrCreateCacheEntry below
+  return Date.now() - cacheEntry.timestamp > CACHE_TTL_MS;
 }
 
-async function fetchAllInBackground(filter) {                             // fetches every page of results in the background
-  const entry = cache.get(filter);                                        // look up the cache entry for this filter and if it doesnt exist just exit
-  if (!entry) return;
+async function fnFetchAllInBackground(filterName) { // called from fnGetOrCreateCacheEntry on a cold cache; fires-and-forgets, pages through the entire upstream feed
+  const cacheEntry = cacheByFilter.get(filterName);
+  if (!cacheEntry) return;
 
-  let offset = 0;                                                         // pagination
+  let pageOffset = 0;
 
   try {
-    while (true) {                                                                            // infinite loop to get all data
-      const res = await fetch(`${LEADERBOARD_URL}?offset=${offset}&limit=${PAGE_SIZE}`);      // fetch data for current page and pause until it arrives
-      if (!res.ok) throw new Error(`Leaderboard API ${res.status}`);                          // if the response is not a 200 (ok response) then throw error
-      const data = await res.json();                                                          // parse the response body into json
+    while (true) {                                                                                  // loop every upstream page until none remain
+      const upstreamResponse = await fetch(`${LEADERBOARD_API_URL}?offset=${pageOffset}&limit=${API_PAGE_SIZE}`);
+      if (!upstreamResponse.ok) throw new Error(`Leaderboard API ${upstreamResponse.status}`);
+      const responseBody = await upstreamResponse.json();
 
-      const records = data.data ?? [];                                                        // returns the data array from the response above
-      for (const raw of records) {                                                            // for all records, apply the filter using the function above, and then map the records via the function above too
-        if (applyFilter(raw, filter)) {
-          entry.records.push(mapRecord(raw));
+      const upstreamRecords = responseBody.data ?? [];
+      for (const rawRecord of upstreamRecords) {
+        if (fnApplyFilter(rawRecord, filterName)) {
+          cacheEntry.records.push(fnMapRecord(rawRecord));
         }
       }
 
-      if (entry._resolve20 && entry.records.length >= 20) {                                    // once we have 20 records then resolve so the first page can show the data
-        entry._resolve20();
-        entry._resolve20 = null;
+      if (cacheEntry._resolveFirstPageReady && cacheEntry.records.length >= RESPONSE_PAGE_SIZE) {   // once we have a full first response page, let any waiter on readyPromise proceed
+        cacheEntry._resolveFirstPageReady();
+        cacheEntry._resolveFirstPageReady = null;
       }
 
-      const total = data.metadata?.total_filtered_count ?? 0;                                   // the total records that are in the api
-      const hasMore = offset + records.length < total;                                          // checks if we have more pages to scrape
-      if (!hasMore) break;                                                                      // will exit loop if so, otherwise offets the offset
-      offset += PAGE_SIZE;
-
+      const totalFilteredCount = responseBody.metadata?.total_filtered_count ?? 0;
+      const moreUpstreamPagesExist = pageOffset + upstreamRecords.length < totalFilteredCount;
+      if (!moreUpstreamPagesExist) break;
+      pageOffset += API_PAGE_SIZE;
     }
-  } catch (err) {
-    console.error(`Leaderboard cache fetch error (filter=${filter}):`, err);
+  } catch (fetchErr) {
+    console.error(`Leaderboard cache fetch error (filter=${filterName}):`, fetchErr);
   } finally {
-    entry.complete = true;                                                // fetching complete
-    entry.fetching = false;
-    if (entry._resolve20) {                                               // if we never hit 20 records still resolve
-      entry._resolve20();
-      entry._resolve20 = null;
+    cacheEntry.complete = true;
+    cacheEntry.fetching = false;
+    if (cacheEntry._resolveFirstPageReady) {                                                        // resolve even if we never hit a full page (rare empty/short result)
+      cacheEntry._resolveFirstPageReady();
+      cacheEntry._resolveFirstPageReady = null;
     }
   }
 }
 
-export function getOrCreateEntry(filter) {                                // function to get or create cache for a specified filter
-  const existing = cache.get(filter);                                     // look up current entry and if we have one and it hasnt expired just return it
-  if (existing && !isStale(existing)) {
-    return existing;
+export function fnGetOrCreateCacheEntry(filterName) { // called from GET() in src/routes/api/leaderboard/+server.js
+  const existingEntry = cacheByFilter.get(filterName);
+  if (existingEntry && !fnIsCacheEntryStale(existingEntry)) {
+    return existingEntry;
   }
 
-  let resolveReady;                                                       // resolve function that the client will wait for to know when records are finished - needs to be this way as its completed in a different function
-  const readyPromise = new Promise(resolve => { resolveReady = resolve; });
+  let resolveFirstPageReady;
+  const firstPageReadyPromise = new Promise((resolve) => { resolveFirstPageReady = resolve; });
 
-  const entry = {                                                         // entry object to store the cache for this filter
-    records: [], 
+  const freshCacheEntry = {
+    records: [],
     complete: false,
     fetching: true,
     timestamp: Date.now(),
-    readyPromise,
-    _resolve20: resolveReady
+    readyPromise: firstPageReadyPromise,
+    _resolveFirstPageReady: resolveFirstPageReady
   };
 
-  cache.set(filter, entry);                                               // sets the cache for this
+  cacheByFilter.set(filterName, freshCacheEntry);
 
-  fetchAllInBackground(filter);                                           // starts the background fetching
+  fnFetchAllInBackground(filterName);                                                               // kick off the background scrape; caller can await readyPromise
 
-  return entry;                                                           // return immediately so the caller can start waiting on readyPromise
+  return freshCacheEntry;
 }
 
-export async function waitForPage(entry, page) {                          // function to wait for a specific page of results before showing it
-  const endIdx = page * 20;                                               // 20 records per page, and calculate the index of the last
+export async function fnWaitForPage(cacheEntry, pageNumber) { // called from GET() in src/routes/api/leaderboard/+server.js
+  const lastRecordIndex = pageNumber * RESPONSE_PAGE_SIZE;
 
-  if (page === 1) {
-    await entry.readyPromise;
-  } else {                                                                // for pages other than 1, we wait until we have enough records to show, otherwise we wait
-    while (entry.records.length < endIdx && !entry.complete) {
-      await new Promise(r => setTimeout(r, 150));
+  if (pageNumber === 1) {
+    await cacheEntry.readyPromise;
+  } else {                                                                                          // pages beyond 1 need enough records buffered; poll until ready or scrape completes
+    while (cacheEntry.records.length < lastRecordIndex && !cacheEntry.complete) {
+      await new Promise((resolve) => setTimeout(resolve, POLL_INTERVAL_MS));
     }
   }
 }

@@ -1,0 +1,76 @@
+{
+  "threadId": "1322249269666648136",
+  "title": "Hide UI elements (including Points) Leaderboard",
+  "messages": [
+    {
+      "content": "# Pit Menu (on the right):\n> Settings > Assetto Corsa > System > **\"Pits menu\" disable everything**\n> Settings > Custom Shader Patch > General Patch Settings > Enable **\"Stop AC from using D Pad in pits app\"**\n> Settings > Assetto Corsa > Controls > \"System\" > Enable **'Ignore Pov1 buttons in pits\"**\n\n# or\n** **\n> Open Steam > Right click Assetto Corsa > click properties > click local files > click browse\n> Go to \\system\\cfg\\pitstop.ini\n> Open the .ini file with notepad and then change USE_MOUSE_PITSTOP=0 to be **=1**\n> Relaunch Content Manager",
+      "attachments": [
+        "/faqs-images/1322249269666648136/0-0.png"
+      ]
+    },
+    {
+      "content": "# Driver names (bottom):\n> F9 to hide",
+      "attachments": [
+        "/faqs-images/1322249269666648136/1-0.png"
+      ]
+    },
+    {
+      "content": "# Virtual Mirror  (top mid) :\n> F11",
+      "attachments": [
+        "/faqs-images/1322249269666648136/2-0.png"
+      ]
+    },
+    {
+      "content": "# Proximity indicator (red arrow):",
+      "attachments": [
+        "/faqs-images/1322249269666648136/3-0.png"
+      ]
+    },
+    {
+      "content": "# Yellow Flag (top left):\n\n> https://youtu.be/GALR0-TE9_0",
+      "attachments": []
+    },
+    {
+      "content": "# Server messages (top mid)",
+      "attachments": [
+        "/faqs-images/1322249269666648136/5-0.png"
+      ]
+    },
+    {
+      "content": "# Ping (top right):",
+      "attachments": [
+        "/faqs-images/1322249269666648136/6-0.png"
+      ]
+    },
+    {
+      "content": "# Time Remaining in Session (Top Middle)\n> Steam\\steamapps\\common\\assettocorsa\\system\\cfg\\session_info.ini\n> Change the following values:\n> \"PRATICE_VISIBLE=0\"\n> \"QUALIFY_VISIBLE=0\"\n> \"RACE_VISIBLE=0\"",
+      "attachments": [
+        "/faqs-images/1322249269666648136/7-0.png"
+      ]
+    },
+    {
+      "content": "# Pit speed limit (top left)",
+      "attachments": [
+        "/faqs-images/1322249269666648136/8-0.png"
+      ]
+    },
+    {
+      "content": "",
+      "attachments": [
+        "/faqs-images/1322249269666648136/9-0.png"
+      ]
+    },
+    {
+      "content": "# No Hesi Speedometer & Points UI\n> Click the `Gear` icon located at the top right of your screen.\n> \n> - To turn off all of the Points UI, click the `toggle button` in the `Toggle UI` box\n>     - To turn off specific Points UI parts, click `UI Settings` at the bottom, then click the `toggle button` for the specific part you want disabled.\n> \n> - To turn off the speedometer, click the `toggle button` in the `Speedometer` box",
+      "attachments": [
+        "/faqs-images/1322249269666648136/10-0.png"
+      ]
+    },
+    {
+      "content": "# No Hesi Chat\n> Click the `Gear` icon located at the top right of chat.\n> Scroll down in the `Chat Settings` then click `Hide chat when inactive`",
+      "attachments": [
+        "/faqs-images/1322249269666648136/11-0.png"
+      ]
+    }
+  ]
+}

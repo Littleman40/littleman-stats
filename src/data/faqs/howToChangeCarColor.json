@@ -1,0 +1,34 @@
+{
+  "threadId": "1322250892509974720",
+  "title": "How to change car color?",
+  "messages": [
+    {
+      "content": "# Do you want to change your car color to stand out from the rest? Follow this guide!",
+      "attachments": [
+        "/faqs-images/1322250892509974720/0-0.png"
+      ]
+    },
+    {
+      "content": "# Method 1\n> Join a server > Click on the Settings Icon in the top right > Click Change Car Color\n> \n> **Warning: \"Toggle UI\" must be enabled**",
+      "attachments": [
+        "/faqs-images/1322250892509974720/1-0.png"
+      ]
+    },
+    {
+      "content": "## 🚨 VR Users Warning 🚨 \n> To fix the color menu staying inside of the cockpit, while the camera is pulled out into third person, please do the following:\n> \n> Go to Content Manager -> Settings -> Custom Shaders Patch -> \"Mode Tweaks: VR\" -> Custom VR HUD Rendering \n> \n> Please tick both **\"active\" and the \"move with other camera modes\"** boxes.",
+      "attachments": [
+        "/faqs-images/1322250892509974720/2-0.png"
+      ]
+    },
+    {
+      "content": "-# credit: <@311861142114926593>",
+      "attachments": []
+    },
+    {
+      "content": "# Reset color\n> 1. Go to __Documents\\Assetto Corsa\\cfg\\extension\\state\\lua__\n> \n> 2. Open with NotePad __shared-NoHesiUI_Saves__\n> \n> 3. Delete the lines with \"__paintQueue__\"",
+      "attachments": [
+        "/faqs-images/1322250892509974720/4-0.png"
+      ]
+    }
+  ]
+}

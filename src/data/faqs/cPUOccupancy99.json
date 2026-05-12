@@ -1,0 +1,16 @@
+{
+  "threadId": "1322241457293230080",
+  "title": "CPU Occupancy > 99%",
+  "messages": [
+    {
+      "content": "# Here is how to fix the “CPU Occupancy > 99%” warning.",
+      "attachments": [
+        "/faqs-images/1322241457293230080/0-0.png"
+      ]
+    },
+    {
+      "content": "## Method 1\n> **Change the following settings:**\n> Settings > Custom Shaders Patch > General Patch Settings > Optimizations\n> Tick \"Use SIMD-Accelerated culling for tracks\" | Disable \"Force Cull Tests\"\n> \n> Settings > Custom Shaders Patch > General Patch Settings > CPU Optimizations\n> Chunks Optimization - Advanced for SRP | Basic for 110\n> \n> Settings > Custom Shaders Patch > General Patch Settings > FPS Limiter Options\n> Tick \"Adjust Frame Time to improve smoothness\"",
+      "attachments": []
+    }
+  ]
+}

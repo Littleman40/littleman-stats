@@ -1,0 +1,42 @@
+{
+  "threadId": "1431128401661530152",
+  "title": "Broken Textures on 110",
+  "messages": [
+    {
+      "content": "# Are your building textures on 110 glitched or broken? Follow this guide!",
+      "attachments": [
+        "/faqs-images/1431128401661530152/0-0.jpg"
+      ]
+    },
+    {
+      "content": "## Prerequisite\n> Please ensure you are using **0.2.11 CSP**. (CM > Settings > Custom Shaders Patch > About & Updates)\n\n# Method 1:\n\n> Ensure you have \"Optimize meshes some more\" **DISABLED**.\n> `Content Manager > Settings > Custom Shaders Patch > General Patch Settings > GPU Optimizations`",
+      "attachments": []
+    },
+    {
+      "content": "",
+      "attachments": [
+        "/faqs-images/1431128401661530152/2-0.jpg"
+      ]
+    },
+    {
+      "content": "# Method 2:\n> 7zip is required for this: \n> **[Download and install 7zip.](https://www.7-zip.org/)** **7zip** is free.",
+      "attachments": [
+        "/faqs-images/1431128401661530152/3-0.png"
+      ]
+    },
+    {
+      "content": "## Step 1: Delete the track:\n> 1. <#1322235675239645184> > content > tracks\n> 2. Delete the 110 folder\n\n## Step 2: Reinstall the track manually. Ensure you install the `autoupateapp` lua.\n> 1. [**Click Here**](<https://cdn.nohesi.gg/maps/nohesi_110.7z>) to download the track\n> 2. Right-Click the zip folder > Show more options > 7zip > Open archive\n> 3. Drag & Drop the `apps` and `content` into <#1322235675239645184>\n> -# This \"apps\" folder, contains the \"autoupateapp\" lua needed",
+      "attachments": []
+    },
+    {
+      "content": "# VIDEO GUIDE",
+      "attachments": []
+    },
+    {
+      "content": "",
+      "attachments": [
+        "/faqs-images/1431128401661530152/6-0.mp4"
+      ]
+    }
+  ]
+}

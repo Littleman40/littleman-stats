@@ -1,7 +1,7 @@
 <script>
   import { page } from '$app/stores';
 
-  const links = [
+  const navLinks = [
     { href: '/', label: 'Home' },
     { href: '/user-search', label: 'User Search' },
     { href: '/leaderboard', label: 'Leaderboard' },
@@ -9,35 +9,35 @@
     { href: '/faq', label: 'FAQ' }
   ];
 
-  let menuOpen = $state(false);
+  let isMobileMenuOpen = $state(false);
 
-  function toggleMenu() {
-    menuOpen = !menuOpen;
+  function fnToggleMobileMenu() { // called from the hamburger button onclick in the template below
+    isMobileMenuOpen = !isMobileMenuOpen;
   }
 
-  function closeMenu() {
-    menuOpen = false;
+  function fnCloseMobileMenu() { // called from the brand link + each nav link onclick in the template below
+    isMobileMenuOpen = false;
   }
 </script>
 
 <nav>
   <div class="nav-inner page-wrapper">
-    <a href="/" class="brand" onclick={closeMenu}>LittleMan Stats</a>
+    <a href="/" class="brand" onclick={fnCloseMobileMenu}>LittleMan Stats</a>
 
-    <button class="hamburger" onclick={toggleMenu} aria-label="Toggle menu">
+    <button class="hamburger" onclick={fnToggleMobileMenu} aria-label="Toggle menu">
       <span></span>
       <span></span>
       <span></span>
     </button>
 
-    <ul class="nav-links" class:open={menuOpen}>
-      {#each links as link}
+    <ul class="nav-links" class:open={isMobileMenuOpen}>
+      {#each navLinks as navLink}
         <li>
           <a
-            href={link.href}
-            class:active={$page.url.pathname === link.href}
-            onclick={closeMenu}
-          >{link.label}</a>
+            href={navLink.href}
+            class:active={$page.url.pathname === navLink.href}
+            onclick={fnCloseMobileMenu}
+          >{navLink.label}</a>
         </li>
       {/each}
     </ul>

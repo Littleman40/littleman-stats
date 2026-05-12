@@ -1,0 +1,28 @@
+{
+  "threadId": "1452213561190256752",
+  "title": "Fix Camera Sway / Shake",
+  "messages": [
+    {
+      "content": "# Is your camera shaking for no reason? Follow this guide!",
+      "attachments": []
+    },
+    {
+      "content": "## Step 1\n> Open Content Manager and navigate to `Settings > Custom Shaders Patch > Graphics Adjusments > Origin Shift` and tick `active`",
+      "attachments": [
+        "/faqs-images/1452213561190256752/1-0.png"
+      ]
+    },
+    {
+      "content": "## Step 2\n> Navigate to `Settings > Custom Shaders Patch > General Patch Settings > Track Camera Options` and tick `Disable camera wobble.`",
+      "attachments": [
+        "/faqs-images/1452213561190256752/2-0.png"
+      ]
+    },
+    {
+      "content": "## Step 3\n> Navigate to `Settings > Assetto Corsa > View & UI > Camera` and untick `Lock onboard camera to horizon.`",
+      "attachments": [
+        "/faqs-images/1452213561190256752/3-0.png"
+      ]
+    }
+  ]
+}

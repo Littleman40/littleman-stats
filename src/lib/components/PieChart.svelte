@@ -1,31 +1,31 @@
 <script>
   import { onMount } from 'svelte';
 
-  let { distribution = {}, title = '' } = $props();
+  let { distribution: distributionMap = {}, title: chartTitle = '' } = $props();
 
-  let canvas;
-  let chart;
+  let canvasElement;
+  let chartInstance;
 
-  const GREYSCALE = [
+  const GREYSCALE_PALETTE = [
     '#ffffff', '#cccccc', '#aaaaaa', '#888888',
     '#666666', '#444444', '#333333', '#222222'
   ];
 
-  function buildChart() {
-    if (!canvas) return;
-    if (chart) chart.destroy();
+  function fnBuildPieChart() { // called from onMount below + the distribution-change $effect below
+    if (!canvasElement) return;
+    if (chartInstance) chartInstance.destroy();
 
-    const labels = Object.keys(distribution);
-    const data = Object.values(distribution);
+    const sliceLabels = Object.keys(distributionMap);
+    const sliceValues = Object.values(distributionMap);
 
     import('chart.js/auto').then(({ Chart }) => {
-      chart = new Chart(canvas, {
+      chartInstance = new Chart(canvasElement, {
         type: 'doughnut',
         data: {
-          labels,
+          labels: sliceLabels,
           datasets: [{
-            data,
-            backgroundColor: labels.map((_, i) => GREYSCALE[i % GREYSCALE.length]),
+            data: sliceValues,
+            backgroundColor: sliceLabels.map((_label, sliceIndex) => GREYSCALE_PALETTE[sliceIndex % GREYSCALE_PALETTE.length]),
             borderColor: '#0a0a0a',
             borderWidth: 2
           }]
@@ -45,7 +45,7 @@
             },
             tooltip: {
               callbacks: {
-                label: (ctx) => ` ${ctx.label}: ${ctx.parsed.toLocaleString()}`
+                label: (tooltipCtx) => ` ${tooltipCtx.label}: ${tooltipCtx.parsed.toLocaleString()}`
               }
             }
           }
@@ -55,20 +55,20 @@
   }
 
   onMount(() => {
-    buildChart();
-    return () => chart?.destroy();
+    fnBuildPieChart();
+    return () => chartInstance?.destroy();
   });
 
   $effect(() => {
-    distribution;
-    buildChart();
+    distributionMap;
+    fnBuildPieChart();
   });
 </script>
 
 <div class="pie-wrap">
-  <canvas bind:this={canvas}></canvas>
-  {#if title}
-    <p class="chart-title">{title}</p>
+  <canvas bind:this={canvasElement}></canvas>
+  {#if chartTitle}
+    <p class="chart-title">{chartTitle}</p>
   {/if}
 </div>
 
