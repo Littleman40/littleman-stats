@@ -96,34 +96,32 @@
     onreset={handleReset}
   />
 
-  {#if error}
+  {#if loading}
+    <LeaderboardTable records={[]} />
+    <div class="skeleton-wrap">
+      {#each Array(20) as _, i}
+        <div class="skeleton-row" style="opacity: {1 - i * 0.15}"></div>
+      {/each}
+    </div>
+  {:else if error}
+    <LeaderboardTable {records} />
     <div class="error-state">
       <p>{error}</p>
       <button class="retry-btn" onclick={loadData}>Retry</button>
     </div>
-  {/if}
-
-  {#if !error}
-    {#if loading}
-      <div class="skeleton-wrap">
-        {#each Array(20) as _, i}
-          <div class="skeleton-row" style="opacity: {1 - i * 0.15}"></div>
-        {/each}
-      </div>
-    {:else if records.length === 0}
-      <div class="empty-state">
-        <p>No results found for this filter.</p>
-      </div>
-    {:else}
-      <LeaderboardTable {records} />
-      <PaginationControls
-        page={currentPage}
-        {hasNext}
-        {hasPrev}
-        onprev={handlePrev}
-        onnext={handleNext}
-      />
-    {/if}
+  {:else if records.length === 0}
+    <div class="empty-state">
+      <p>No results found for this filter.</p>
+    </div>
+  {:else}
+    <LeaderboardTable {records} />
+    <PaginationControls
+      page={currentPage}
+      {hasNext}
+      {hasPrev}
+      onprev={handlePrev}
+      onnext={handleNext}
+    />
   {/if}
 </div>
 
@@ -155,7 +153,7 @@
   }
 
   .skeleton-row {
-    height: 63px; 
+    height: 63px;
     background: var(--color-card-elevated);
     border-top: 1px solid var(--color-border);
     border-left: 1px solid var(--color-border);
