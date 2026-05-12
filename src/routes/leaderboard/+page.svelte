@@ -97,14 +97,18 @@
   />
 
   {#if loading}
-    <LeaderboardTable records={[]} />
-    <div class="skeleton-wrap">
-      {#each Array(20) as _, i}
-        <div class="skeleton-row" style="opacity: {1 - i * 0.15}"></div>
-      {/each}
+    <div class="scroll-wrap">
+      <LeaderboardTable records={[]} />
+      <div class="skeleton-wrap">
+        {#each Array(20) as _, i}
+          <div class="skeleton-row" style="opacity: {1 - i * 0.15}"></div>
+        {/each}
+      </div>
     </div>
   {:else if error}
-    <LeaderboardTable {records} />
+    <div class="scroll-wrap">
+      <LeaderboardTable {records} />
+    </div>
     <div class="error-state">
       <p>{error}</p>
       <button class="retry-btn" onclick={loadData}>Retry</button>
@@ -114,7 +118,9 @@
       <p>No results found for this filter.</p>
     </div>
   {:else}
-    <LeaderboardTable {records} />
+    <div class="scroll-wrap">
+      <LeaderboardTable {records} />
+    </div>
     <PaginationControls
       page={currentPage}
       {hasNext}
@@ -147,9 +153,16 @@
     font-size: 0.95rem;
   }
 
+  .scroll-wrap {
+    width: 100%;
+    overflow-x: auto;
+    color-scheme: dark;
+  }
+
   .skeleton-wrap {
     display: flex;
     flex-direction: column;
+    min-width: 1213px;
   }
 
   .skeleton-row {
@@ -158,7 +171,7 @@
     border-top: 1px solid var(--color-border);
     border-left: 1px solid var(--color-border);
     border-right: 1px solid var(--color-border);
-
+    
     animation: pulse 1.5s ease-in-out infinite;
   }
 

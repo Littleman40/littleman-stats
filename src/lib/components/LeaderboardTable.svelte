@@ -6,6 +6,16 @@
 
 <div class="table-wrap">
   <table>
+    <colgroup>
+      <col style="width: 90px" />
+      <col style="width: 389px" />
+      <col style="width: 146px" />
+      <col style="width: 103px" />
+      <col style="width: 109px" />
+      <col style="width: 82px" />
+      <col style="width: 67px" />
+      <col style="width: 227px" />
+    </colgroup>
     <thead>
       <tr>
         <th>Position</th>
@@ -52,11 +62,11 @@
 <style>
   .table-wrap {
     width: 100%;
-    overflow-x: auto;
   }
 
   table {
-    width: 100%;
+    table-layout: fixed;
+    min-width: 1213px;
     border-collapse: collapse;
     font-size: 0.875rem;
   }
