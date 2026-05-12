@@ -66,7 +66,7 @@
 
   table {
     table-layout: fixed;
-    min-width: 1213px;
+    width: 1213px;
     border-collapse: collapse;
     font-size: 0.875rem;
   }
@@ -104,6 +104,10 @@
     padding: 0.65rem 0.75rem;
     color: var(--color-text);
     vertical-align: middle;
+    overflow: hidden;
+    white-space: nowrap;
+    -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 24px), transparent);
+    mask-image: linear-gradient(to right, #000 calc(100% - 24px), transparent);
   }
 
   .pos {
@@ -140,6 +144,7 @@
     display: flex;
     flex-direction: column;
     gap: 0.1rem;
+    min-width: 0;
   }
 
   .player-name {
@@ -159,10 +164,6 @@
   .car {
     color: var(--color-muted);
     font-size: 0.8rem;
-    max-width: 200px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
   }
 
 </style>
