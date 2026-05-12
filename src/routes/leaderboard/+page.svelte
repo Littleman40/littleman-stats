@@ -106,7 +106,7 @@
   {#if !error}
     {#if loading}
       <div class="skeleton-wrap">
-        {#each Array(5) as _, i}
+        {#each Array(20) as _, i}
           <div class="skeleton-row" style="opacity: {1 - i * 0.15}"></div>
         {/each}
       </div>
@@ -152,15 +152,15 @@
   .skeleton-wrap {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
-    margin-top: 1rem;
   }
 
   .skeleton-row {
-    height: 48px;
+    height: 63px; 
     background: var(--color-card-elevated);
-    border: 1px solid var(--color-border);
-    border-radius: 4px;
+    border-top: 1px solid var(--color-border);
+    border-left: 1px solid var(--color-border);
+    border-right: 1px solid var(--color-border);
+
     animation: pulse 1.5s ease-in-out infinite;
   }
 
