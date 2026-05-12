@@ -1,0 +1,30 @@
+{
+  "threadId": "1322251762538774649",
+  "title": "How to fix Lost ForceFeedBack (FFB) when Alt-Tabbing",
+  "messages": [
+    {
+      "content": "# Playing No Hesi then when you Alt-Tab you lose all Force Feedback? Follow this guide!",
+      "attachments": [
+        "/faqs-images/1322251762538774649/0-0.png"
+      ]
+    },
+    {
+      "content": "# Microsoft pushed out \"Microsoft GameInput\" Redistributable as part of one of the Xbox App updates (I think?) and that has been claiming exclusivity over FFB devices and causing issues.\n\n# Method 1\n-# Do these steps to disable the service. Simply uninstalling isn't permanent as Windows seems to reinstall it on reboot:\n## Step 1\n> Press Windows Key and type \"Services\" to find the Service Manager. Open it as administrator.",
+      "attachments": [
+        "/faqs-images/1322251762538774649/1-0.png"
+      ]
+    },
+    {
+      "content": "## Step 2\n> Find \"GameInput Service\" and right click > Properties > Startup Type > Change to \"Disabled\" > Click OK",
+      "attachments": [
+        "/faqs-images/1322251762538774649/2-0.png"
+      ]
+    },
+    {
+      "content": "",
+      "attachments": [
+        "/faqs-images/1322251762538774649/3-0.png"
+      ]
+    }
+  ]
+}

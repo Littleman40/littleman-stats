@@ -1,0 +1,120 @@
+{
+  "threadId": "1468772448605573416",
+  "title": "How to get more FPS (CSP 0.3)",
+  "messages": [
+    {
+      "content": "# Want to improve your FPS? Follow this guide!",
+      "attachments": []
+    },
+    {
+      "content": "## What this guide *CAN* and *CANNOT* do\n> This guide will help you understand and optimise your settings for the best balance between quality and performance. Increase and decrease the settings as needed.\n> This guide WILL not magically increase your FPS to 300 at 4k resolution and it will not make your PC itself better if the specs are terrible.\n> **This guide is meant for Custom Shaders Patch versions 0.3.x**\n-# For CSP versions 0.2, use https://discord.com/channels/964645662866173972/1468772307433558320",
+      "attachments": []
+    },
+    {
+      "content": "** **\n\n## What are some common causes of FPS issues?\n- `Installing Pure by dragging it into CM.`\n> This causes heavy FPS drops. Follow the video here to install it correctly: https://discord.com/channels/964645662866173972/1322227974371545159\n\n- `Your CPU/GPU is not strong enough for your monitor resolution.`\n> If you have low-end hardware, avoid resolutions above 1080p. If you use a higher resolution monitor, lower the resolution in your GPU control panel.\n\n- `Shadow and/or reflection resolution are set too high.`\n> Values between 3K–8K are usually overkill. For low- to mid-tier PCs, keep this at 1024–2048.\n\n- `MSAA is set to 8x.`\n> Use 2x/turn it off on low-end systems, and 4x max if your PC can handle it.\n\n- `Rain.`\n> Avoid using this if you’re in need of more frames.\n\n- `Tree skins.`\n> While they can drastically change the look of maps, its not recommended to use them if you are using low to mid-tier hardware.",
+      "attachments": []
+    },
+    {
+      "content": "** **\n\n# __Assetto Corsa Video Settings__\n## Resolution and FPS\n- `Rendering Mode:`\n> Set to match your screen set up i.e One Monitor = Single Screen.\n> Tick fullscreen as windowed mode usually diminishes frames.\n\n- `Resolution:`\n> Set this to match your monitor's resolution and refresh rate.\n> Please note that the higher your resolution, the more demanding it is on your FPS.",
+      "attachments": [
+        "/faqs-images/1468772448605573416/3-0.png"
+      ]
+    },
+    {
+      "content": "> Do not enable `Fix Resolution Automatically`, `Vertical Synchronization`, or `Limit framerate`.",
+      "attachments": [
+        "/faqs-images/1468772448605573416/4-0.png"
+      ]
+    },
+    {
+      "content": "## Quality:\n- `MSAA:`\n> Set to `2x` or `4x` depending on PC specs | Do not use `8x`.\n\n- `Anisotropic Filtering:`\n> Feel free to max this out.\n\n- `World Details:`\n> This is reliant on the track you are using but usually set this to `Medium` or `High`.\n\n- `Shadow Resolution:`\n> This is the biggest frame killer, set this to `512x512` or `1024x1024` | **NEVER** set this to anything above `2048x2048`.\n\n- `Smoke Generation:`\n> This setting is overridden by ParticlesFX but you can set this to `Medium` anyways.",
+      "attachments": [
+        "/faqs-images/1468772448605573416/5-0.png"
+      ]
+    },
+    {
+      "content": "## Reflections:\n- `Reflection Resolution:`\n> Set this to either `512x512` or `1024x1024`.\n\n- `Reflection Frequency:`\n> **ONLY** set this to `Two face per frame`.\n\n- `Rendering Distance:`\n> Feel free to max this out.",
+      "attachments": [
+        "/faqs-images/1468772448605573416/6-0.png"
+      ]
+    },
+    {
+      "content": "## Post-Processing\n- `Enable Post-Processing Effects`\n> Have this checked/enabled.\n\n- `Filter:`\n> Depending on the filter you use, the impact can vary but usually the `defaults` and the `pure_` (if pure is installed) ones are the best for FPS.\n\n- `Overall Quality:`\n> Setting this to `High` or `Very High` should be sufficient.\n\n- `Glare Quality:`\n> Setting this to `High` or `Very High` should be sufficient.\n\n- `Depth of Field:`\n> Setting this to `Maximum` is fine as it only works during replays.\n\n- `Motion Blur:`\n> Set this to `Off`\n\n- `Saturation:`\n> Leave this at 100%\n\n- `Heat Shimmering`\n> You can leave this off as it is not noticeable and can take some frames\n\n- `Sunrays`\n> Leave this on\n\n- `FXAA`\n> Leave this on",
+      "attachments": [
+        "/faqs-images/1468772448605573416/7-0.png"
+      ]
+    },
+    {
+      "content": "## Mirrors\n- `Mirror Resolution:`\n> `128x512` or `256x1024` is sufficient and should provide a good balance.\n\n- `High Quality`\n> Leave this on",
+      "attachments": [
+        "/faqs-images/1468772448605573416/8-0.png"
+      ]
+    },
+    {
+      "content": "** **\n\n# Custom Shaders Patch Settings\n- `CSP Settings > Other > DXGI`\n> Make sure you have “Pace frames better” & set Maximum latency to 1 frame.",
+      "attachments": [
+        "/faqs-images/1468772448605573416/9-0.png"
+      ]
+    },
+    {
+      "content": "- `CSP settings > Patch > Optimizations`\n> Under CPU optimizations, make sure you have “Flatten nodes” & \"Apply hyperthreading fix\" checked, Set Chunks optimization to “Advanced”. Under GPU optimizations enable \"Optimize meshes\"\n> **Important!**\n> Since the Chinatown addition to 110 it is recommended to disable “Optimize meshes some more”. \n> To prevent any issues on the map keep this setting OFF! Set Chunk optimization to \"Basic\". If you don't have access to the 110 map / don't play it, you can ignore this.\n> -# Flatten nodes is automatically enabled on 0.3.0-preview212",
+      "attachments": [
+        "/faqs-images/1468772448605573416/10-0.png"
+      ]
+    },
+    {
+      "content": "** **\n\n**`If you followed the first 3 steps & still have low fps apply these changes as well:`**\n`Custom Shaders Patch Settings:`\n> Graphics > LightningFX > Dynamic Shadows off",
+      "attachments": [
+        "/faqs-images/1468772448605573416/11-0.png"
+      ]
+    },
+    {
+      "content": "> Graphics > ParticleFX > Sparks off\n> Graphics > ParticleFX > Fireworks off\n> Graphics > ParticleFX > Solid Pieces off",
+      "attachments": [
+        "/faqs-images/1468772448605573416/12-0.png"
+      ]
+    },
+    {
+      "content": "> Cars > Windscreen FX > Remove dirt completely on",
+      "attachments": [
+        "/faqs-images/1468772448605573416/13-0.png"
+      ]
+    },
+    {
+      "content": "> Cars > Visual > Tyres FX > off\n> Cars > Visual > Brake Discs > off",
+      "attachments": [
+        "/faqs-images/1468772448605573416/14-0.png"
+      ]
+    },
+    {
+      "content": "> Track > GrassFX > off",
+      "attachments": [
+        "/faqs-images/1468772448605573416/15-0.png"
+      ]
+    },
+    {
+      "content": "> Track > SkidmarksFX> set limit to 20k or lower",
+      "attachments": [
+        "/faqs-images/1468772448605573416/16-0.png"
+      ]
+    },
+    {
+      "content": "`Assetto Corsa Video Settings:`\n> Enable Triple Buffering \n> Lower MSAA\n> Lower Shadow Resolution\n> Lower Smoke Generation\n> Lower Reflection Resolution\n> Lower Mirror Resolution",
+      "attachments": [
+        "/faqs-images/1468772448605573416/17-0.png"
+      ]
+    },
+    {
+      "content": "** **\n\n**`If it is still laggy after those changes:`**\n`Custom Shaders Patch Settings:`\n> Graphics > ExtraFX > Uncheck active",
+      "attachments": [
+        "/faqs-images/1468772448605573416/18-0.png"
+      ]
+    },
+    {
+      "content": "> Graphics > Adjustments > AMD FidelityFX Super Resolution (FSR) > on (Lower % presets look worse, but give bigger FPS boosts.)",
+      "attachments": [
+        "/faqs-images/1468772448605573416/19-0.png"
+      ]
+    }
+  ]
+}

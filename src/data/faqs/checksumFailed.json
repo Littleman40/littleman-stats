@@ -1,0 +1,78 @@
+{
+  "threadId": "1322241099229692026",
+  "title": "Checksum failed",
+  "messages": [
+    {
+      "content": "# Here is how to fix *Checksum Failed*",
+      "attachments": [
+        "/faqs-images/1322241099229692026/0-0.png"
+      ]
+    },
+    {
+      "content": "# Checksum Failed *always* means your files are different from the files used by the server. This causes it to not match, and you get kicked.\n> **Follow every step below all at once to prevent weird issues from happening**",
+      "attachments": []
+    },
+    {
+      "content": "## Step 1:\n> **Ensure your system meets requirements**\n> \n> * You must have **more than 16GB of RAM**\n> * You must be using **DDR4 or newer RAM**\n> \n> Using **DDR3 RAM** or **only 16GB total** will cause checksum errors",
+      "attachments": []
+    },
+    {
+      "content": "# *If you have __16GB of RAM__ or less, follow steps __2.1__ → __2.5__, otherwise, skip to Step 3",
+      "attachments": []
+    },
+    {
+      "content": "## Step 2.1\n> On the start button right click and select system",
+      "attachments": [
+        "/faqs-images/1322241099229692026/4-0.png"
+      ]
+    },
+    {
+      "content": "## Step 2.2\n> On your right in related setting click on Advanced system settings",
+      "attachments": []
+    },
+    {
+      "content": "",
+      "attachments": [
+        "/faqs-images/1322241099229692026/6-0.png"
+      ]
+    },
+    {
+      "content": "## Step 2.3\n> In the advanced tab performance case click on settings",
+      "attachments": [
+        "/faqs-images/1322241099229692026/7-0.png"
+      ]
+    },
+    {
+      "content": "## Step 2.4\n> Advanced tab go in virtual memory and select change\n> Untick the case \"Automatically manage paging file size\"\n> Select your faster drive with at least 16gb of free space\n> Select Custom size and write 16000 in initial size and maximum size and don't forget to click on Set",
+      "attachments": []
+    },
+    {
+      "content": "",
+      "attachments": [
+        "/faqs-images/1322241099229692026/9-0.png"
+      ]
+    },
+    {
+      "content": "## Step 2.5\n> Select Ok and restart your PC",
+      "attachments": []
+    },
+    {
+      "content": "## VIDEO GUIDE",
+      "attachments": [
+        "/faqs-images/1322241099229692026/11-0.mp4"
+      ]
+    },
+    {
+      "content": "## Step 3:\n> **Reinstall all cars**\n### Prerequisite:\n> You **must** use **7-Zip**, **not WinRAR**.\n> Download and install 7-Zip for free: https://www.7-zip.org/\n### Reinstall:\n> 1. Navigate to your <#1322235675239645184> and open the \"content\" folder > then rename `cars` to `old_cars`\n> 2. Then proceed to <#1322222319518748692>\n> 3. Reinstall all cars **manually** following: <#1440122305861652520>",
+      "attachments": []
+    },
+    {
+      "content": "## Step 4:\n> **If still failing, delete and reinstall the affected tracks manually**\n> \n> Delete / Reinstall: <#1457475437809631416> \n> Track Download:<#1412564819785027695>",
+      "attachments": []
+    },
+    {
+      "content": "## Step 5:\n-# Only if the above fix does not work\n> Close all background apps, including discord and connect again.",
+      "attachments": []
+    }
+  ]
+}

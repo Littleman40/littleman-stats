@@ -1,7 +1,7 @@
 <script>
-  import { formatScore } from '$lib/utils/formatters.js';
+  import { fnFormatScore } from '$lib/utils/formatters.js';
 
-  let { records = [], activeFilter = 'all', startRank = 1 } = $props();
+  let { records: leaderboardRecords = [], activeFilter = 'all', startRank = 1 } = $props();
 </script>
 
 <div class="table-wrap">
@@ -29,36 +29,36 @@
       </tr>
     </thead>
     <tbody>
-      {#each records as record, i}
+      {#each leaderboardRecords as runRecord, rowIndex}
         <tr>
           <td class="pos">
             {#if activeFilter === 'all'}
-              {record.rank_position ?? startRank + i}
+              {runRecord.rank_position ?? startRank + rowIndex}
             {:else}
-              {startRank + i} ({record.rank_position ?? startRank + i})
+              {startRank + rowIndex} ({runRecord.rank_position ?? startRank + rowIndex})
             {/if}
           </td>
           <td class="player-cell">
             <div class="player">
-              {#if record.nohesi_pfp}
-                <img src={record.nohesi_pfp} alt="" class="pfp" />
+              {#if runRecord.nohesi_pfp}
+                <img src={runRecord.nohesi_pfp} alt="" class="pfp" />
               {:else}
                 <div class="pfp-placeholder"></div>
               {/if}
               <div class="player-names">
-                <span class="player-name">{record.nohesi_name}</span>
-                {#if record.mode === 'team' && record.team_names?.length}
-                  <span class="team-members">{record.team_names.join(', ')}</span>
+                <span class="player-name">{runRecord.nohesi_name}</span>
+                {#if runRecord.mode === 'team' && runRecord.team_names?.length}
+                  <span class="team-members">{runRecord.team_names.join(', ')}</span>
                 {/if}
               </div>
             </div>
           </td>
-          <td class="num">{formatScore(record.score)}</td>
-          <td class="num">{record.combo}</td>
-          <td>{record.map}</td>
-          <td>{record.traffic_type}</td>
-          <td>{record.mode === 'team' ? 'Team' : 'Solo'}</td>
-          <td class="car">{record.car_model}</td>
+          <td class="num">{fnFormatScore(runRecord.score)}</td>
+          <td class="num">{runRecord.combo}</td>
+          <td>{runRecord.map}</td>
+          <td>{runRecord.traffic_type}</td>
+          <td>{runRecord.mode === 'team' ? 'Team' : 'Solo'}</td>
+          <td class="car">{runRecord.car_model}</td>
         </tr>
       {/each}
     </tbody>

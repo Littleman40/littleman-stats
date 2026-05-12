@@ -1,0 +1,54 @@
+{
+  "threadId": "1322242152197128222",
+  "title": "Driver model is probably missing",
+  "messages": [
+    {
+      "content": "# Here is how to fix the \" Driver model is probably missing \" error.",
+      "attachments": [
+        "/faqs-images/1322242152197128222/0-0.png"
+      ]
+    },
+    {
+      "content": "## Step 1\n> Open steam > library > right click Assetto Corsa > Manage > browse local files",
+      "attachments": [
+        "/faqs-images/1322242152197128222/1-0.png"
+      ]
+    },
+    {
+      "content": "## Step 2\n> Open the \"content\" folder then open the \"drivers\" folder and identify any folder other than \"**driver_skins**\" and \"**Drivers_oculus**\".\n> In this case, the extra faulty folder is \"**driver_80_B.kn5**\"",
+      "attachments": [
+        "/faqs-images/1322242152197128222/2-0.png"
+      ]
+    },
+    {
+      "content": "## Step 3\n> Rename the faulty folder to anything, it doesn't matter.\n> Then open the freshly renamed folder\n> Inside you'll see a .kn5 file. Move it back into the \"drivers\" folder",
+      "attachments": []
+    },
+    {
+      "content": "",
+      "attachments": [
+        "/faqs-images/1322242152197128222/4-0.png"
+      ]
+    },
+    {
+      "content": "",
+      "attachments": [
+        "/faqs-images/1322242152197128222/5-0.png"
+      ]
+    },
+    {
+      "content": "## Step 4\n> Delete the freshly renamed folder and play on No Hesi servers.",
+      "attachments": []
+    },
+    {
+      "content": "# VIDEO GUIDE",
+      "attachments": []
+    },
+    {
+      "content": "",
+      "attachments": [
+        "/faqs-images/1322242152197128222/8-0.mp4"
+      ]
+    }
+  ]
+}

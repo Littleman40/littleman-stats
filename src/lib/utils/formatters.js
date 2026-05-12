@@ -1,21 +1,21 @@
-export function formatScore(n) {                    // formats a score to include commas
-  if (n == null) return '-';
-  return Number(n).toLocaleString();
+export function fnFormatScore(rawScore) { // called from LeaderboardTable.svelte (each table row's score cell)
+  if (rawScore == null) return '-';
+  return Number(rawScore).toLocaleString();
 }
 
-export function formatTime(seconds) {               // turns number of seconds into a mm:ss string
-  if (seconds == null) return '-';
-  const s = Math.round(Number(seconds));
-  const m = Math.floor(s / 60);
-  const rem = s % 60;
-  return `${m}:${String(rem).padStart(2, '0')}`;
+export function fnFormatTime(totalSeconds) { // exported helper — turns a number of seconds into a mm:ss string (no current callers, reserved for timing pages)
+  if (totalSeconds == null) return '-';
+  const roundedSeconds = Math.round(Number(totalSeconds));
+  const minutes = Math.floor(roundedSeconds / 60);
+  const remainderSeconds = roundedSeconds % 60;
+  return `${minutes}:${String(remainderSeconds).padStart(2, '0')}`;
 }
 
-export function formatDate(isoString) {             // converts an iso date into a timestamp from the users local time zone
-  if (!isoString) return '-';
+export function fnFormatDate(isoTimestamp) { // exported helper — converts an ISO date into the user's local timestamp (no current callers, reserved for run-history views)
+  if (!isoTimestamp) return '-';
   try {
-    return new Date(isoString).toLocaleString();
+    return new Date(isoTimestamp).toLocaleString();
   } catch {
-    return isoString;
+    return isoTimestamp;
   }
 }

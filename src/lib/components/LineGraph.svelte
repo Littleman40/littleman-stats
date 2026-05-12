@@ -1,27 +1,27 @@
 <script>
   import { onMount } from 'svelte';
 
-  let { data = [] } = $props();
+  let { data: runData = [] } = $props();
 
-  let canvas;
-  let chart;
+  let canvasElement;
+  let chartInstance;
 
-  function buildChart() {
-    if (!canvas || !data.length) return;
-    if (chart) chart.destroy();
+  function fnBuildLineChart() { // called from onMount below + the data-change $effect below
+    if (!canvasElement || !runData.length) return;
+    if (chartInstance) chartInstance.destroy();
 
-    const sorted = [...data].sort((a, b) => new Date(a.submitted_at) - new Date(b.submitted_at));
-    const labels = sorted.map(d => new Date(d.submitted_at).toLocaleDateString());
-    const scores = sorted.map(d => d.score);
+    const sortedRuns = [...runData].sort((a, b) => new Date(a.submitted_at) - new Date(b.submitted_at));
+    const dateLabels = sortedRuns.map((run) => new Date(run.submitted_at).toLocaleDateString());
+    const scoreSeries = sortedRuns.map((run) => run.score);
 
     import('chart.js/auto').then(({ Chart }) => {
-      chart = new Chart(canvas, {
+      chartInstance = new Chart(canvasElement, {
         type: 'line',
         data: {
-          labels,
+          labels: dateLabels,
           datasets: [{
             label: 'Score',
-            data: scores,
+            data: scoreSeries,
             borderColor: '#ffffff',
             backgroundColor: 'rgba(255,255,255,0.04)',
             borderWidth: 2,
@@ -38,7 +38,7 @@
             legend: { display: false },
             tooltip: {
               callbacks: {
-                label: (ctx) => ` ${ctx.parsed.y.toLocaleString()}`
+                label: (tooltipCtx) => ` ${tooltipCtx.parsed.y.toLocaleString()}`
               }
             }
           },
@@ -51,7 +51,7 @@
               ticks: {
                 color: '#a0a0a0',
                 font: { size: 11 },
-                callback: (v) => v.toLocaleString()
+                callback: (tickValue) => tickValue.toLocaleString()
               },
               grid: { color: '#2e2e2e' }
             }
@@ -62,18 +62,18 @@
   }
 
   onMount(() => {
-    buildChart();
-    return () => chart?.destroy();
+    fnBuildLineChart();
+    return () => chartInstance?.destroy();
   });
 
   $effect(() => {
-    data;
-    buildChart();
+    runData;
+    fnBuildLineChart();
   });
 </script>
 
 <div class="graph-wrap">
-  <canvas bind:this={canvas}></canvas>
+  <canvas bind:this={canvasElement}></canvas>
 </div>
 
 <style>
