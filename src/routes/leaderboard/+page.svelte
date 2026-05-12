@@ -9,6 +9,7 @@
   let currentPage = $state(1);
 
   let records = $state([]);
+  let startRank = $state(1);
   let hasNext = $state(false);
   let hasPrev = $state(false);
   let loading = $state(false);
@@ -43,6 +44,7 @@
       if (!res.ok) throw new Error('API error');
       const data = await res.json();
       records = data.records ?? [];
+      startRank = data.startRank ?? 1;
       hasNext = data.hasNext ?? false;
       hasPrev = data.hasPrev ?? false;
     } catch {
@@ -98,7 +100,7 @@
 
   {#if loading}
     <div class="scroll-wrap">
-      <LeaderboardTable records={[]} />
+      <LeaderboardTable records={[]} {activeFilter} {startRank} />
       <div class="skeleton-wrap">
         {#each Array(20) as _, i}
           <div class="skeleton-row" style="opacity: {1 - i * 0.15}"></div>
@@ -107,7 +109,7 @@
     </div>
   {:else if error}
     <div class="scroll-wrap">
-      <LeaderboardTable {records} />
+      <LeaderboardTable {records} {activeFilter} {startRank} />
     </div>
     <div class="error-state">
       <p>{error}</p>
@@ -119,7 +121,7 @@
     </div>
   {:else}
     <div class="scroll-wrap">
-      <LeaderboardTable {records} />
+      <LeaderboardTable {records} {activeFilter} {startRank} />
     </div>
     <PaginationControls
       page={currentPage}

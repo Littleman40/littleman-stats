@@ -1,7 +1,7 @@
 <script>
   import { formatScore } from '$lib/utils/formatters.js';
 
-  let { records = [] } = $props();
+  let { records = [], activeFilter = 'all', startRank = 1 } = $props();
 </script>
 
 <div class="table-wrap">
@@ -31,7 +31,13 @@
     <tbody>
       {#each records as record, i}
         <tr>
-          <td class="pos">{record.rank_position ?? i + 1}</td>
+          <td class="pos">
+            {#if activeFilter === 'all'}
+              {record.rank_position ?? startRank + i}
+            {:else}
+              {startRank + i} ({record.rank_position ?? startRank + i})
+            {/if}
+          </td>
           <td class="player-cell">
             <div class="player">
               {#if record.nohesi_pfp}
