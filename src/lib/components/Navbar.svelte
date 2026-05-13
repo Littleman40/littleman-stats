@@ -1,7 +1,7 @@
 <script>
   import { page } from '$app/stores';
 
-  const navLinks = [
+  const navLinks = [                              // navigation links
     { href: '/', label: 'Home' },
     { href: '/user-search', label: 'User Search' },
     { href: '/leaderboard', label: 'Leaderboard' },
@@ -11,11 +11,11 @@
 
   let isMobileMenuOpen = $state(false);
 
-  function fnToggleMobileMenu() { // called from the hamburger button onclick in the template below
+  function fnToggleMobileMenu() {                 // called from the hamburger button onclick in the template below
     isMobileMenuOpen = !isMobileMenuOpen;
   }
 
-  function fnCloseMobileMenu() { // called from the brand link + each nav link onclick in the template below
+  function fnCloseMobileMenu() {                  // called from the brand link + each nav link onclick in the template below
     isMobileMenuOpen = false;
   }
 </script>
@@ -31,13 +31,13 @@
     </button>
 
     <ul class="nav-links" class:open={isMobileMenuOpen}>
-      {#each navLinks as navLink}
+      {#each navLinks as navLinkObj}                          <!-- nav links -->
         <li>
           <a
-            href={navLink.href}
-            class:active={$page.url.pathname === navLink.href}
+            href={navLinkObj.href}
+            class:active={$page.url.pathname === navLinkObj.href}
             onclick={fnCloseMobileMenu}
-          >{navLink.label}</a>
+          >{navLinkObj.label}</a>
         </li>
       {/each}
     </ul>

@@ -11,13 +11,13 @@
 
   let jumpInputValue = $state('');
 
-  function fnHandleJumpSubmit(submitEvent) { // called from the jump-form onsubmit in the template below
-    submitEvent.preventDefault();
-    const requestedPageNumber = parseInt(jumpInputValue, 10);
-    if (!Number.isFinite(requestedPageNumber) || requestedPageNumber < 1) return;
-    if (totalPageCount != null && requestedPageNumber > totalPageCount) return;
-    onjump?.(requestedPageNumber);
-    jumpInputValue = '';
+  function fnHandleJumpSubmit(submitEvent) {                  // called from the jump-form onsubmit in the template below
+    submitEvent.preventDefault();                             // stops the default page refresh
+    const requestedPageNumber = parseInt(jumpInputValue, 10); // converts input to an integer
+    if (!Number.isFinite(requestedPageNumber) || requestedPageNumber < 1) return; // if the number is not finite/ applicable, then return nothing
+    if (totalPageCount != null && requestedPageNumber > totalPageCount) return;   // stops from going to an unknown page number
+    onjump?.(requestedPageNumber);    // goes to page
+    jumpInputValue = '';              // clears the input field once complete
   }
 </script>
 
@@ -31,7 +31,12 @@
 
     <span class="page-indicator">
 
-      {#if totalPageCount != null}Page {currentPageNumber} of {totalPageCount}{:else}Page {currentPageNumber}{/if}
+      {#if totalPageCount != null}
+        Page {currentPageNumber} of {totalPageCount}
+      {:else}
+        Page {currentPageNumber}
+      {/if}
+
     </span>
 
     <button
@@ -40,7 +45,7 @@
       onclick={() => onnext?.()}
     >Next →</button>
 
-    {#if onjump && totalPageCount != null && totalPageCount > 1}
+    {#if onjump && totalPageCount != null && totalPageCount > 1}    <!-- shows go to holder if applicable -->
       <form class="jump" onsubmit={fnHandleJumpSubmit}>
         <label class="jump-label" for="page-jump">Go to</label>
         <input
@@ -49,7 +54,7 @@
           min="1"
           max={totalPageCount}
           bind:value={jumpInputValue}
-          placeholder="#"
+          placeholder="_"
         />
         <button class="btn" type="submit" disabled={!jumpInputValue}>Go</button>
       </form>

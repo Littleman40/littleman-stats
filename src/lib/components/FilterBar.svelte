@@ -7,14 +7,14 @@
     onreset
   } = $props();
 
-  const filters = [
+  const filters = [                                   // filter types + their labes for lb page
     { value: 'all', label: 'Everything' },
     { value: 'crew', label: 'Crew' },
     { value: 'solo', label: 'Solo' },
     { value: 'realistic', label: 'Realistic Physics' }
   ];
 
-  const views = [
+  const views = [                                     // views eg lb and statistics mode
     { value: 'leaderboard', label: 'Leaderboard' },
     { value: 'statistics', label: 'Statistics', disabled: true }
   ];
@@ -24,12 +24,12 @@
   <div class="group">
     <span class="group-label">Filter By:</span>
     <div class="pills">
-      {#each filters as f}
+      {#each filters as filterobj}              <!-- list all filters -->
         <button
           class="pill"
-          class:active={activeFilter === f.value}
-          onclick={() => onfilterchange?.(f.value)}
-        >{f.label}</button>
+          class:active={activeFilter === filterobj.value}
+          onclick={() => onfilterchange?.(filterobj.value)}
+        >{filterobj.label}</button>
       {/each}
     </div>
   </div>
@@ -37,16 +37,16 @@
   <div class="group">
     <span class="group-label">View:</span>
     <div class="pills">
-      {#each views as v}
+      {#each views as viewobj}                  <!-- list all view buttons -->
         <button
           class="pill"
-          class:active={activeView === v.value}
-          class:is-disabled={v.disabled}
-          disabled={v.disabled}
-          aria-disabled={v.disabled ? 'true' : undefined}
-          title={v.disabled ? 'Statistics view is currently unavailable' : undefined}
-          onclick={() => !v.disabled && onviewchange?.(v.value)}
-        >{v.label}</button>
+          class:active={activeView === viewobj.value}
+          class:is-disabled={viewobj.disabled}
+          disabled={viewobj.disabled}
+          aria-disabled={viewobj.disabled ? 'true' : undefined}
+          title={viewobj.disabled ? 'Statistics view is currently unavailable' : undefined}
+          onclick={() => !viewobj.disabled && onviewchange?.(viewobj.value)}
+        >{viewobj.label}</button>
       {/each}
     </div>
   </div>

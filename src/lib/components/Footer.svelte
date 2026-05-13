@@ -1,5 +1,5 @@
 <script>
-  const navLinks = [
+  const navLinks = [                                                    // navigation links for pages
     { href: '/user-search', label: 'User Stats' },
     { href: '/leaderboard', label: 'Leaderboard' },
     { href: '/littleman-timing', label: 'LittleMan Timing' },
@@ -18,7 +18,7 @@
       <div class="links-col">
         <span class="col-label">Navigation</span>
         <ul>
-          {#each navLinks as link}
+          {#each navLinks as link}                            <!-- list all links -->
             <li><a href={link.href}>{link.label}</a></li>
           {/each}
         </ul>

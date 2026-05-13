@@ -6,7 +6,7 @@
 
 <div class="table-wrap">
   <table>
-    <colgroup>
+    <colgroup>                                        <!-- fixed table widths so skeleton headers stay in same position-->
       <col style="width: 90px" />
       <col style="width: 389px" />
       <col style="width: 146px" />
@@ -29,15 +29,17 @@
       </tr>
     </thead>
     <tbody>
-      {#each leaderboardRecords as runRecord, rowIndex}
+      {#each leaderboardRecords as runRecord, rowIndex}                                 <!-- each lb entry -->
         <tr>
+          
           <td class="pos">
-            {#if activeFilter === 'all'}
+            {#if activeFilter === 'all'}                                                <!-- only show real position for all filter-->
               {runRecord.rank_position ?? startRank + rowIndex}
-            {:else}
-              {startRank + rowIndex} ({runRecord.rank_position ?? startRank + rowIndex})
+            {:else}                                                                     <!-- show relative position and real position for other filters -->
+              {startRank + rowIndex} ({runRecord.rank_position ?? startRank + rowIndex}) <!-- ?? reverts to the after for null -->
             {/if}
           </td>
+          
           <td class="player-cell">
             <div class="player">
               {#if runRecord.nohesi_pfp}
@@ -53,12 +55,19 @@
               </div>
             </div>
           </td>
-          <td class="num">{fnFormatScore(runRecord.score)}</td>
+          
+          <td class="num">{fnFormatScore(runRecord.score)}</td>       <!-- formats the score to include , for each hundredth-->
+          
           <td class="num">{runRecord.combo}</td>
+          
           <td>{runRecord.map}</td>
+          
           <td>{runRecord.traffic_type}</td>
+          
           <td>{runRecord.mode === 'team' ? 'Team' : 'Solo'}</td>
+          
           <td class="car">{runRecord.car_model}</td>
+        
         </tr>
       {/each}
     </tbody>

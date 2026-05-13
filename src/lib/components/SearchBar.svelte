@@ -4,17 +4,17 @@
     oninput,
   } = $props();
 
-  let inputValue = $state('');
+  let inputSearchBarValue = $state('');
 
-  function fnHandleInput() { // called from the <input> oninput in the template below; fires oninput callback (e.g. fnHandleSearch in src/routes/faq/+page.svelte)
-    oninput?.(inputValue);
+  function fnHandleInput() {              // called from the <input> oninput in the template below - fires oninput callback 
+    oninput?.(inputSearchBarValue);
   }
 </script>
 
 <div class="search-bar">
   <input
     type="text"
-    bind:value={inputValue}
+    bind:value={inputSearchBarValue}
     {placeholder}
     autocomplete="off"
     spellcheck="false"
