@@ -6,7 +6,7 @@ const POLL_INTERVAL_MS = 150;                                                   
 
 const cacheByFilter = new Map();
 
-export function fnApplyFilter(rawRecord, filterName) { // called from fnFetchAllInBackground below for every upstream record
+export function fnApplyFilter(rawRecord, filterName) {
   switch (filterName) {
     case 'crew': return rawRecord.mode === 'team';                                // 'crew' = team mode
     case 'solo': return rawRecord.mode === 'solo';                                // 'solo' = solo mode
@@ -16,7 +16,7 @@ export function fnApplyFilter(rawRecord, filterName) { // called from fnFetchAll
   }
 }
 
-function fnMapRecord(rawRecord) { // called from fnFetchAllInBackground below â€” reshapes upstream record into our flat shape
+function fnMapRecord(rawRecord) {
   return {
     nohesi_name: rawRecord.nohesi_name,
     nohesi_pfp: rawRecord.nohesi_pfp,
@@ -36,11 +36,11 @@ function fnMapRecord(rawRecord) { // called from fnFetchAllInBackground below â€
   };
 }
 
-function fnIsCacheEntryStale(cacheEntry) { // called from fnGetOrCreateCacheEntry below
+function fnIsCacheEntryStale(cacheEntry) {
   return Date.now() - cacheEntry.timestamp > CACHE_TTL_MS;
 }
 
-async function fnFetchAllInBackground(filterName) { // called from fnGetOrCreateCacheEntry on a cold cache; fires-and-forgets, pages through the entire upstream feed
+async function fnFetchAllInBackground(filterName) {
   const cacheEntry = cacheByFilter.get(filterName);
   if (!cacheEntry) return;
 
@@ -81,7 +81,7 @@ async function fnFetchAllInBackground(filterName) { // called from fnGetOrCreate
   }
 }
 
-export function fnGetOrCreateCacheEntry(filterName) { // called from GET() in src/routes/api/leaderboard/+server.js
+export function fnGetOrCreateCacheEntry(filterName) {                                               // called from GET() in src/routes/api/leaderboard/+server.js
   const existingEntry = cacheByFilter.get(filterName);
   if (existingEntry && !fnIsCacheEntryStale(existingEntry)) {
     return existingEntry;
@@ -106,7 +106,7 @@ export function fnGetOrCreateCacheEntry(filterName) { // called from GET() in sr
   return freshCacheEntry;
 }
 
-export async function fnWaitForPage(cacheEntry, pageNumber) { // called from GET() in src/routes/api/leaderboard/+server.js
+export async function fnWaitForPage(cacheEntry, pageNumber) {                                       // called from GET() in src/routes/api/leaderboard/+server.js
   const lastRecordIndex = pageNumber * RESPONSE_PAGE_SIZE;
 
   if (pageNumber === 1) {

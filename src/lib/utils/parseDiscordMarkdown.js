@@ -1,17 +1,17 @@
 const HTML_ESCAPE_MAP = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' };
 
-function fnEscapeHtml(rawText) { // called from fnProcessInline + fnParseDiscordMarkdown in this file
+function fnEscapeHtml(rawText) {
   return rawText.replace(/[&<>"']/g, (char) => HTML_ESCAPE_MAP[char]);
 }
 
-function fnSafeUrl(rawUrl) { // called from fnProcessInline (markdown link replacer) in this file
+function fnSafeUrl(rawUrl) {
   const trimmedUrl = rawUrl.trim();
   if (/^(https?:|mailto:)/i.test(trimmedUrl)) return trimmedUrl;
   if (trimmedUrl.startsWith('/') || trimmedUrl.startsWith('#')) return trimmedUrl;
   return null;
 }
 
-function fnProcessInline(escapedText, parseOptions) { // called from fnRenderBlocks (inline closure) in this file
+function fnProcessInline(escapedText, parseOptions) {
   let workingText = escapedText;
 
   workingText = workingText.replace(/&lt;(https?:\/\/[^\s&]+)&gt;/g, '$1');                             // remove discord's url wrapping
@@ -43,7 +43,7 @@ function fnProcessInline(escapedText, parseOptions) { // called from fnRenderBlo
   return workingText;
 }
 
-function fnClassifyLine(rawLine) { // called from fnRenderBlocks (per-line loop) in this file
+function fnClassifyLine(rawLine) {
   const subtextMatch = /^-#\s+(.*)$/.exec(rawLine);                                                     // very small text
   if (subtextMatch) return { kind: 'subtext', text: subtextMatch[1] };
 
@@ -62,14 +62,14 @@ function fnClassifyLine(rawLine) { // called from fnRenderBlocks (per-line loop)
   return { kind: 'text', text: rawLine };
 }
 
-function fnRenderBlocks(allLines, parseOptions) { // called from fnParseDiscordMarkdown in this file
+function fnRenderBlocks(allLines, parseOptions) {
   const outputParts = [];
   let openBlockKind = null;
   let paragraphBuffer = [];
 
-  const fnInline = (rawText) => fnProcessInline(fnEscapeHtml(rawText), parseOptions); // called within fnRenderBlocks below
+  const fnInline = (rawText) => fnProcessInline(fnEscapeHtml(rawText), parseOptions);
 
-  const fnCloseOpenBlock = () => { // called within fnRenderBlocks below
+  const fnCloseOpenBlock = () => {
     if (openBlockKind === 'quote') outputParts.push('</blockquote>');
     else if (openBlockKind === 'ul') outputParts.push('</ul>');
     else if (openBlockKind === 'ol') outputParts.push('</ol>');
@@ -126,7 +126,7 @@ function fnRenderBlocks(allLines, parseOptions) { // called from fnParseDiscordM
   return outputParts.join('');
 }
 
-function fnBridgeBlockquotes(allLines) { // called from fnParseDiscordMarkdown in this file
+function fnBridgeBlockquotes(allLines) {
   const bridgedLines = [];
   for (let lineIndex = 0; lineIndex < allLines.length; lineIndex++) {
     const currentLine = allLines[lineIndex];
@@ -152,7 +152,7 @@ function fnBridgeBlockquotes(allLines) { // called from fnParseDiscordMarkdown i
   return bridgedLines;
 }
 
-export function fnParseDiscordMarkdown(rawInput, parseOptions) { // called from load() in src/routes/faq/[threadId]/+page.server.js
+export function fnParseDiscordMarkdown(rawInput, parseOptions) {
   if (!rawInput || typeof rawInput !== 'string') return '';
 
   const codeBlockHtml = [];
@@ -176,7 +176,7 @@ export function fnParseDiscordMarkdown(rawInput, parseOptions) { // called from 
   return renderedHtml;
 }
 
-export function fnStripDiscordMarkdown(rawInput, parseOptions) { // called from fnBuildPreviewText in src/routes/faq/+page.server.js
+export function fnStripDiscordMarkdown(rawInput, parseOptions) {
   if (!rawInput || typeof rawInput !== 'string') return '';
   return rawInput
     .replace(/```[\s\S]*?```/g, ' ')              // fenced code → blank
