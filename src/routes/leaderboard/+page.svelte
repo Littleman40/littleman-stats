@@ -15,32 +15,27 @@
   let isLoading = $state(false);
   let loadError = $state(null);
 
-  $effect(() => {                                                            // watches the URL — when ?filter or ?page changes (e.g. back/forward nav), reload
+  let latestRequestId = 0;  // increment each time we start a fetch, to order responses
+
+  $effect(() => {
     const urlParams = $page.url.searchParams;
     const filterFromUrl = urlParams.get('filter') ?? 'all';
     const pageFromUrl = parseInt(urlParams.get('page') ?? '1', 10);
 
-    if (filterFromUrl !== activeFilter || pageFromUrl !== currentPageNumber) {
-      activeFilter = filterFromUrl;
-      currentPageNumber = pageFromUrl;
-      fnLoadLeaderboardData();
-    }
+    activeFilter = filterFromUrl;
+    currentPageNumber = pageFromUrl;
+    fnLoadLeaderboardData(filterFromUrl, pageFromUrl);
   });
 
-  function fnSyncUrl() { // called from fnHandleFilterChange + fnHandleReset + fnHandlePrev + fnHandleNext below
-    const urlParams = new URLSearchParams();
-    urlParams.set('filter', activeFilter);
-    urlParams.set('page', String(currentPageNumber));
-    goto(`/leaderboard?${urlParams}`, { replaceState: false, keepFocus: true, noScroll: true });
-  }
-
-  async function fnLoadLeaderboardData() { // called from the URL-watch $effect above, the on-mount $effect below, and the Retry button in the template
+  async function fnLoadLeaderboardData(filterToLoad, pageNumberToLoad) { // called from the URL-watch $effect above and the Retry button in the template
+    const thisRequestId = ++latestRequestId;
     isLoading = true;
     loadError = null;
     leaderboardRecords = [];
 
     try {
-      const apiResponse = await fetch(`/api/leaderboard?filter=${activeFilter}&page=${currentPageNumber}`);
+      const apiResponse = await fetch(`/api/leaderboard?filter=${filterToLoad}&page=${pageNumberToLoad}`);
+      if (thisRequestId !== latestRequestId) return; // a newer fetch started while we were waiting - discard this stale response
       if (!apiResponse.ok) throw new Error('API error');
       const responseBody = await apiResponse.json();
       leaderboardRecords = responseBody.records ?? [];
@@ -48,37 +43,35 @@
       canGoNext = responseBody.hasNext ?? false;
       canGoPrev = responseBody.hasPrev ?? false;
     } catch {
+      if (thisRequestId !== latestRequestId) return; // same staleness check on the error path so a stale failure doesn't overwrite a fresh success
       loadError = 'Failed to load data. Please try again.';
     } finally {
-      isLoading = false;
+      if (thisRequestId === latestRequestId) isLoading = false; // only the latest fetch is allowed to flip the loading flag off
     }
   }
 
+  function fnSyncUrl(filterToApply, pageNumberToApply) { // called from every handler below; the URL change is what triggers the load via the $effect above
+    const urlParams = new URLSearchParams();
+    urlParams.set('filter', filterToApply);
+    urlParams.set('page', String(pageNumberToApply));
+    goto(`/leaderboard?${urlParams}`, { replaceState: false, keepFocus: true, noScroll: true });
+  }
+
   function fnHandleFilterChange(selectedFilter) { // called from FilterBar onfilterchange in the template below
-    activeFilter = selectedFilter;
-    currentPageNumber = 1;
-    fnSyncUrl();
+    fnSyncUrl(selectedFilter, 1);
   }
 
   function fnHandleReset() { // called from FilterBar onreset in the template below
-    activeFilter = 'all';
-    currentPageNumber = 1;
-    fnSyncUrl();
+    fnSyncUrl('all', 1);
   }
 
   function fnHandlePrev() { // called from PaginationControls onprev in the template below
-    currentPageNumber = Math.max(1, currentPageNumber - 1);
-    fnSyncUrl();
+    fnSyncUrl(activeFilter, Math.max(1, currentPageNumber - 1));
   }
 
   function fnHandleNext() { // called from PaginationControls onnext in the template below
-    currentPageNumber = currentPageNumber + 1;
-    fnSyncUrl();
+    fnSyncUrl(activeFilter, currentPageNumber + 1);
   }
-
-  $effect(() => {                                                            // initial-mount fetch
-    fnLoadLeaderboardData();
-  });
 </script>
 
 <svelte:head>
@@ -113,7 +106,7 @@
     </div>
     <div class="error-state">
       <p>{loadError}</p>
-      <button class="retry-btn" onclick={fnLoadLeaderboardData}>Retry</button>
+      <button class="retry-btn" onclick={() => fnLoadLeaderboardData(activeFilter, currentPageNumber)}>Retry</button>
     </div>
   {:else if leaderboardRecords.length === 0}
     <div class="empty-state">
