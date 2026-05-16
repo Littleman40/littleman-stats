@@ -16,11 +16,8 @@ function fnPickPreviewImage(faqMessages) { // called from load() below (one call
 }
 
 function fnBuildPreviewText(faqMessages, fnResolveChannel) { // called from load() below (one call per FAQ)
-  if (!Array.isArray(faqMessages)) return '';
-  return faqMessages
-    .map((message) => fnStripDiscordMarkdown(message?.content || '', { resolveChannel: fnResolveChannel }))
-    .filter(Boolean)
-    .join(' ');
+  if (!Array.isArray(faqMessages) || faqMessages.length === 0) return '';
+  return fnStripDiscordMarkdown(faqMessages[0]?.content || '', { resolveChannel: fnResolveChannel });
 }
 
 export async function load() { // called by SvelteKit when /faq is requested — renders src/routes/faq/+page.svelte
