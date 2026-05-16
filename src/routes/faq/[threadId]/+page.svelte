@@ -77,6 +77,7 @@
     font-weight: 700;
     color: var(--color-text);
     margin: 0 0 2rem 0;
+    overflow-wrap: anywhere;
   }
 
   .faq-body {

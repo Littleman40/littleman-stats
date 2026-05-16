@@ -233,6 +233,7 @@
     font-weight: 600;
     margin: 0 0 0.4rem 0;
     color: var(--color-text);
+    overflow-wrap: anywhere;
   }
 
   .preview {
