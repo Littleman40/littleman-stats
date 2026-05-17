@@ -41,18 +41,24 @@
           </td>
           
           <td class="player-cell">
-            <div class="player">
-              {#if runRecord.nohesi_pfp}
-                <img src={runRecord.nohesi_pfp} alt="" class="pfp" />
+            <div class="player"></div>
+              {#if runRecord.mode === 'team'}
+                <div class="player-names">
+                  <span class="team-members">{(runRecord.team_names?.length ?? 0)} Player Crew</span>
+                  {#if runRecord.team_names?.length}
+                    <span class="player-name">{runRecord.team_names.join(', ')}</span>
+                  {/if}
+                </div>
               {:else}
-                <div class="pfp-placeholder"></div>
-              {/if}
-              <div class="player-names">
-                <span class="player-name">{runRecord.nohesi_name}</span>
-                {#if runRecord.mode === 'team' && runRecord.team_names?.length}
-                  <span class="team-members">{runRecord.team_names.join(', ')}</span>
+                {#if runRecord.nohesi_pfp}
+                  <img src={runRecord.nohesi_pfp} alt="" class="pfp" />
+                {:else}
+                  <div class="pfp-placeholder"></div>
                 {/if}
-              </div>
+                <div class="player-names">
+                  <span class="player-name">{runRecord.nohesi_name}</span>
+                </div>
+              {/if}
             </div>
           </td>
           
