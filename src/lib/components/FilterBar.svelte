@@ -11,7 +11,7 @@
     { value: 'all', label: 'Everything' },
     { value: 'crew', label: 'Crew' },
     { value: 'solo', label: 'Solo' },
-    { value: 'realistic', label: 'Realistic Physics' }
+    { value: 'realistic', label: 'Realistic Physics (Solo)' }
   ];
 
   const views = [                                     // views eg lb and statistics mode
