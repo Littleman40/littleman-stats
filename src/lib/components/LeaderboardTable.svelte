@@ -41,7 +41,7 @@
           </td>
           
           <td class="player-cell">
-            <div class="player"></div>
+            <div class="player">
               {#if runRecord.mode === 'team'}
                 <div class="player-names">
                   <span class="team-members">{(runRecord.team_names?.length ?? 0)} Player Crew</span>
