@@ -77,10 +77,6 @@
         oninput={fnHandleSearch}
       />
     </div>
-
-    <span class="result-count">
-      Showing {visibleFaqs.length} of {filteredFaqs.length}
-    </span>
   </div>
 
   {#if allFaqs.length === 0}
@@ -112,15 +108,20 @@
       {/each}
     </ul>
 
-    <PaginationControls
-      page={currentPageNumber}
-      totalPages={totalPageCount}
-      hasPrev={currentPageNumber > 1}
-      hasNext={currentPageNumber < totalPageCount}
-      onprev={fnHandlePrev}
-      onnext={fnHandleNext}
-      onjump={fnHandleJump}
-    />
+    <div class="pagination-row">
+      <PaginationControls
+        page={currentPageNumber}
+        totalPages={totalPageCount}
+        hasPrev={currentPageNumber > 1}
+        hasNext={currentPageNumber < totalPageCount}
+        onprev={fnHandlePrev}
+        onnext={fnHandleNext}
+        onjump={fnHandleJump}
+      />
+      <span class="result-count">
+        Showing {visibleFaqs.length} of {filteredFaqs.length}
+      </span>
+    </div>
   {/if}
   </div>
 </div>
@@ -129,15 +130,15 @@
   .page-strip {
     flex: 1;
     background: var(--color-card-elevated);
-    border-left: 1px solid var(--color-border);
-    border-right: 1px solid var(--color-border);
+    border-left: 1px solid rgb(44, 44, 44);
+    border-right: 1px solid rgb(44, 44, 44);
     width: 100%;
     max-width: var(--max-width);
-    margin: 0 auto;
+    margin: calc(-1 * var(--navbar-height)) auto 0;
   }
 
   .page {
-    padding-top: 2.5rem;
+    padding-top: calc(var(--navbar-height) + 2.5rem);
     padding-bottom: 4rem;
   }
 
@@ -158,33 +159,31 @@
   }
 
   .search-wrap {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
     margin-bottom: 1.75rem;
   }
 
   .search-bar-wrap {
-    flex: 1 1 auto;
-    max-width: 420px;
+    width: 100%;
+  }
+
+  .search-bar-wrap :global(input) {
+    border-radius: 1rem;
+    border: 1px solid rgb(44, 44, 44);
+  }
+
+  .pagination-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
   }
 
   .result-count {
     color: var(--color-muted);
     font-size: 0.9rem;
     white-space: nowrap;
-  }
-
-  @media (max-width: 540px) {
-    .search-wrap {
-      flex-direction: column;
-      align-items: flex-start;
-    }
-    .search-bar-wrap {
-      width: 100%;
-      max-width: none;
-    }
+    margin-left: auto;
   }
 
   .empty-state {
@@ -199,17 +198,17 @@
     margin: 0;
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
+    gap: 0.5rem;
   }
 
   .faq-card {
     display: flex;
     align-items: stretch;
-    gap: 1rem;
-    padding: 1rem 1.25rem;
+    gap: 0.75rem;
+    padding: 1rem;
     background: var(--color-card-raised);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-btn);
+    border: 1px solid rgb(44, 44, 44);
+    border-radius: 1rem;
     color: var(--color-text);
     text-decoration: none;
     transition: border-color 0.15s, transform 0.15s;
@@ -246,14 +245,17 @@
     line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
+    
   }
 
   .image {
     flex: 0 0 180px;
     aspect-ratio: 16 / 9;
     overflow: hidden;
-    border-radius: calc(var(--radius-btn) - 4px);
+    border-radius: 5px;
     background: var(--color-card);
+    border: 1px solid rgb(44, 44, 44);
+
   }
 
   .image img {
