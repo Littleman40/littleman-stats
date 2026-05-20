@@ -11,6 +11,9 @@ This is a data driven website built as my Year 12 NSW Enterprise Computing Major
 - [ ] Littleman Timing
 - [ ] Leaderboard Statistics
 
+## Screenshots
+<img src="https://i.imgur.com/UulhS3a.png" width=400> <img src="https://i.imgur.com/mXFh2W2.png" width=400> <img src="https://i.imgur.com/e3NtkiU.png" width=400> <img src="https://i.imgur.com/Zvr7kKX.png" width=400>
+
 ## Tech stack (so far)
 
 - **SvelteKit**: https://kit.svelte.dev/
