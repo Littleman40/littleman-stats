@@ -18,20 +18,24 @@
   function fnCloseMobileMenu() {                  // called from the brand link + each nav link onclick in the template below
     isMobileMenuOpen = false;
   }
+
+  $effect(() => {                                 // auto-close the dropdown when the viewport widens past the hamburger breakpoint
+    if (typeof window === 'undefined') return;
+    const mediaQuery = window.matchMedia('(min-width: 761px)');
+    function fnHandleViewportChange(event) {
+      if (event.matches) isMobileMenuOpen = false;
+    }
+    mediaQuery.addEventListener('change', fnHandleViewportChange);
+    return () => mediaQuery.removeEventListener('change', fnHandleViewportChange);
+  });
 </script>
 
-<nav>
-  <div class="nav-inner page-wrapper">
+<div class="nav-wrap">
+  <nav class="nav-pill">
     <a href="/" class="brand" onclick={fnCloseMobileMenu}>LittleMan Stats</a>
 
-    <button class="hamburger" onclick={fnToggleMobileMenu} aria-label="Toggle menu">
-      <span></span>
-      <span></span>
-      <span></span>
-    </button>
-
-    <ul class="nav-links" class:open={isMobileMenuOpen}>
-      {#each navLinks as navLinkObj}                          <!-- nav links -->
+    <ul class="nav-links">
+      {#each navLinks as navLinkObj}                          <!-- desktop nav links -->
         <li>
           <a
             href={navLinkObj.href}
@@ -41,95 +45,177 @@
         </li>
       {/each}
     </ul>
-  </div>
-</nav>
+
+    <button
+      class="hamburger"
+      class:open={isMobileMenuOpen}
+      onclick={fnToggleMobileMenu}
+      aria-label="Toggle menu"
+      aria-expanded={isMobileMenuOpen}
+    >
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </nav>
+
+  {#if isMobileMenuOpen}
+    <div class="mobile-menu">
+      <ul>
+        {#each navLinks as navLinkObj}                        <!-- mobile dropdown links -->
+          <li>
+            <a
+              href={navLinkObj.href}
+              class:active={$page.url.pathname === navLinkObj.href}
+              onclick={fnCloseMobileMenu}
+            >{navLinkObj.label}</a>
+          </li>
+        {/each}
+      </ul>
+    </div>
+  {/if}
+</div>
 
 <style>
-  nav {
+  .nav-wrap {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
-    height: var(--navbar-height);
-    background: var(--color-bg-alt);
-    border-bottom: 1px solid var(--color-border);
     z-index: 100;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    pointer-events: none;                          /* let clicks pass through the empty space around the pill */
+    padding: 0.85rem var(--page-padding) 0;
   }
-
-  .nav-inner {
+  .nav-pill {
+    pointer-events: auto;
+    width: 100%;
+    max-width: 1180px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    height: 100%;
+    gap: 2rem;
+    padding: 0.7rem 2.1rem;
+    background: rgb(from var(--color-text) r g b / 0.75);
+    backdrop-filter: blur(16px) saturate(160%);
+    -webkit-backdrop-filter: blur(16px) saturate(80%);
+    border: 1px solid rgb(44, 44, 44);
+    border-radius: var(--radius-pill);             /* outer container = fully rounded pill */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35), 0 1px 2px rgba(0, 0, 0, 0.15);
+    color: var(--color-text-on-light);
   }
 
   .brand {
     font-weight: 700;
-    font-size: 1.1rem;
-    color: var(--color-text);
+    font-size: 1.3rem;
+    color: var(--color-text-on-light);
     white-space: nowrap;
+    letter-spacing: -0.01em;
   }
 
   .nav-links {
     display: flex;
     list-style: none;
-    gap: 1.75rem;
+    gap: 2.25rem;
     align-items: center;
   }
 
   .nav-links a {
-    color: var(--color-muted);
-    font-size: 0.9rem;
+    color: rgba(17, 17, 17, 0.7);
+    font-size: 1.05rem;
+    font-weight: 500;
+    padding: 0.25rem 0;
     transition: color 0.15s;
   }
 
-  .nav-links a:hover,
-  .nav-links a.active {
-    color: var(--color-text);
+  .nav-links a:hover {
+    color: var(--color-text-on-light);
   }
 
   .nav-links a.active {
+    color: var(--color-text-on-light);
     text-decoration: underline;
-    text-underline-offset: 3px;
+    text-underline-offset: 5px;
+    text-decoration-thickness: 2px;
   }
 
+  /* Hamburger lives inside the pill — circular to match the pill's fully-rounded shape. */
   .hamburger {
     display: none;
     flex-direction: column;
+    justify-content: center;
+    align-items: center;
     gap: 5px;
-    padding: 4px;
+    width: 44px;
+    height: 44px;
+    border-radius: var(--radius-pill);
+    background: #888888;
+    transition: background 0.15s;
+    border: 1px solid rgb(44, 44, 44);
   }
 
   .hamburger span {
     display: block;
     width: 22px;
     height: 2px;
-    background: var(--color-text);
+    background: var(--color-text-on-light);
     border-radius: 2px;
-    transition: opacity 0.15s;
   }
 
-  @media (max-width: 640px) {
+  .mobile-menu {
+    pointer-events: auto;
+    width: 100%;
+    max-width: 1180px;                             /* match the nav-pill so the dropdown sits flush under it */
+    margin-top: 0.6rem;
+    padding: 0.5rem;
+    background: rgb(from var(--color-text) r g b / 0.75);
+    backdrop-filter: blur(16px) saturate(160%);
+    -webkit-backdrop-filter: blur(16px) saturate(160%);
+    border: 1px solid rgb(44, 44, 44);
+    border-radius: 15px;                           /* outer card radius */
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
+  }
+
+  .mobile-menu ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .mobile-menu a {
+    display: block;
+    padding: 0.85rem 1.15rem;
+    border-radius: 10px;
+    color: rgba(17, 17, 17, 0.78);
+    font-size: 1.05rem;
+    font-weight: 500;
+    transition: background 0.15s, color 0.15s;
+  }
+
+  .mobile-menu a:hover {
+    background: rgba(0, 0, 0, 0.06);
+    color: var(--color-text-on-light);
+  }
+
+  .mobile-menu a.active {
+    background: rgba(0, 0, 0, 0.08);
+    color: var(--color-text-on-light);
+  }
+
+  @media (max-width: 760px) {
+    .nav-links {
+      display: none;
+    }
+
     .hamburger {
       display: flex;
     }
 
-    .nav-links {
-      display: none;
-      position: absolute;
-      top: var(--navbar-height);
-      left: 0;
-      right: 0;
-      background: var(--color-bg-alt);
-      border-bottom: 1px solid var(--color-border);
-      flex-direction: column;
-      padding: 1rem var(--page-padding);
-      gap: 1rem;
-      align-items: flex-start;
-    }
-
-    .nav-links.open {
-      display: flex;
+    .nav-pill {
+      padding: 0.5rem 0.65rem 0.5rem 1.25rem;
     }
   }
 </style>

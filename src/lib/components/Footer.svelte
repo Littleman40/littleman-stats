@@ -92,7 +92,7 @@
   .col-label {
     display: block;
     font-size: 0.7rem;
-    font-weight: 500;
+    font-weight: bold;
     letter-spacing: 0.08em;
     text-transform: uppercase;
     color: var(--color-muted);
