@@ -66,9 +66,9 @@
   .pagination-box {
     margin-top: 1.5rem;
     padding: 0.75rem 1rem;
-    background: var(--color-card-elevated);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-btn);
+    background: var(--color-card-raised);
+    border: 1px solid rgb(44, 44, 44);
+    border-radius: 1rem;
     display: inline-flex;
   }
 
@@ -81,8 +81,8 @@
 
   .btn {
     padding: 0.5rem 1rem;
-    background: var(--color-card-elevated);
-    border: 1px solid var(--color-border);
+    background: var(--color-card-raised);
+    border: 1px solid rgb(44, 44, 44);
     border-radius: var(--radius-btn);
     color: var(--color-text);
     font-family: inherit;
@@ -124,8 +124,8 @@
     width: 64px;
     height: 32px;
     padding: 0 0.5rem;
-    background: var(--color-card-elevated);
-    border: 1px solid var(--color-border);
+    background: var(--color-card-raised);
+    border: 1px solid rgb(44, 44, 44);
     border-radius: var(--radius-btn);
     color: var(--color-text);
     font-family: inherit;
