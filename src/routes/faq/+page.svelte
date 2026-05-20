@@ -63,83 +63,80 @@
   <title>FAQ - LittleMan Stats</title>
 </svelte:head>
 
-<div class="page-strip">
-  <div class="page page-wrapper">
-    <div class="page-header">
-      <h1>No Hesi Help FAQ</h1>
-      <p>Find a solution to 99% of the issues you may face</p>
-    </div>
-
-  <div class="search-wrap">
-    <div class="search-bar-wrap">
-      <SearchBar
-        placeholder="Search an entry"
-        oninput={fnHandleSearch}
-      />
-    </div>
+<div class="page page-wrapper">
+  <div class="page-header">
+    <h1>No Hesi Help FAQ</h1>
+    <p>Find a solution to 99% of the issues you may face</p>
   </div>
 
-  {#if allFaqs.length === 0}
-    <div class="empty-state">
-      <p>No FAQs available.</p>
+  <div class="page-strip">
+    <div class="search-wrap">
+      <div class="search-bar-wrap">
+        <SearchBar
+          placeholder="Search an entry"
+          oninput={fnHandleSearch}
+        />
+      </div>
     </div>
-  {:else if filteredFaqs.length === 0}
-    <div class="empty-state">
-      <p>No results found for "{searchQuery}".</p>
-    </div>
-  {:else}
-    <ul class="faq-list">
-      {#each visibleFaqs as faq (faq.id)}
-        <li>
-          <a class="faq-card" href={`/faq/${faq.id}`}>
-            <div class="text">
-              <h2 class="title">{faq.title}</h2>
-              {#if faq.previewText}
-                <p class="preview">{faq.previewText}</p>
-              {/if}
-            </div>
-            {#if faq.previewImage}
-              <div class="image">
-                <img src={faq.previewImage} alt="" loading="lazy" />
-              </div>
-            {/if}
-          </a>
-        </li>
-      {/each}
-    </ul>
 
-    <div class="pagination-row">
-      <PaginationControls
-        page={currentPageNumber}
-        totalPages={totalPageCount}
-        hasPrev={currentPageNumber > 1}
-        hasNext={currentPageNumber < totalPageCount}
-        onprev={fnHandlePrev}
-        onnext={fnHandleNext}
-        onjump={fnHandleJump}
-      />
-      <span class="result-count">
-        Showing {visibleFaqs.length} of {filteredFaqs.length}
-      </span>
-    </div>
-  {/if}
+    {#if allFaqs.length === 0}
+      <div class="empty-state">
+        <p>No FAQs available.</p>
+      </div>
+    {:else if filteredFaqs.length === 0}
+      <div class="empty-state">
+        <p>No results found for "{searchQuery}".</p>
+      </div>
+    {:else}
+      <ul class="faq-list">
+        {#each visibleFaqs as faq (faq.id)}
+          <li>
+            <a class="faq-card" href={`/faq/${faq.id}`}>
+              <div class="text">
+                <h2 class="title">{faq.title}</h2>
+                {#if faq.previewText}
+                  <p class="preview">{faq.previewText}</p>
+                {/if}
+              </div>
+              {#if faq.previewImage}
+                <div class="image">
+                  <img src={faq.previewImage} alt="" loading="lazy" />
+                </div>
+              {/if}
+            </a>
+          </li>
+        {/each}
+      </ul>
+
+      <div class="pagination-row">
+        <PaginationControls
+          page={currentPageNumber}
+          totalPages={totalPageCount}
+          hasPrev={currentPageNumber > 1}
+          hasNext={currentPageNumber < totalPageCount}
+          onprev={fnHandlePrev}
+          onnext={fnHandleNext}
+          onjump={fnHandleJump}
+        />
+        <span class="result-count">
+          Showing {visibleFaqs.length} of {filteredFaqs.length}
+        </span>
+      </div>
+    {/if}
   </div>
 </div>
 
 <style>
-  .page-strip {
-    flex: 1;
-    background: var(--color-card-elevated);
-    border-left: 1px solid rgb(44, 44, 44);
-    border-right: 1px solid rgb(44, 44, 44);
-    width: 100%;
-    max-width: var(--max-width);
-    margin: calc(-1 * var(--navbar-height)) auto 0;
+  .page {
+    padding-top: 2.5rem;
+    padding-bottom: 4rem;
   }
 
-  .page {
-    padding-top: calc(var(--navbar-height) + 2.5rem);
-    padding-bottom: 4rem;
+  .page-strip {
+    background: var(--color-card-elevated);
+    border: 1px solid rgb(44, 44, 44);
+    border-radius: 1rem;
+    padding: 1.5rem;
   }
 
   .page-header {
