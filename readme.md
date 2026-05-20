@@ -12,7 +12,7 @@ This is a data driven website built as my Year 12 NSW Enterprise Computing Major
 - [ ] Leaderboard Statistics
 
 ## Screenshots
-<img src="https://i.imgur.com/UulhS3a.png" width=400> <img src="https://i.imgur.com/mXFh2W2.png" width=400> <img src="https://i.imgur.com/e3NtkiU.png" width=400> <img src="https://i.imgur.com/Zvr7kKX.png" width=400>
+<img src="https://i.imgur.com/EHsdxKZ.png" width=400> <img src="https://i.imgur.com/3yL0VcQ.png" width=400> <img src="https://i.imgur.com/su4n9z6.png" width=400>
 
 ## Tech stack (so far)
 
