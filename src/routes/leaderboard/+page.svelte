@@ -84,46 +84,54 @@
     <p>Filter and sort the global leaderboard in all sorts of ways</p>
   </div>
 
-  <FilterBar
-    {activeFilter}
-    activeView="leaderboard"
-    onfilterchange={fnHandleFilterChange}
-    onreset={fnHandleReset}
-  />
-
-  {#if isLoading}
-    <div class="scroll-wrap">
-      <LeaderboardTable records={[]} {activeFilter} {startRank} />
-      <div class="skeleton-wrap">
-        {#each Array(20) as _, skeletonIndex}
-          <div class="skeleton-row" style="opacity: {1 - skeletonIndex * 0.15}"></div>
-        {/each}
-      </div>
-    </div>
-  {:else if loadError}
-    <div class="scroll-wrap">
-      <LeaderboardTable records={leaderboardRecords} {activeFilter} {startRank} />
-    </div>
-    <div class="error-state">
-      <p>{loadError}</p>
-      <button class="retry-btn" onclick={() => fnLoadLeaderboardData(activeFilter, currentPageNumber)}>Retry</button>
-    </div>
-  {:else if leaderboardRecords.length === 0}
-    <div class="empty-state">
-      <p>No results found for this filter.</p>
-    </div>
-  {:else}
-    <div class="scroll-wrap">
-      <LeaderboardTable records={leaderboardRecords} {activeFilter} {startRank} />
-    </div>
-    <PaginationControls
-      page={currentPageNumber}
-      hasNext={canGoNext}
-      hasPrev={canGoPrev}
-      onprev={fnHandlePrev}
-      onnext={fnHandleNext}
+  <div>
+    <FilterBar
+      {activeFilter}
+      activeView="leaderboard"
+      onfilterchange={fnHandleFilterChange}
+      onreset={fnHandleReset}
     />
-  {/if}
+
+    {#if isLoading}
+      <div class="scroll-wrap">
+        <div class="scroll-inner">
+          <LeaderboardTable records={[]} {activeFilter} {startRank} />
+          <div class="skeleton-wrap">
+            {#each Array(20) as _, skeletonIndex}
+              <div class="skeleton-row" style="opacity: {1 - skeletonIndex * 0.15}"></div>
+            {/each}
+          </div>
+        </div>
+      </div>
+    {:else if loadError}
+      <div class="scroll-wrap">
+        <div class="scroll-inner">
+          <LeaderboardTable records={leaderboardRecords} {activeFilter} {startRank} />
+        </div>
+      </div>
+      <div class="error-state">
+        <p>{loadError}</p>
+        <button class="retry-btn" onclick={() => fnLoadLeaderboardData(activeFilter, currentPageNumber)}>Retry</button>
+      </div>
+    {:else if leaderboardRecords.length === 0}
+      <div class="empty-state">
+        <p>No results found for this filter.</p>
+      </div>
+    {:else}
+      <div class="scroll-wrap">
+        <div class="scroll-inner">
+          <LeaderboardTable records={leaderboardRecords} {activeFilter} {startRank} />
+        </div>
+      </div>
+      <PaginationControls
+        page={currentPageNumber}
+        hasNext={canGoNext}
+        hasPrev={canGoPrev}
+        onprev={fnHandlePrev}
+        onnext={fnHandleNext}
+      />
+    {/if}
+  </div>
 </div>
 
 <style>
@@ -133,8 +141,9 @@
   }
 
   .page-header {
-    margin-bottom: 0.5rem;
+    margin-bottom: 1.5rem;
   }
+
 
   .page-header h1 {
     font-size: 1.75rem;
@@ -150,7 +159,15 @@
 
   .scroll-wrap {
     width: 100%;
-    overflow-x: auto;
+    margin-top: 1rem;
+    border: 1px solid var(--color-border);
+    border-radius: 1rem;
+    overflow: hidden;
+  }
+
+  .scroll-inner {
+    width: 100%;
+    overflow: auto;
     color-scheme: dark;
   }
 

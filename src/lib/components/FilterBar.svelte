@@ -64,8 +64,7 @@
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: 1rem 2rem;
-    padding: 1rem 0;
+    gap: 0.75rem;
   }
 
   .group {
@@ -73,11 +72,16 @@
     align-items: center;
     gap: 0.75rem;
     flex-wrap: wrap;
+    padding: 0.3rem;
+    padding-left: 0.9rem;
+    border: 1px solid var(--color-border);
+    border-radius: 3rem;
+    background: var(--color-card-elevated);
   }
 
   .group-label {
     font-size: 0.75rem;
-    font-weight: 500;
+    font-weight: 1000;
     letter-spacing: 0.05em;
     text-transform: uppercase;
     color: var(--color-muted);
@@ -127,9 +131,9 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 32px;
-    height: 32px;
-    border-radius: var(--radius-btn);
+    width: 40px;
+    height: 40px;
+    border-radius: 999rem;
     border: 1px solid var(--color-border);
     background: var(--color-card-elevated);
     color: var(--color-muted);
