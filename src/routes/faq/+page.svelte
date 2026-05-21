@@ -69,7 +69,7 @@
     <p>Find a solution to 99% of the issues you may face</p>
   </div>
 
-  <div class="page-strip">
+  <div>
     <div class="search-wrap">
       <div class="search-bar-wrap">
         <SearchBar
@@ -130,13 +130,6 @@
   .page {
     padding-top: 2.5rem;
     padding-bottom: 4rem;
-  }
-
-  .page-strip {
-    background: var(--color-card-elevated);
-    border: 1px solid rgb(44, 44, 44);
-    border-radius: 1rem;
-    padding: 1.5rem;
   }
 
   .page-header {

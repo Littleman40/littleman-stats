@@ -87,7 +87,8 @@
 
   table {
     table-layout: fixed;
-    width: 1213px;
+    width: 100%;
+    min-width: 1213px;
     border-collapse: collapse;
     font-size: 0.875rem;
   }
