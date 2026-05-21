@@ -13,6 +13,8 @@
       <div class="brand-col">
         <span class="brand">LittleMan Stats</span>
         <p class="tagline">An indepth statistics viewer for No Hesi.</p>
+        <br>
+        <p class="tagline">This is an open source project on GitHub.</p>
       </div>
 
       <div class="links-col">
