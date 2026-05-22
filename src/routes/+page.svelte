@@ -4,7 +4,7 @@
       href: '/user-search',
       title: 'User Search',
       description: 'Look up any player by their Steam ID or No Hesi username. See their personal best stats, ranking, tier, and full run history with charts.',
-      image: '/img/example-1.png'
+      image: '/img/UserSearchPreview.png'
     },
     {
       href: '/leaderboard',
@@ -16,13 +16,13 @@
       href: '/littleman-timing',
       title: 'LittleMan Timing',
       description: 'A dedicated timing app for routes around No Hesi',
-      image: '/img/example-2.png'
+      image: '/img/LittleManTimingPreview.png'
     },
     {
       href: '/faq',
       title: 'FAQ',
       description: 'Searchable answers to the most common questions about No Hesi.',
-      image: '/img/example-3.png'
+      image: '/img/FAQPreview.png'
     }
   ];
 </script>
