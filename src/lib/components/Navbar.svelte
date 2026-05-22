@@ -92,7 +92,7 @@
   .nav-pill {
     pointer-events: auto;
     width: 100%;
-    max-width: 1180px;
+    max-width: 1216px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -120,9 +120,11 @@
     list-style: none;
     gap: 2.25rem;
     align-items: center;
+    transition: opacity 0.3s ease;
   }
 
   .nav-links a {
+    position: relative;
     color: rgba(17, 17, 17, 0.7);
     font-size: 1.05rem;
     font-weight: 500;
@@ -130,15 +132,31 @@
     transition: color 0.15s;
   }
 
+  .nav-links a::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0px;
+    height: 2px;
+    background: currentColor;
+    border-radius: 2px;
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform 0.25s ease;
+  }
+
   .nav-links a:hover {
     color: var(--color-text-on-light);
   }
 
+  .nav-links a:hover::after,
+  .nav-links a.active::after {
+    transform: scaleX(1);
+  }
+
   .nav-links a.active {
     color: var(--color-text-on-light);
-    text-decoration: underline;
-    text-underline-offset: 5px;
-    text-decoration-thickness: 2px;
   }
 
   /* Hamburger lives inside the pill — circular to match the pill's fully-rounded shape. */

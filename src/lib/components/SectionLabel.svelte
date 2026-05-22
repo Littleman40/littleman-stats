@@ -12,6 +12,7 @@
     letter-spacing: 0.08em;
     text-transform: uppercase;
     color: var(--color-muted);
-    margin-bottom: 0.75rem;
+    margin-top: 1rem;
+    margin-bottom: 0.01rem;
   }
 </style>

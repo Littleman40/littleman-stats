@@ -600,7 +600,7 @@
   .history-block {
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
+    gap: 0.3rem;
   }
 
   .unknown-block {
@@ -634,7 +634,7 @@
   .run-info-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 1rem;
+    gap: 0.3rem;
   }
 
   @media (max-width: 1024px) {
