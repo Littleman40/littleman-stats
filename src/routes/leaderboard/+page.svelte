@@ -161,7 +161,7 @@
     width: 100%;
     margin-top: 1rem;
     border: 1px solid var(--color-border);
-    border-radius: 1rem;
+    border-radius: 0.7rem;
     overflow: hidden;
   }
 

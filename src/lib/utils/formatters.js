@@ -19,3 +19,18 @@ export function fnFormatDate(isoTimestamp) {            // returns when runs whe
     return isoTimestamp;
   }
 }
+
+export function fnFormatDateUTC(isoTimestamp) {         // returns when a run was set as 'HH:MM DD/MM/YYYY (UTC)' so users in any timezone see the same value
+  if (!isoTimestamp) return '-';
+  try {
+    const parsedDate = new Date(isoTimestamp);
+    const hourPart = String(parsedDate.getUTCHours()).padStart(2, '0');
+    const minutePart = String(parsedDate.getUTCMinutes()).padStart(2, '0');
+    const dayPart = String(parsedDate.getUTCDate()).padStart(2, '0');
+    const monthPart = String(parsedDate.getUTCMonth() + 1).padStart(2, '0');
+    const yearPart = parsedDate.getUTCFullYear();
+    return `${hourPart}:${minutePart} ${dayPart}/${monthPart}/${yearPart} (UTC)`;
+  } catch {
+    return isoTimestamp;
+  }
+}
