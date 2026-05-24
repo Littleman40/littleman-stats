@@ -106,15 +106,15 @@
     activeAbortController = localController;
     const signal = localController.signal;
 
-    // reset state
+    // reset state - both skeletons turn on at the same time so the layout settles immediately on submit
     isLoadingPersonalBest = true;
+    isLoadingSoloHistory = true;
+    isLoadingCrewHistory = false;
     searchError = null;
     playerProfile = null;
     resolvedSteamId = null;
     soloHistory = null;
     crewHistory = null;
-    isLoadingSoloHistory = false;
-    isLoadingCrewHistory = false;
     historyMode = 'solo';
 
     const queryType = fnDetectQueryType(typedQuery);
@@ -125,6 +125,7 @@
       const pbData = await pbResponse.json();
       if (!pbResponse.ok || pbData.error) {
         searchError = pbData.error ?? 'Something went wrong. Please try again.';
+        isLoadingSoloHistory = false;                                                 // clear the history skeleton too on a failed lookup so the page falls back to its empty state
         return;
       }
       playerProfile = pbData.profile;
@@ -132,6 +133,7 @@
     } catch (err) {
       if (fnIsAbortError(err)) return;
       searchError = 'Network error. Please try again.';
+      isLoadingSoloHistory = false;
       return;
     } finally {
       if (!signal.aborted) isLoadingPersonalBest = false;
@@ -149,8 +151,7 @@
       // non-fatal — total_runs stays 0
     }
 
-    // phase 3: full solo history
-    isLoadingSoloHistory = true;
+    // phase 3: full solo history (isLoadingSoloHistory was already set true at the top of the search)
     try {
       const soloResponse = await fetch(`/api/user-search/history?steamid=${encodeURIComponent(resolvedSteamId)}&mode=solo`, { signal });
       const soloData = await soloResponse.json();
@@ -205,16 +206,84 @@
     {/if}
   </div>
 
-  <!-- loading personal best -->
+  <!-- loading personal best - skeleton mirrors the real profile-section layout so there's no shift on load -->
   {#if isLoadingPersonalBest}
-    <div class="loading-state">
-      <div class="spinner"></div>
-      <p>Looking up player...</p>
+    <div class="profile-section">
+      <div class="results-layout">
+        <div class="left-col">
+          <div class="sk-profile-card">
+            <div class="sk-identity">
+              <div class="sk-block sk-avatar"></div>
+              <div class="sk-name-block">
+                <div class="sk-block sk-bar sk-name-bar"></div>
+                <div class="sk-block sk-bar sk-steamid-bar"></div>
+              </div>
+            </div>
+            <div class="sk-divider"></div>
+            <div class="sk-stat-rows">
+              <div class="sk-stat-row">
+                <div class="sk-block sk-bar sk-label-bar"></div>
+                <div class="sk-block sk-bar sk-value-bar"></div>
+              </div>
+              <div class="sk-stat-row">
+                <div class="sk-block sk-bar sk-label-bar"></div>
+                <div class="sk-block sk-bar sk-value-bar"></div>
+              </div>
+            </div>
+            <div class="sk-rank-icon-wrap">
+              <div class="sk-block sk-rank-icon"></div>
+            </div>
+          </div>
+        </div>
+        <div class="right-col">
+          <div class="stats-grid">
+            <div class="sk-stat-card">
+              <div class="sk-block sk-bar sk-label-bar"></div>
+              <div class="sk-block sk-bar sk-value-bar"></div>
+            </div>
+            <div class="sk-stat-card">
+              <div class="sk-block sk-bar sk-label-bar"></div>
+              <div class="sk-block sk-bar sk-value-bar"></div>
+            </div>
+            <div class="sk-stat-card">
+              <div class="sk-block sk-bar sk-label-bar"></div>
+              <div class="sk-block sk-bar sk-value-bar"></div>
+            </div>
+            <div class="span-rows">
+              <div class="sk-stat-card sk-stat-card-tall">
+                <div class="sk-block sk-bar sk-label-bar"></div>
+                <div class="sk-block sk-bar sk-value-bar"></div>
+              </div>
+            </div>
+            <div class="span-rows">
+              <div class="sk-stat-card sk-stat-card-tall">
+                <div class="sk-block sk-bar sk-label-bar"></div>
+                <div class="sk-block sk-bar sk-value-bar"></div>
+              </div>
+            </div>
+            <div class="sk-stat-card">
+              <div class="sk-block sk-bar sk-label-bar"></div>
+              <div class="sk-block sk-bar sk-value-bar"></div>
+            </div>
+            <div class="sk-stat-card">
+              <div class="sk-block sk-bar sk-label-bar"></div>
+              <div class="sk-block sk-bar sk-value-bar"></div>
+            </div>
+            <div class="sk-stat-card">
+              <div class="sk-block sk-bar sk-label-bar"></div>
+              <div class="sk-block sk-bar sk-value-bar"></div>
+            </div>
+            <div class="span-cols">
+              <div class="sk-stat-card">
+                <div class="sk-block sk-bar sk-label-bar"></div>
+                <div class="sk-block sk-bar sk-value-bar"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-  {/if}
-
-  <!-- results -->
-  {#if playerProfile}
+  {:else if playerProfile}
     <!-- profile + stats row (wrapped in an elevated panel so the inner cards layer on top of it) -->
     <div class="profile-section">
     <div class="results-layout">
@@ -259,14 +328,87 @@
       </div>
     </div>
     </div>
+  {/if}
 
-    <!-- history section -->
-    {#if isLoadingSoloHistory}
-      <div class="history-loading">
-        <div class="spinner spinner-sm"></div>
-        <p>Loading run history...</p>
+  <!-- history section - skeleton stays mounted from search submit until solo history loads; the real header + filter bar render even while the inner charts are still skeletons -->
+  {#if isLoadingSoloHistory}
+    <div class="history-wrap">
+      <div class="history-section">
+        <div class="history-header">
+          <div class="history-title">
+            <h2>Run History</h2>
+          </div>
+
+          <div class="filter-group">
+            <span class="filter-group-label">Mode:</span>
+            <div class="filter-pills">
+              <button
+                class="filter-pill"
+                class:active={historyMode === 'solo'}
+                onclick={() => historyMode = 'solo'}
+              >Solo</button>
+
+              <button
+                class="filter-pill"
+                class:active={historyMode === 'crew'}
+                class:is-disabled={!crewTabAvailable}
+                disabled={!crewTabAvailable}
+                onclick={() => crewTabAvailable && (historyMode = 'crew')}
+              >Crew{#if isLoadingCrewHistory}&nbsp;<span class="tab-spinner"></span>{/if}</button>
+
+              <button
+                class="filter-pill"
+                class:active={historyMode === 'combined'}
+                class:is-disabled={!combinedTabAvailable}
+                disabled={!combinedTabAvailable}
+                onclick={() => combinedTabAvailable && (historyMode = 'combined')}
+              >Combined</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="history-block">
+          <SectionLabel text="Points Over Time" />
+          <div class="sk-block sk-graph"></div>
+        </div>
+
+        <div class="charts-row">
+          <div class="chart-block"><div class="sk-block sk-pie"></div></div>
+          <div class="chart-block"><div class="sk-block sk-pie"></div></div>
+          <div class="chart-block"><div class="sk-block sk-pie"></div></div>
+        </div>
+
+        <div class="history-block">
+          <SectionLabel text="Run Info" />
+          <div class="run-info-grid">
+            <div class="sk-stat-card">
+              <div class="sk-block sk-bar sk-label-bar"></div>
+              <div class="sk-block sk-bar sk-value-bar"></div>
+            </div>
+            <div class="sk-stat-card">
+              <div class="sk-block sk-bar sk-label-bar"></div>
+              <div class="sk-block sk-bar sk-value-bar"></div>
+            </div>
+            <div class="sk-stat-card">
+              <div class="sk-block sk-bar sk-label-bar"></div>
+              <div class="sk-block sk-bar sk-value-bar"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="history-block">
+          <SectionLabel text="Cars Used" />
+          <ul class="sk-tally-list">
+            <li class="sk-block sk-tally-row"></li>
+            <li class="sk-block sk-tally-row"></li>
+            <li class="sk-block sk-tally-row"></li>
+            <li class="sk-block sk-tally-row"></li>
+            <li class="sk-block sk-tally-row"></li>
+          </ul>
+        </div>
       </div>
-    {:else if soloHistory}
+    </div>
+  {:else if soloHistory}
       <div class="history-wrap">
         <div class="history-section">
           <div class="history-header">
@@ -357,7 +499,6 @@
         </div>
       </div>
     {/if}
-  {/if}
 </div>
 
 <style>
@@ -392,42 +533,153 @@
     font-size: 0.9rem;
   }
 
-  .loading-state {
+  .sk-block {
+    background: var(--color-card-raised);
+    border-radius: 0.3rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .sk-block::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.04) 50%, transparent 100%);
+    animation: sk-shimmer 1.6s ease-in-out infinite;
+  }
+
+  @keyframes sk-shimmer {
+    0%   { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+  }
+
+  .sk-profile-card {
+    background: var(--color-card-raised);
+    border: 1px solid var(--color-border);
+    border-radius: 0.4rem;
+    padding: 1.25rem;
+    height: 381.6px;
     display: flex;
     flex-direction: column;
-    align-items: center;
     gap: 1rem;
-    padding: 3rem 0;
-    color: var(--color-muted);
   }
 
-  .history-loading {
+  .sk-identity {
     display: flex;
     align-items: center;
-    gap: 0.75rem;
-    padding: 1.5rem 0;
-    color: var(--color-muted);
-    font-size: 0.9rem;
+    gap: 0.875rem;
   }
 
-  .spinner {
-    width: 32px;
-    height: 32px;
-    border: 3px solid var(--color-border);
-    border-top-color: var(--color-text);
-    border-radius: 50%;
-    animation: spin 0.8s linear infinite;
+  .sk-avatar {
+    width: 52px;
+    height: 52px;
+    border-radius: 6px;
     flex-shrink: 0;
   }
 
-  .spinner-sm {
-    width: 20px;
-    height: 20px;
-    border-width: 2px;
+  .sk-name-block {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    flex: 1;
+    min-width: 0;
   }
 
-  @keyframes spin {
-    to { transform: rotate(360deg); }
+  .sk-name-bar {
+    width: 70%;
+    height: 1rem;
+  }
+
+  .sk-steamid-bar {
+    width: 90%;
+    height: 0.75rem;
+  }
+
+  .sk-divider {
+    height: 1px;
+    background: var(--color-border);
+  }
+
+  .sk-stat-rows {
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+  }
+
+  .sk-stat-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .sk-rank-icon-wrap {
+    display: flex;
+    justify-content: center;
+    padding-top: 0.25rem;
+  }
+
+  .sk-rank-icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+  }
+
+  .sk-stat-card {
+    background: var(--color-card-raised);
+    border: 1px solid var(--color-border);
+    border-radius: 0.4rem;
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    height: 91.81px;
+  }
+
+  .sk-stat-card-tall {
+    height: 186.18px;
+  }
+
+  .sk-bar {
+    display: block;
+  }
+
+  .sk-label-bar {
+    width: 40%;
+    height: 0.7rem;
+  }
+
+  .sk-value-bar {
+    width: 65%;
+    height: 1.1rem;
+  }
+
+  .sk-graph {
+    width: 100%;
+    height: 300px;
+    border: 1px solid var(--color-border);
+    border-radius: 0.4rem;
+  }
+
+  .sk-pie {
+    width: 100%;
+    height: 350px;
+    border: 1px solid var(--color-border);
+    border-radius: 0.4rem;
+    flex: 1;
+  }
+
+  .sk-tally-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+
+  .sk-tally-row {
+    height: 2.4rem;
+    border-radius: 0.4rem;
+    border: 1px solid var(--color-border);
   }
 
   .profile-section {
