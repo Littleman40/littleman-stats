@@ -6,9 +6,9 @@ This is a data driven website built as my Year 12 NSW Enterprise Computing Major
 - [x] Leaderboard Filters
 - [x] Searchable FAQ's
 - [x] Per User Search 
+- [x] Ranks
 
 ## Planned Updates
-- [ ] Littleman Timing
 - [ ] Leaderboard Statistics
 
 ## Screenshots
