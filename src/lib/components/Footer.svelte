@@ -2,7 +2,7 @@
   const navLinks = [                                                    // navigation links for pages
     { href: '/user-search', label: 'User Stats' },
     { href: '/leaderboard', label: 'Leaderboard' },
-    { href: '/littleman-timing', label: 'LittleMan Timing' },
+    { href: '/ranks', label: 'Ranks' },
     { href: '/faq', label: 'FAQ' }
   ];
 </script>
