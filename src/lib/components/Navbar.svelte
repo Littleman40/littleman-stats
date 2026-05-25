@@ -5,7 +5,7 @@
     { href: '/', label: 'Home' },
     { href: '/user-search', label: 'User Search' },
     { href: '/leaderboard', label: 'Leaderboard' },
-    { href: '/littleman-timing', label: 'LittleMan Timing' },
+    { href: '/ranks', label: 'Ranks' },
     { href: '/faq', label: 'FAQ' }
   ];
 
