@@ -13,10 +13,10 @@
       image: '/img/LeaderboardPreview.png'
     },
     {
-      href: '/littleman-timing',
-      title: 'LittleMan Timing',
-      description: 'A dedicated timing app for routes around No Hesi',
-      image: '/img/LittleManTimingPreview.png'
+      href: '/ranks',
+      title: 'Ranks',
+      description: 'Percentile breakdown for all ranks, including lowest required scores, player counts and icons.',
+      image: '/img/RanksPreview.png'
     },
     {
       href: '/faq',
