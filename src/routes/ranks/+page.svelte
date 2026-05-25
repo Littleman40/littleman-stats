@@ -88,9 +88,10 @@
         <thead>
           <tr>
             <th>Rank</th>
-            <th>Percentile</th>
             <th>Min Score</th>
+            <th>Lowest Position</th>
             <th>Players</th>
+            <th>Percentile</th>
           </tr>
         </thead>
         <tbody>
@@ -102,8 +103,9 @@
                   <div class="skeleton skeleton-name" style="opacity: {1 - i * 0.04}"></div>
                 </div>
               </td>
-              <td><div class="skeleton skeleton-short" style="opacity: {1 - i * 0.04}"></div></td>
               <td><div class="skeleton skeleton-medium" style="opacity: {1 - i * 0.04}"></div></td>
+              <td><div class="skeleton skeleton-short" style="opacity: {1 - i * 0.04}"></div></td>
+              <td><div class="skeleton skeleton-short" style="opacity: {1 - i * 0.04}"></div></td>
               <td><div class="skeleton skeleton-short" style="opacity: {1 - i * 0.04}"></div></td>
             </tr>
           {/each}
@@ -121,9 +123,10 @@
         <thead>
           <tr>
             <th>Rank</th>
-            <th>Percentile</th>
             <th>Min Score</th>
+            <th>Lowest Position</th>
             <th>Players</th>
+            <th>Percentile</th>
           </tr>
         </thead>
         <tbody>
@@ -135,9 +138,10 @@
                   <span class="rank-name">{t.displayName}</span>
                 </div>
               </td>
-              <td class="cell-muted">{PERCENTILES[t.displayName] || '—'}</td>
               <td class="cell-mono">{fnFormatNumber(t.min_score)}</td>
+              <td class="cell-mono">{fnFormatNumber(t.lowest_position)}</td>
               <td class="cell-mono">{fnFormatNumber(t.playerCount)}</td>
+              <td class="cell-muted">{PERCENTILES[t.displayName] || '—'}</td>
             </tr>
           {/each}
         </tbody>
