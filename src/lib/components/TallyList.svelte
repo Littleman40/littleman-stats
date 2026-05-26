@@ -1,9 +1,11 @@
 <script>
-  let { tally: tallyMap = {} } = $props();
+  let {                                  // local variables
+    tally: tallyMap = {} 
+  } = $props();
 
   const sortedEntries = $derived(
-    Object.entries(tallyMap)
-      .sort(([, a], [, b]) => b - a)
+    Object.entries(tallyMap)             // converts the { name: count } object into an array of [name, count] pairs
+      .sort(([, a], [, b]) => b - a)     // sorts highest count first
   );
 </script>
 

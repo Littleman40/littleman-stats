@@ -31,7 +31,6 @@
   <title>LittleMan Stats</title>
 </svelte:head>
 
-<!-- Hero -->
 <section class="hero">
   <video
     class="hero-video"
@@ -193,11 +192,11 @@
   }
 
   .feature-card.reverse {
-    direction: rtl;
+    direction: rtl;   /* flips the column order so the image appears on the right without changing the HTML structure */
   }
 
   .feature-card.reverse > * {
-    direction: ltr;
+    direction: ltr;   /* reset direction for children so text inside still reads left-to-right normally */
   }
 
   .feature-card.reverse .feature-text {

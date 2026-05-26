@@ -1,5 +1,5 @@
 <script>
-  let {
+  let {                                   // local variables
     placeholder = 'Search...',
     oninput,
     onsubmit,
@@ -8,7 +8,7 @@
 
   let inputSearchBarValue = $state('');
 
-  function fnHandleInput() {              // called from the <input> oninput in the template below - fires oninput callback for live filtering
+  function fnHandleInput() {              // called from the <input> oninput in the template below - fires oninput callback for live filtering on the faq page
     oninput?.(inputSearchBarValue);
   }
 

@@ -1,6 +1,6 @@
 <script>
-  import { goto } from '$app/navigation';
-  import { page } from '$app/stores';
+  import { goto } from '$app/navigation';                                         // used to update the URL without a full page refresh when search or page changes
+  import { page } from '$app/stores';                                             // gives access to the current URL so we can read search params on load
   import SearchBar from '$lib/components/SearchBar.svelte';
   import PaginationControls from '$lib/components/PaginationControls.svelte';
 
@@ -8,26 +8,26 @@
 
   const FAQS_PER_PAGE = 20;
 
-  const allFaqs = $derived(data.faqs);
+  const allFaqs = $derived(data.faqs);                                             // full list of FAQs loaded from the server
 
-  let searchQuery = $state($page.url.searchParams.get('q') ?? '');
-  let currentPageNumber = $state(parseInt($page.url.searchParams.get('page') ?? '1', 10) || 1);
+  let searchQuery = $state($page.url.searchParams.get('q') ?? '');                 // reads ?q= from the URL so the search persists on page refresh
+  let currentPageNumber = $state(parseInt($page.url.searchParams.get('page') ?? '1', 10) || 1); // same for the current page number
 
-  const filteredFaqs = $derived.by(() => {
+  const filteredFaqs = $derived.by(() => {                                         // live filters the FAQ list to only entries whose title matches the search query
     const normalisedQuery = searchQuery.trim().toLowerCase();
     if (!normalisedQuery) return allFaqs;
     return allFaqs.filter((faq) => faq.title.toLowerCase().includes(normalisedQuery));
   });
 
-  const totalPageCount = $derived(Math.max(1, Math.ceil(filteredFaqs.length / FAQS_PER_PAGE)));
+  const totalPageCount = $derived(Math.max(1, Math.ceil(filteredFaqs.length / FAQS_PER_PAGE))); // total pages needed for the filtered results, minimum 1
 
-  const visibleFaqs = $derived.by(() => {
+  const visibleFaqs = $derived.by(() => {                                           // slices filteredFaqs down to just the entries for the current page
     const clampedPage = Math.min(currentPageNumber, totalPageCount);
     const sliceStart = (clampedPage - 1) * FAQS_PER_PAGE;
     return filteredFaqs.slice(sliceStart, sliceStart + FAQS_PER_PAGE);
   });
 
-  function fnSyncUrl(replaceHistory = true) { // called from fnHandleSearch + fnHandlePrev + fnHandleNext + fnHandleJump below
+  function fnSyncUrl(replaceHistory = true) {                                       // syncs the URL with the current search query and page number so back/forward and refresh work correctly
     const urlParams = new URLSearchParams();
     if (searchQuery.trim()) urlParams.set('q', searchQuery.trim());
     if (currentPageNumber > 1) urlParams.set('page', String(currentPageNumber));
@@ -35,25 +35,25 @@
     goto(queryString ? `/faq?${queryString}` : '/faq', { replaceState: replaceHistory, keepFocus: true, noScroll: true });
   }
 
-  function fnHandleSearch(typedValue) { // called from SearchBar oninput in the template below
+  function fnHandleSearch(typedValue) {                                             // called from SearchBar oninput in the template below
     searchQuery = typedValue;
     currentPageNumber = 1;
     fnSyncUrl();
   }
 
-  function fnHandlePrev() { // called from PaginationControls onprev in the template below
+  function fnHandlePrev() {                                                         // called from PaginationControls onprev in the template below
     if (currentPageNumber <= 1) return;
     currentPageNumber--;
     fnSyncUrl(false);
   }
 
-  function fnHandleNext() { // called from PaginationControls onnext in the template below
+  function fnHandleNext() {                                                         // called from PaginationControls onnext in the template below
     if (currentPageNumber >= totalPageCount) return;
     currentPageNumber++;
     fnSyncUrl(false);
   }
 
-  function fnHandleJump(targetPageNumber) { // called from PaginationControls onjump in the template below
+  function fnHandleJump(targetPageNumber) {                                         // called from PaginationControls onjump in the template below
     currentPageNumber = Math.min(Math.max(1, targetPageNumber), totalPageCount);
     fnSyncUrl(false);
   }

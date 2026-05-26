@@ -1,7 +1,15 @@
 <script>
-  let { nohesi_pfp, nohesi_name, steam_id, rank_position, tier_name, mode, team_names } = $props();
+  let {                                  // local variables
+    nohesi_pfp, 
+    nohesi_name, 
+    steam_id, 
+    rank_position, 
+    tier_name, 
+    mode, 
+    team_names 
+  } = $props();
 
-  const rankIconUrl = $derived(                                                   // builds the rank-icon url from the tier name
+  const rankIconUrl = $derived(          // builds the rank-icon url from the tier name
     tier_name
       ? `https://cdn.nohesi.gg/images/rankicons/${tier_name.toLowerCase().replace(/\s+/g, '_')}.svg`
       : null
@@ -11,8 +19,7 @@
 </script>
 
 <div class="profile-card">
-  <!-- identity row: avatar + name/steamid -->
-  <div class="identity">
+  <div class="identity">      <!-- top section of profile card -->
     <div class="avatar-wrap">
       {#if nohesi_pfp}
         <img src={nohesi_pfp} alt="{nohesi_name} avatar" class="avatar" />
@@ -28,8 +35,7 @@
 
   <div class="divider"></div>
 
-  <!-- stat rows -->
-  <div class="stat-rows">
+  <div class="stat-rows">   <!-- bottom section of profile card -->
     <div class="stat-row">
       <span class="stat-label">Position</span>
       <span class="stat-value">{rank_position != null ? `#${rank_position}` : '-'}</span>
@@ -39,21 +45,21 @@
       <span class="stat-value rank-value">
         <span>{tier_name ?? '-'}</span>
         {#if rankIconUrl && showTeamSection}
-          <!-- crew PB: keep the icon small/inline so the team list still fits below -->
+          <!-- for crew pbs, keep the icon inline so the team list fits -->
           <img src={rankIconUrl} alt="{tier_name} rank icon" class="rank-icon-inline" />
         {/if}
       </span>
     </div>
   </div>
 
-  <!-- solo PB: show the big rank icon below the stat rows since there's no team list to take up space -->
+  <!-- for solo pbs show the big rank icon below -->
   {#if rankIconUrl && !showTeamSection}
     <div class="rank-icon-wrap">
       <img src={rankIconUrl} alt="{tier_name} rank icon" class="rank-icon-large" />
     </div>
   {/if}
 
-  <!-- team members section (only shown for team-mode PBs; sits below the rank icon) -->
+  <!-- team members section - for crew runs -->
   {#if showTeamSection}
     <div class="divider"></div>
     <div class="team-section">
@@ -73,7 +79,7 @@
     border: 1px solid var(--color-border);
     border-radius: 0.4rem;
     padding: 1.25rem;
-    height: 100%;                                                                 /* stretch to fill the grid cell so the card height stays consistent regardless of contents */
+    height: 100%;
     display: flex;
     flex-direction: column;
     gap: 1rem;

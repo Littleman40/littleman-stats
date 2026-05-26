@@ -1,19 +1,22 @@
 <script>
-  import { onMount } from 'svelte';
+  import { onMount } from 'svelte';             // used to ensures the canvas exists before Chart.js tries to draw on it.
 
-  let { distribution: distributionMap = {}, title: chartTitle = '' } = $props();
+  let {                                         // local variables
+    distribution: distributionMap = {},
+    title: chartTitle = '' 
+  } = $props();
 
   let canvasElement = $state();
   let chartInstance;
 
-  const GREYSCALE_PALETTE = [
+  const GREYSCALE_PALETTE = [                    // the different colours for the pie chart - to be changed later to have more contrast
     '#ffffff', '#cccccc', '#aaaaaa', '#888888',
     '#666666', '#444444', '#333333', '#222222'
   ];
 
   const hasData = $derived(Object.keys(distributionMap).length > 0);
 
-  const breakdownRows = $derived.by(() => {                                        // builds the legend-style table under the doughnut: top 4 entries + an 'Other' bucket
+  const breakdownRows = $derived.by(() => {     // builds the table under the doughnut: top 4 entries + an 'Other' bucket
     const sortedEntries = Object.entries(distributionMap).sort(([, a], [, b]) => b - a);
     if (!sortedEntries.length) return [];
 
@@ -39,14 +42,14 @@
     return rows;
   });
 
-  function fnBuildPieChart() {                                                     // called from onMount below + the distribution-change $effect below
+  function fnBuildPieChart() {                // called from onMount below + the distribution-change $effect below
     if (!canvasElement || !hasData) return;
     if (chartInstance) chartInstance.destroy();
 
     const sliceLabels = Object.keys(distributionMap);
     const sliceValues = Object.values(distributionMap);
 
-    import('chart.js/auto').then(({ Chart }) => {
+    import('chart.js/auto').then(({ Chart }) => {  // lazy import so Chart.js isn't bundled into the initial page load
       chartInstance = new Chart(canvasElement, {
         type: 'doughnut',
         data: {
@@ -77,11 +80,11 @@
 
   onMount(() => {
     fnBuildPieChart();
-    return () => chartInstance?.destroy();
+    return () => chartInstance?.destroy();         // destroy the chart when the component gets destroyed
   });
 
   $effect(() => {
-    distributionMap;
+    distributionMap;                               // reading the prop here tells Svelte to re-run this effect whenever distributionMap changes
     fnBuildPieChart();
   });
 </script>

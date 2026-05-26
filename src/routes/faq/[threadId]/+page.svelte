@@ -1,6 +1,6 @@
 <script>
-  let { data } = $props();
-  const currentFaq = $derived(data.faq);
+  let { data } = $props();                      // server-loaded data passed in from +page.server.js
+  const currentFaq = $derived(data.faq);        // reference to the FAQ thread being displayed
 </script>
 
 <svelte:head>
@@ -18,6 +18,7 @@
     {#each currentFaq.messages as faqMessage, messageIndex (messageIndex)}
       <section class="message" class:not-first={messageIndex > 0}>
         {#if faqMessage.html}
+          <!-- @html renders the raw HTML from the Discord message, content is generated server-side so it's trusted -->
           <div class="content">{@html faqMessage.html}</div>
         {/if}
 
