@@ -1,13 +1,19 @@
-const HTML_ESCAPE_MAP = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' };
+const HTML_ESCAPE_MAP = {                 // variables
+  '&': '&amp;', 
+  '<': '&lt;', 
+  '>': '&gt;', 
+  '"': '&quot;', 
+  "'": '&#39;' 
+};
 
-function fnEscapeHtml(rawText) {
+function fnEscapeHtml(rawText) {         // cleans input text
   return rawText.replace(/[&<>"']/g, (char) => HTML_ESCAPE_MAP[char]);
 }
 
-function fnSafeUrl(rawUrl) {
-  const trimmedUrl = rawUrl.trim();
-  if (/^(https?:|mailto:)/i.test(trimmedUrl)) return trimmedUrl;
-  if (trimmedUrl.startsWith('/') || trimmedUrl.startsWith('#')) return trimmedUrl;
+function fnSafeUrl(rawUrl) {                                                        // ensures url's are safe
+  const trimmedUrl = rawUrl.trim();                                                 // removes blank space at start and end
+  if (/^(https?:|mailto:)/i.test(trimmedUrl)) return trimmedUrl;                    // only allow urls that start with https and mailto
+  if (trimmedUrl.startsWith('/') || trimmedUrl.startsWith('#')) return trimmedUrl;  // allows relative paths or page anchors
   return null;
 }
 

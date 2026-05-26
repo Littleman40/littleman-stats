@@ -1,12 +1,12 @@
 <script>
-  import SearchBar from '$lib/components/SearchBar.svelte';
-  import ProfileCard from '$lib/components/ProfileCard.svelte';
-  import StatCard from '$lib/components/StatCard.svelte';
-  import LineGraph from '$lib/components/LineGraph.svelte';
-  import PieChart from '$lib/components/PieChart.svelte';
-  import TallyList from '$lib/components/TallyList.svelte';
-  import SectionLabel from '$lib/components/SectionLabel.svelte';
-  import { fnFormatScore, fnFormatTime, fnFormatDateUTC } from '$lib/utils/formatters.js';
+  import SearchBar from '$lib/components/SearchBar.svelte';                                   // text input with a submit button for looking up players
+  import ProfileCard from '$lib/components/ProfileCard.svelte';                               // shows the player's avatar, name, steam ID, and rank
+  import StatCard from '$lib/components/StatCard.svelte';                                     // single label + value stat tile
+  import LineGraph from '$lib/components/LineGraph.svelte';                                   // scatter chart showing score over time
+  import PieChart from '$lib/components/PieChart.svelte';                                     // doughnut chart for distributions (traffic, tracks, input type)
+  import TallyList from '$lib/components/TallyList.svelte';                                   // ranked list showing how often each car was used
+  import SectionLabel from '$lib/components/SectionLabel.svelte';                             // small uppercase heading used to label sections within the history panel
+  import { fnFormatScore, fnFormatTime, fnFormatDateUTC } from '$lib/utils/formatters.js';    // utility functions for formatting large numbers, durations, and UTC dates
 
   let isLoadingPersonalBest = $state(false);
   let isLoadingSoloHistory = $state(false);
@@ -18,7 +18,7 @@
   let soloHistory = $state(null);
   let crewHistory = $state(null);
 
-  let historyMode = $state('solo'); // 'solo' | 'crew' | 'combined'
+  let historyMode = $state('solo');                                                 // 'solo' | 'crew' | 'combined'
 
   let activeAbortController = null;                                                 // tracks the AbortController for the in-flight search so a new search can cancel it
 
@@ -59,7 +59,7 @@
     return soloHistory;
   });
 
-  const activeRunCount = $derived(activeHistory?.points_over_time?.length ?? 0);   // total runs in the currently-selected history view
+  const activeRunCount = $derived(activeHistory?.points_over_time?.length ?? 0);    // total runs in the currently-selected history view
 
   const inputLabel = $derived(                                                      // the api returns input as a numeric code — translate to a human label (kept in sync with INPUT_CODE_LABELS in /api/user-search/history)
     playerProfile?.input === 0 ? 'Wheel'
@@ -139,7 +139,7 @@
       if (!signal.aborted) isLoadingPersonalBest = false;
     }
 
-    // phase 2: total runs count (fast — peeks the first history page for the upstream-reported total)
+    // phase 2: total runs count
     try {
       const totalsResponse = await fetch(`/api/user-search/totals?steamid=${encodeURIComponent(resolvedSteamId)}`, { signal });
       const totalsData = await totalsResponse.json();
@@ -148,7 +148,6 @@
       }
     } catch (err) {
       if (fnIsAbortError(err)) return;
-      // non-fatal — total_runs stays 0
     }
 
     // phase 3: full solo history (isLoadingSoloHistory was already set true at the top of the search)
@@ -160,7 +159,6 @@
       }
     } catch (err) {
       if (fnIsAbortError(err)) return;
-      // non-fatal
     } finally {
       if (!signal.aborted) isLoadingSoloHistory = false;
     }
@@ -175,7 +173,6 @@
       }
     } catch (err) {
       if (fnIsAbortError(err)) return;
-      // non-fatal
     } finally {
       if (!signal.aborted) isLoadingCrewHistory = false;
     }
@@ -189,13 +186,11 @@
 </svelte:head>
 
 <div class="page page-wrapper">
-  <!-- header -->
   <div class="page-header">
     <h1>Individual User's Stats</h1>
     <p>Find individual users specific stats, from total runs, run history, points over time and more!</p>
   </div>
 
-  <!-- search bar -->
   <div class="search-wrap">
     <SearchBar
       placeholder="Enter Steam ID or Username"
@@ -206,7 +201,6 @@
     {/if}
   </div>
 
-  <!-- loading personal best - skeleton mirrors the real profile-section layout so there's no shift on load -->
   {#if isLoadingPersonalBest}
     <div class="profile-section">
       <div class="results-layout">
@@ -284,10 +278,8 @@
       </div>
     </div>
   {:else if playerProfile}
-    <!-- profile + stats row (wrapped in an elevated panel so the inner cards layer on top of it) -->
     <div class="profile-section">
     <div class="results-layout">
-      <!-- left: profile card (team members now live inside the card so the column height stays fixed) -->
       <div class="left-col">
         <ProfileCard
           nohesi_pfp={playerProfile.nohesi_pfp}
@@ -300,7 +292,6 @@
         />
       </div>
 
-      <!-- right: personal best stats grid -->
       <div class="right-col">
         <div class="stats-grid">
           <StatCard label="Score" value={fnFormatScore(playerProfile.score) || 'Unknown'} />
@@ -330,7 +321,6 @@
     </div>
   {/if}
 
-  <!-- history section - skeleton stays mounted from search submit until solo history loads; the real header + filter bar render even while the inner charts are still skeletons -->
   {#if isLoadingSoloHistory}
     <div class="history-wrap">
       <div class="history-section">
@@ -423,7 +413,6 @@
               {/if}
             </div>
 
-            <!-- mode selector - styled to match the leaderboard FilterBar (rounded group + pill buttons) -->
             <div class="filter-group">
               <span class="filter-group-label">Mode:</span>
               <div class="filter-pills">
@@ -452,7 +441,6 @@
             </div>
           </div>
 
-          <!-- points over time -->
           <div class="history-block">
             <SectionLabel text="Points Over Time" />
             {#if historyMode === 'combined' && soloHistory && crewHistory}
@@ -464,7 +452,6 @@
             {/if}
           </div>
 
-          <!-- distributions (traffic + tracks + camera type) -->
           {#if activeHistory}
             <div class="charts-row">
               <div class="chart-block">
@@ -478,7 +465,6 @@
               </div>
             </div>
 
-            <!-- run info summary -->
             <div class="history-block">
               <SectionLabel text="Run Info" />
               <div class="run-info-grid">
@@ -488,7 +474,6 @@
               </div>
             </div>
 
-            <!-- cars used -->
             {#if activeHistory.cars_tally && Object.keys(activeHistory.cars_tally).length}
               <div class="history-block">
                 <SectionLabel text="Cars Used" />

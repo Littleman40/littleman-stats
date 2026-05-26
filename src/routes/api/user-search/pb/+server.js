@@ -1,57 +1,59 @@
-import { json } from '@sveltejs/kit';
-import { fnGetCached, fnSetCached } from '$lib/server/userSearchCache.js';
+import { json } from '@sveltejs/kit';                                               // sveltes helper for returning json responses
+import { fnGetCached, fnSetCached } from '$lib/server/userSearchCache.js';          // our cache helpers
 
-const LEADERBOARD_API_URL = 'https://leaderboard-06nkmjf5r0.nohesi.gg';             // upstream leaderboard api base
-const PROFILE_API_URL = 'https://api.nohesi.gg';                                    // upstream profile api base, used to resolve nohesi username to steam id
+const LEADERBOARD_API_URL = 'https://leaderboard-06nkmjf5r0.nohesi.gg';             // no hesi leaderboard api base
+const PROFILE_API_URL = 'https://api.nohesi.gg';                                    // no hesi profile api base, used to resolve no hesi username to steam id
 
 async function fnResolveUsernameToSteamId(usernameQuery, abortSignal) {             // called from GET() when type === 'username'; abortSignal lets the upstream fetch cancel if the client disconnects
-  const profileResponse = await fetch(`${PROFILE_API_URL}/functions/user-profile/${encodeURIComponent(usernameQuery)}`, { signal: abortSignal });
-  if (!profileResponse.ok) return { error: 'No No Hesi account found for that username.' };
+  const profileResponse = await fetch(`${PROFILE_API_URL}/functions/user-profile/${encodeURIComponent(usernameQuery)}`, { signal: abortSignal }); // fetches user profile from the api
+  if (!profileResponse.ok) return { error: 'No No Hesi account found for that username.' };   // error handling
 
-  const profileBody = await profileResponse.json();
-  const connectedProviders = profileBody?.data?.connected_providers ?? [];
-  const steamProvider = connectedProviders.find((provider) => provider.provider === 'steam');
+  const profileBody = await profileResponse.json();                                 // parse profile api response
+  const connectedProviders = profileBody?.data?.connected_providers ?? [];          // extract any liked accounts
+  const steamProvider = connectedProviders.find((provider) => provider.provider === 'steam'); // find steam connection inside of linked accounts
 
-  if (!steamProvider?.id) return { error: 'This user has no linked Steam account.' };
-  return { steamId: steamProvider.id };
+  if (!steamProvider?.id) return { error: 'This user has no linked Steam account.' }; // error handling
+  return { steamId: steamProvider.id };                                             // returns steam id
 }
 
 export async function GET({ url, request }) {                                       // called by SvelteKit on GET /api/user-search/pb, fetched from fnHandleUserSearch() in src/routes/user-search/+page.svelte
-  const rawQuery = url.searchParams.get('query')?.trim();
-  const queryType = url.searchParams.get('type');
+  const rawQuery = url.searchParams.get('query')?.trim();                           // extract the search query
+  const queryType = url.searchParams.get('type');                                   // extract the query type - username or steam id
 
-  if (!rawQuery) return json({ error: 'Missing query parameter.' }, { status: 400 });
+  if (!rawQuery) return json({ error: 'Missing query parameter.' }, { status: 400 }); // reject if its missing
 
-  let resolvedSteamId;
+  let resolvedSteamId;                                                              // stores steam id
 
   try {
-    if (queryType === 'username') {
-      const usernameCacheKey = `username:${rawQuery.toLowerCase()}`;
-      const cachedUsername = fnGetCached(usernameCacheKey);
-      if (cachedUsername) {
+    if (queryType === 'username') {                                                 // if user searched by username, we resolve that first
+      const usernameCacheKey = `username:${rawQuery.toLowerCase()}`;                // cache key for username -> steam id
+      const cachedUsername = fnGetCached(usernameCacheKey);                         // checks if its already been cached
+      if (cachedUsername) {                                                         // uses cached username if its already been found
         resolvedSteamId = cachedUsername.steamId;
-      } else {
-        const resolveResult = await fnResolveUsernameToSteamId(rawQuery, request.signal);
-        if (resolveResult.error) return json({ error: resolveResult.error }, { status: 404 });
+      } else {                                                                      // calls no hesi's api to find steam id
+        const resolveResult = await fnResolveUsernameToSteamId(rawQuery, request.signal); 
+        if (resolveResult.error) return json({ error: resolveResult.error }, { status: 404 });  // error handling
         resolvedSteamId = resolveResult.steamId;
         fnSetCached(usernameCacheKey, { steamId: resolvedSteamId });
       }
     } else {
-      resolvedSteamId = rawQuery;
+      resolvedSteamId = rawQuery;                                                     // if searched by steam id, just use it
     }
 
-    const pbCacheKey = `pb:${resolvedSteamId}`;
-    const cachedPb = fnGetCached(pbCacheKey);
-    if (cachedPb) return json(cachedPb);
+    const pbCacheKey = `pb:${resolvedSteamId}`;                                       // cache key for pb lookup
+    const cachedPb = fnGetCached(pbCacheKey);                                         // checks if pb result is already cached
+    if (cachedPb) return json(cachedPb);                                              // returns cached info if its there
 
-    const pbResponse = await fetch(`${LEADERBOARD_API_URL}/scores/${resolvedSteamId}`, { signal: request.signal });
-    if (!pbResponse.ok) return json({ error: 'No player found with that Steam ID.' }, { status: 404 });
+    const pbResponse = await fetch(`${LEADERBOARD_API_URL}/scores/${resolvedSteamId}`, { signal: request.signal }); // finds personal best
+    if (!pbResponse.ok) return json({ error: 'No player found with that Steam ID.' }, { status: 404 }); // error handling
 
     const pbData = await pbResponse.json();
-    if (!pbData || (!pbData.score && pbData.score !== 0)) {                         // upstream returned an object with no score, treat as no PB recorded
+    if (!pbData || (!pbData.score && pbData.score !== 0)) {                         // runs if no hesi returned an object with no score, treat as no PB recorded
       return json({ error: 'This player has no personal best recorded yet.' }, { status: 404 });
     }
 
+
+    // player run data
     const rankingData = pbData.ranking;
     const teamData = pbData.team;
 
@@ -75,11 +77,11 @@ export async function GET({ url, request }) {                                   
       total_runs: 0                                                                 // filled in by the totals endpoint after this returns
     };
 
-    const responseResult = { steamId: resolvedSteamId, profile };
-    fnSetCached(pbCacheKey, responseResult);
-    return json(responseResult);
+    const responseResult = { steamId: resolvedSteamId, profile };                   // final result structure
+    fnSetCached(pbCacheKey, responseResult);                                        // stores pb in cache
+    return json(responseResult);                                                    // returns response to client
   } catch (err) {
-    if (err?.name === 'AbortError') return new Response(null, { status: 499 });     // client disconnected
+    if (err?.name === 'AbortError') return new Response(null, { status: 499 });     // client disconnected so abort
     throw err;
   }
 }

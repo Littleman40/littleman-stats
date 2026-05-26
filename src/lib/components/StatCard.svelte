@@ -1,5 +1,9 @@
 <script>
-  let { label, value, backgroundImage = null } = $props();
+  let {                                             // local variables
+    label, 
+    value, 
+    backgroundImage = null 
+    } = $props();
 </script>
 
 <div class="stat-card" class:has-bg={!!backgroundImage}>
@@ -22,7 +26,7 @@
     display: flex;
     flex-direction: column;
     gap: 0.4rem;
-    overflow: hidden;                                                              /* clips the bg image to the rounded card corners */
+    overflow: hidden;
   }
 
   .bg-image {
@@ -34,7 +38,6 @@
     z-index: 0;
   }
 
-  /* dark gradient overlay so white text stays readable on bright/varied car artwork */
   .bg-overlay {
     position: absolute;
     inset: 0;
@@ -44,7 +47,7 @@
 
   .label,
   .value {
-    position: relative;                                                            /* sit above the bg layers */
+    position: relative;
     z-index: 2;
   }
 
@@ -57,7 +60,7 @@
   }
 
   .stat-card.has-bg .label {
-    color: rgba(255, 255, 255, 0.85);                                              /* lift the label off the muted grey since the bg is darker than the card */
+    color: rgba(255, 255, 255, 0.85);
   }
 
   .value {

@@ -1,20 +1,24 @@
 <script>
-  import { fnFormatScore } from '$lib/utils/formatters.js';
+  import { fnFormatScore } from '$lib/utils/formatters.js';     // importing the format score function to be used later in the table
 
-  let { records: leaderboardRecords = [], activeFilter = 'all', startRank = 1 } = $props();
+  let {                                                         // local variables
+    records: leaderboardRecords = [], 
+    activeFilter = 'all', 
+    startRank = 1 
+  } = $props(); 
 </script>
 
 <div class="table-wrap">
   <table>
-    <colgroup>                                        <!-- fixed table widths so skeleton headers stay in same position-->
-      <col style="width: 90px" />
-      <col style="width: 389px" />
-      <col style="width: 146px" />
-      <col style="width: 103px" />
-      <col style="width: 109px" />
-      <col style="width: 82px" />
-      <col style="width: 67px" />
-      <col style="width: 227px" />
+    <colgroup>                                                <!-- fixed table widths so skeleton headers stay in same position-->
+      <col style="width: 90px"/>
+      <col style="width: 389px"/>
+      <col style="width: 146px"/>
+      <col style="width: 103px"/>
+      <col style="width: 109px"/>
+      <col style="width: 82px"/>
+      <col style="width: 67px"/>
+      <col style="width: 227px"/>
     </colgroup>
     <thead>
       <tr>
@@ -29,28 +33,28 @@
       </tr>
     </thead>
     <tbody>
-      {#each leaderboardRecords as runRecord, rowIndex}                                 <!-- each lb entry -->
+      {#each leaderboardRecords as runRecord, rowIndex}                                   <!-- each lb entry -->
         <tr>
           
           <td class="pos">
-            {#if activeFilter === 'all'}                                                <!-- only show real position for all filter-->
+            {#if activeFilter === 'all'}                                                  <!-- only show real position for all filter-->
               {runRecord.rank_position ?? startRank + rowIndex}
-            {:else}                                                                     <!-- show relative position and real position for other filters -->
-              {startRank + rowIndex} ({runRecord.rank_position ?? startRank + rowIndex}) <!-- ?? reverts to the after for null -->
+            {:else}                                                                       <!-- show relative position and real position for other filters -->
+              {startRank + rowIndex} ({runRecord.rank_position ?? startRank + rowIndex})  <!-- ?? reverts to the after for null data -->
             {/if}
           </td>
           
-          <td class="player-cell">
+          <td class="player-cell">                                                        <!-- the player cell section -->
             <div class="player">
               {#if runRecord.mode === 'team'}
-                <div class="player-names">
+                <div class="player-names">                                                <!-- if its a crew run, display the number of people in the crew - or go to 0 for any null data -->
                   <span class="team-members">{(runRecord.team_names?.length ?? 0)} Player Crew</span>
                   {#if runRecord.team_names?.length}
                     <span class="player-name">{runRecord.team_names.join(', ')}</span>
                   {/if}
                 </div>
               {:else}
-                {#if runRecord.nohesi_pfp}
+                {#if runRecord.nohesi_pfp}                                                <!-- solo runs display profile picture and then the player name -->
                   <img src={runRecord.nohesi_pfp} alt="" class="pfp" />
                 {:else}
                   <div class="pfp-placeholder"></div>
@@ -62,7 +66,7 @@
             </div>
           </td>
           
-          <td class="num">{fnFormatScore(runRecord.score)}</td>       <!-- formats the score to include , for each hundredth-->
+          <td class="num">{fnFormatScore(runRecord.score)}</td>                          <!-- formats the score to include , for each hundredth -->
           
           <td class="num">{runRecord.combo}</td>
           
@@ -70,7 +74,7 @@
           
           <td>{runRecord.traffic_type}</td>
           
-          <td>{runRecord.mode === 'team' ? 'Team' : 'Solo'}</td>
+          <td>{runRecord.mode === 'team' ? 'Crew' : 'Solo'}</td>                        <!-- the api returns crew runs as 'team' runs, so we change it on display to the user -->
           
           <td class="car">{runRecord.car_model}</td>
         
@@ -187,5 +191,4 @@
     color: var(--color-muted);
     font-size: 0.8rem;
   }
-
 </style>

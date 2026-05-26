@@ -1,5 +1,7 @@
 <script>
-  let { text } = $props();
+  let {               // local variable - as an fyi, this page is only used in the run history part of our website
+    text
+    } = $props();
 </script>
 
 <span class="section-label">{text}</span>

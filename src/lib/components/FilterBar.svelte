@@ -1,5 +1,5 @@
 <script>
-  let {
+  let {                                             // local variables
     activeFilter = 'all',
     activeView = 'leaderboard',
     onfilterchange,
@@ -7,14 +7,14 @@
     onreset
   } = $props();
 
-  const filters = [                                   // filter types + their labes for lb page
+  const filters = [                                  // filter types
     { value: 'all', label: 'Everything' },
     { value: 'crew', label: 'Crew' },
     { value: 'solo', label: 'Solo' },
     { value: 'realistic', label: 'Realistic Physics (Solo)' }
   ];
 
-  const views = [                                     // views eg lb and statistics mode
+  const views = [                                    // different view modes
     { value: 'leaderboard', label: 'Leaderboard' },
     { value: 'statistics', label: 'Statistics', disabled: true }
   ];
@@ -24,12 +24,12 @@
   <div class="group">
     <span class="group-label">Filter By:</span>
     <div class="pills">
-      {#each filters as filterobj}              <!-- list all filters -->
+      {#each filters as filterobj}                  <!-- list all filters - when button is clicked, we change filter to that value -->
         <button
           class="pill"
           class:active={activeFilter === filterobj.value}
-          onclick={() => onfilterchange?.(filterobj.value)}
-        >{filterobj.label}</button>
+          onclick={() => onfilterchange?.(filterobj.value)} 
+        >{filterobj.label}</button>               
       {/each}
     </div>
   </div>
@@ -37,25 +37,22 @@
   <div class="group">
     <span class="group-label">View:</span>
     <div class="pills">
-      {#each views as viewobj}                  <!-- list all view buttons -->
+      {#each views as viewobj}                    <!-- list all view buttons -->
         <button
-          class="pill"
-          class:active={activeView === viewobj.value}
-          class:is-disabled={viewobj.disabled}
-          disabled={viewobj.disabled}
-          aria-disabled={viewobj.disabled ? 'true' : undefined}
-          title={viewobj.disabled ? 'Statistics view is currently unavailable' : undefined}
-          onclick={() => !viewobj.disabled && onviewchange?.(viewobj.value)}
-        >{viewobj.label}</button>
+        class="pill"
+        class:active={activeView === viewobj.value}
+        class:is-disabled={viewobj.disabled}
+        disabled={viewobj.disabled}
+        title={viewobj.disabled ? 'Statistics view is currently unavailable' : undefined}
+        onclick={() => onviewchange?.(viewobj.value)}>
+          {viewobj.label}
+        </button>
       {/each}
     </div>
   </div>
 
-  <button class="reset-btn" onclick={() => onreset?.()} aria-label="Reset filters">
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
-      <line x1="18" y1="6" x2="6" y2="18"/>
-      <line x1="6" y1="6" x2="18" y2="18"/>
-    </svg>
+  <button class="reset-btn" onclick={() => onreset?.()} aria-label="Reset filters">   
+    <img src="/img/cross.svg" width="14" height="14" alt="" style="filter: invert(1)" />
   </button>
 </div>
 

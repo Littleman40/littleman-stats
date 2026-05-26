@@ -1,5 +1,5 @@
 <script>
-  import { page } from '$app/stores';
+  import { page } from '$app/stores';             // used to compare the current URL pathname against each nav link to highlight the active one
 
   const navLinks = [                              // navigation links
     { href: '/', label: 'Home' },
@@ -20,13 +20,13 @@
   }
 
   $effect(() => {                                 // auto-close the dropdown when the viewport widens past the hamburger breakpoint
-    if (typeof window === 'undefined') return;
+    if (typeof window === 'undefined') return;    // stops the code being run on the server
     const mediaQuery = window.matchMedia('(min-width: 761px)');
     function fnHandleViewportChange(event) {
       if (event.matches) isMobileMenuOpen = false;
     }
     mediaQuery.addEventListener('change', fnHandleViewportChange);
-    return () => mediaQuery.removeEventListener('change', fnHandleViewportChange);
+    return () => mediaQuery.removeEventListener('change', fnHandleViewportChange);  //remove the listener when the navbar is destroyed
   });
 </script>
 
@@ -102,7 +102,7 @@
     backdrop-filter: blur(16px) saturate(160%);
     -webkit-backdrop-filter: blur(16px) saturate(80%);
     border: 1px solid rgb(44, 44, 44);
-    border-radius: var(--radius-pill);             /* outer container = fully rounded pill */
+    border-radius: var(--radius-pill);
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35), 0 1px 2px rgba(0, 0, 0, 0.15);
     color: var(--color-text-on-light);
   }
@@ -159,7 +159,6 @@
     color: var(--color-text-on-light);
   }
 
-  /* Hamburger lives inside the pill — circular to match the pill's fully-rounded shape. */
   .hamburger {
     display: none;
     flex-direction: column;
@@ -185,14 +184,14 @@
   .mobile-menu {
     pointer-events: auto;
     width: 100%;
-    max-width: 1180px;                             /* match the nav-pill so the dropdown sits flush under it */
+    max-width: 1180px;
     margin-top: 0.6rem;
     padding: 0.5rem;
     background: rgb(from var(--color-text) r g b / 0.75);
     backdrop-filter: blur(16px) saturate(160%);
     -webkit-backdrop-filter: blur(16px) saturate(160%);
     border: 1px solid rgb(44, 44, 44);
-    border-radius: 15px;                           /* outer card radius */
+    border-radius: 15px;
     box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
   }
 

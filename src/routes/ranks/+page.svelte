@@ -1,7 +1,7 @@
 <script>
-  const REFRESH_INTERVAL_MS = 30 * 60 * 1000;
+  const REFRESH_INTERVAL_MS = 30 * 60 * 1000;     // auto-refresh rank data every 30 minutes
 
-  const PERCENTILES = {
+  const PERCENTILES = {                           // hardcoded percentile labels for each rank
     'Certified':    '0.1% (capped at 75)',
     'Sanctioned 3': '0.4%',
     'Sanctioned 2': '0.7%',
@@ -30,12 +30,12 @@
 
   let refreshTimer;
 
-  const processedThresholds = $derived(
+  const processedThresholds = $derived(                                                 // adds information to the api response
     thresholds.map((threshold, i) => {
       const prevLowestPosition = i === 0 ? 0 : thresholds[i - 1].lowest_position;
-      const playerCount = threshold.lowest_position - prevLowestPosition;
-      const iconSlug = threshold.tier === 0
-        ? threshold.rank.toLowerCase().replace(/\s+/g, '_')
+      const playerCount = threshold.lowest_position - prevLowestPosition;               // players in this rank = gap between this rank's lowest position and the previous rank's
+      const iconSlug = threshold.tier === 0                                             // tier 0 means no number suffix, just for certi, otherwise append the tier number
+        ? threshold.rank.toLowerCase().replace(/\s+/g, '_')                             // spaces turn into underscores to match the cdn filename format
         : `${threshold.rank.toLowerCase().replace(/\s+/g, '_')}_${threshold.tier}`;
       const iconUrl = `https://cdn.nohesi.gg/images/rankicons/${iconSlug}.svg`;
       const displayName = threshold.tier === 0 ? threshold.rank : `${threshold.rank} ${threshold.tier}`;
@@ -43,7 +43,7 @@
     })
   );
 
-  async function fnLoadRanks() {
+  async function fnLoadRanks() {                                                        // fetches rank thresholds from the API and schedules the next auto-refresh
     isLoading = true;
     loadError = null;
     try {
@@ -64,7 +64,7 @@
 
   $effect(() => {
     fnLoadRanks();
-    return () => clearTimeout(refreshTimer);
+    return () => clearTimeout(refreshTimer);                                             // cancel the pending auto-refresh when the page is left so we don't fetch in the background
   });
 
   function fnFormatNumber(n) {
