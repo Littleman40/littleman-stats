@@ -549,7 +549,7 @@
   .stats-loading {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: 0.3rem;
   }
 
   .skeleton {
@@ -592,19 +592,6 @@
   .error-detail {
     font-size: 0.9rem;
     margin-bottom: 1rem;
-  }
-
-  .error-hint {
-    font-size: 0.85rem;
-    margin-bottom: 1.25rem;
-  }
-
-  .error-hint code {
-    background: var(--color-card);
-    padding: 0.15rem 0.45rem;
-    border-radius: 0.25rem;
-    font-size: 0.85rem;
-    color: var(--color-text);
   }
 
   .retry-btn {
