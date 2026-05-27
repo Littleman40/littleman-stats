@@ -16,7 +16,7 @@
 
   const views = [                                    // different view modes
     { value: 'leaderboard', label: 'Leaderboard' },
-    { value: 'statistics', label: 'Statistics', disabled: true }
+    { value: 'statistics', label: 'Statistics' }
   ];
 </script>
 
@@ -24,12 +24,12 @@
   <div class="group">
     <span class="group-label">Filter By:</span>
     <div class="pills">
-      {#each filters as filterobj}                  <!-- list all filters - when button is clicked, we change filter to that value -->
+      {#each filters as filterobj}                <!-- list all filters - when button is clicked, we change filter to that value -->
         <button
           class="pill"
           class:active={activeFilter === filterobj.value}
-          onclick={() => onfilterchange?.(filterobj.value)} 
-        >{filterobj.label}</button>               
+          onclick={() => onfilterchange?.(filterobj.value)}
+        >{filterobj.label}</button>
       {/each}
     </div>
   </div>
@@ -37,13 +37,10 @@
   <div class="group">
     <span class="group-label">View:</span>
     <div class="pills">
-      {#each views as viewobj}                    <!-- list all view buttons -->
+      {#each views as viewobj}                      <!-- list all view buttons -->
         <button
         class="pill"
         class:active={activeView === viewobj.value}
-        class:is-disabled={viewobj.disabled}
-        disabled={viewobj.disabled}
-        title={viewobj.disabled ? 'Statistics view is currently unavailable' : undefined}
         onclick={() => onviewchange?.(viewobj.value)}>
           {viewobj.label}
         </button>
@@ -112,15 +109,6 @@
     background: var(--color-text);
     color: var(--color-text-on-light);
     border-color: var(--color-text);
-  }
-
-  .pill.is-disabled,
-  .pill.is-disabled:hover {
-    opacity: 0.4;
-    cursor: not-allowed;
-    border-color: var(--color-border);
-    color: var(--color-muted);
-    background: var(--color-card-elevated);
   }
 
   .reset-btn {
