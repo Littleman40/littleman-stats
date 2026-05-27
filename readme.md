@@ -7,12 +7,11 @@ This is a data driven website built as my Year 12 NSW Enterprise Computing Major
 - [x] Searchable FAQ's
 - [x] Per User Search 
 - [x] Ranks
-
-## Planned Updates
-- [ ] Leaderboard Statistics
+- [x] Leaderboard Statistics
 
 ## Screenshots
-<img src="https://i.imgur.com/EHsdxKZ.png" width=400> <img src="https://i.imgur.com/3yL0VcQ.png" width=400> <img src="https://i.imgur.com/su4n9z6.png" width=400>
+<img src="https://i.imgur.com/9So0gy2.png" width=400> <img src="https://i.imgur.com/UobIcCU.png" width=400> 
+<img src="https://i.imgur.com/bMVtyHb.png" width=400> <img src="https://i.imgur.com/10F5dnR.png" width=400>  
 
 ## Tech stack (so far)
 
@@ -21,14 +20,18 @@ This is a data driven website built as my Year 12 NSW Enterprise Computing Major
 - **Vite**: https://vite.dev/
 - **Chart.js**: https://www.chartjs.org/
 
-## run it locally
+## Run it locally
 
 1. **clone/download the repo**
 2. **install dependencies**
    ```bash
    npm install
    ```
-3. **start the dev server**
+3. **scrape the data for statistics**
+   ```bash
+   node scripts/scrape-stats.js
+   ```
+4. **start the dev server**
    ```bash
    npm run dev
    ```

@@ -202,7 +202,7 @@ function fnBumpAggregations(agg, rawRecord) {                   // the function 
   }
 
 
-  // team size by rank — only present on the crew filter bucket
+  // team size by rank - only present on the crew filter bucket
   if (agg.team_size_by_rank !== undefined && modeKey === 'crew' && Array.isArray(rawRecord.team) && baseRank !== null) {
     const teamSize = rawRecord.team.length;
     const rankBucket = agg.team_size_by_rank[baseRank];
@@ -269,7 +269,7 @@ async function fnRunScrape() {                                        // entry p
     aggregationsByFilter[filterName] = fnCreateEmptyAggregations(filterName);
   }
 
-  const soloScores = [];  // raw scores collected during the scrape — used after the loop to compute score_histogram for the solo filter
+  const soloScores = [];  // raw scores collected during the scrape - used after the loop to compute score_histogram for the solo filter
 
 
   let pageOffset = 0;           // records to skip in each request (increases by 100 each page)
@@ -322,7 +322,7 @@ async function fnRunScrape() {                                        // entry p
         fnBumpAggregations(aggregationsByFilter[filterName], rawRecord);
       }
 
-      // collect solo scores for the post-loop histogram — only valid positive numbers
+      // collect solo scores for the post-loop histogram - only valid positive numbers
       if (rawRecord.mode === 'solo') {
         const score = Number(rawRecord.score);
         if (Number.isFinite(score) && score > 0) {

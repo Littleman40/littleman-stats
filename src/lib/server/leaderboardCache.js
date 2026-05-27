@@ -1,6 +1,6 @@
 const LEADERBOARD_API_URL = 'https://leaderboard-06nkmjf5r0.nohesi.gg/scores';    // upstream api endpoint
 const API_PAGE_SIZE = 100;                                                        // records per upstream api call, as per its pagination
-const CACHE_TTL_MS = 5 * 60 * 1000;                                               // 5 minutes — how long a cached filter is reused before refetching
+const CACHE_TTL_MS = 5 * 60 * 1000;                                               // 5 minutes - how long a cached filter is reused before refetching
 const RESPONSE_PAGE_SIZE = 20;                                                    // records returned to the client per response page
 const POLL_INTERVAL_MS = 150;                                                     // how long fnWaitForPage sleeps between record-count checks
 
@@ -12,7 +12,7 @@ export function fnApplyFilter(rawRecord, filterName) {
     case 'solo': return rawRecord.mode === 'solo';                                // 'solo' = solo mode
     case 'realistic':                                                             // 'realistic' = solo runs in a car whose model name contains 'realistic'
       return rawRecord.mode === 'solo' && rawRecord.car_model?.toLowerCase().includes('realistic');
-    default: return true;                                                         // 'all' / unknown — keep everything
+    default: return true;                                                         // 'all' / unknown - keep everything
   }
 }
 
