@@ -1,48 +1,50 @@
 <script>
-  import { onMount } from 'svelte';             // used to ensures the canvas exists before Chart.js tries to draw on it.
+  import { fnFormatPercent } from '$lib/utils/formatters';
 
-  let {                                         // local variables
+  // local variables
+  let {
     distribution: distributionMap = {},
-    title: chartTitle = '' 
+    title: chartTitle = '',
+    palette = ['#ffffff', '#cccccc', '#aaaaaa', '#888888', '#666666', '#444444', '#333333', '#222222'],
+    maxLegendRows = 5,
+    legendColumns = 1
   } = $props();
 
-  let canvasElement = $state();
-  let chartInstance;
-
-  const GREYSCALE_PALETTE = [                    // the different colours for the pie chart - to be changed later to have more contrast
-    '#ffffff', '#cccccc', '#aaaaaa', '#888888',
-    '#666666', '#444444', '#333333', '#222222'
-  ];
+  let canvasElement = $state();                  // bound to the <canvas> in the template, and must exist before chart.js can draw
+  let chartInstance;                             // holds the current Chart.js instance so we can destroy it before rebuilding
 
   const hasData = $derived(Object.keys(distributionMap).length > 0);
 
-  const breakdownRows = $derived.by(() => {     // builds the table under the doughnut: top 4 entries + an 'Other' bucket
+  const breakdownRows = $derived.by(() => {
     const sortedEntries = Object.entries(distributionMap).sort(([, a], [, b]) => b - a);
     if (!sortedEntries.length) return [];
 
     const totalCount = sortedEntries.reduce((sum, [, count]) => sum + count, 0);
-    const topEntries = sortedEntries.slice(0, 4);
-    const restEntries = sortedEntries.slice(4);
-    const otherCount = restEntries.reduce((sum, [, count]) => sum + count, 0);
+    const fitsWithoutOther = sortedEntries.length <= maxLegendRows;
+    const visibleEntries = fitsWithoutOther ? sortedEntries : sortedEntries.slice(0, maxLegendRows - 1);
+    const overflowEntries = fitsWithoutOther ? [] : sortedEntries.slice(maxLegendRows - 1);
+    const overflowCount = overflowEntries.reduce((sum, [, count]) => sum + count, 0);
 
-    const rows = topEntries.map(([label, count]) => ({
+    const rows = visibleEntries.map(([label, count]) => ({
       label,
       count,
-      pct: totalCount > 0 ? Math.round((count / totalCount) * 100) : 0
+      pct: fnFormatPercent(totalCount > 0 ? (count / totalCount) * 100 : 0),
+      isOther: false
     }));
 
-    if (otherCount > 0) {
+    if (overflowCount > 0) {
       rows.push({
         label: 'Other',
-        count: otherCount,
-        pct: totalCount > 0 ? Math.round((otherCount / totalCount) * 100) : 0
+        count: overflowCount,
+        pct: fnFormatPercent(totalCount > 0 ? (overflowCount / totalCount) * 100 : 0),
+        isOther: true
       });
     }
 
     return rows;
   });
 
-  function fnBuildPieChart() {                // called from onMount below + the distribution-change $effect below
+  function fnBuildPieChart() {
     if (!canvasElement || !hasData) return;
     if (chartInstance) chartInstance.destroy();
 
@@ -56,7 +58,7 @@
           labels: sliceLabels,
           datasets: [{
             data: sliceValues,
-            backgroundColor: sliceLabels.map((_label, sliceIndex) => GREYSCALE_PALETTE[sliceIndex % GREYSCALE_PALETTE.length]),
+            backgroundColor: sliceLabels.map((_label, sliceIndex) => palette[sliceIndex % palette.length]),
             borderColor: '#0a0a0a',
             borderWidth: 2
           }]
@@ -78,14 +80,11 @@
     });
   }
 
-  onMount(() => {
-    fnBuildPieChart();
-    return () => chartInstance?.destroy();         // destroy the chart when the component gets destroyed
-  });
-
   $effect(() => {
-    distributionMap;                               // reading the prop here tells Svelte to re-run this effect whenever distributionMap changes
+    distributionMap;                               // reading the prop here tells Svelte to re-run this effect whenever distributionMap changes (also fires once on initial mount)
+    palette;                                       // re-render if the palette prop ever changes
     fnBuildPieChart();
+    return () => chartInstance?.destroy();         // cleanup runs before the next effect re-run AND on component unmount, so the previous chart is always destroyed before a new one is built on the same canvas
   });
 </script>
 
@@ -103,12 +102,18 @@
   {/if}
 
   {#if breakdownRows.length}
-    <div class="breakdown">
+    <div
+      class="breakdown"
+      class:two-col={legendColumns === 2}
+      style:--per-col-rows={Math.ceil(maxLegendRows / 2)}
+    >
       {#each breakdownRows as row, rowIndex}
-        <span class="dot" style="background: {rowIndex < 4 ? GREYSCALE_PALETTE[rowIndex] : '#555555'}"></span>
-        <span class="bd-label">{row.label}</span>
-        <span class="bd-count">{row.count.toLocaleString()}</span>
-        <span class="bd-pct">{row.pct}%</span>
+        <div class="bd-row">
+          <span class="dot" style="background: {row.isOther ? '#555555' : (palette[rowIndex] ?? '#555555')}"></span>
+          <span class="bd-label">{row.label}</span>
+          <span class="bd-count">{row.count.toLocaleString()}</span>
+          <span class="bd-pct">{row.pct}</span>
+        </div>
       {/each}
     </div>
   {/if}
@@ -126,7 +131,7 @@
     border: 1px solid var(--color-border);
     border-radius: 0.4rem;
     width: 100%;
-    height: 350px;
+    height: 400px;
   }
 
   .chart-container {
@@ -162,28 +167,43 @@
     letter-spacing: 0.06em;
     text-transform: uppercase;
     color: var(--color-muted);
-    margin-top: 0.1rem;
+    margin-top: 0.6rem;
   }
 
   .breakdown {
     display: grid;
-    grid-template-columns: 10px auto 3.5rem 2.5rem;
-    column-gap: 0.5rem;
+    grid-template-columns: 1fr;
     row-gap: 0.3rem;
-    align-items: center;
-    width: fit-content;
+    column-gap: 1.5rem;
     margin: 0.25rem auto 0;
     font-size: 0.8rem;
+  }
+
+  .breakdown.two-col {
+    grid-template-columns: 1fr 1fr;
+    grid-auto-flow: column;
+    grid-template-rows: repeat(var(--per-col-rows, 5), auto);
+  }
+
+  .bd-row {
+    display: grid;
+    grid-template-columns: 10px minmax(0, 1fr) 3.5rem 2.5rem;
+    column-gap: 0.5rem;
+    align-items: center;
   }
 
   .dot {
     width: 10px;
     height: 10px;
     border-radius: 2px;
+    flex-shrink: 0;
   }
 
   .bd-label {
     color: var(--color-text);
+    white-space: nowrap;
+    overflow: hidden;
+    min-width: 0;
   }
 
   .bd-count {

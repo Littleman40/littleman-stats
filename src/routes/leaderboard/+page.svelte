@@ -1,12 +1,14 @@
 <script>
   import { goto } from '$app/navigation';                                       // for updating the URL without a full page refresh
-  import { page } from '$app/stores';                                           // for reading the current filter and page number from the URL
+  import { page } from '$app/state';                                            // reactive page object that works natively with svelte 5 runes ($app/stores subscriptions don't track in $effect)
   import FilterBar from '$lib/components/FilterBar.svelte';                     // the filter + view selector bar above the table
   import LeaderboardTable from '$lib/components/LeaderboardTable.svelte';       // the table of leaderboard entries
   import PaginationControls from '$lib/components/PaginationControls.svelte';   // prev/next/jump page controls
+  import StatisticsView from '$lib/components/StatisticsView.svelte';           // aggregated charts shown when activeView === 'statistics'
 
   let activeFilter = $state('all');
   let currentPageNumber = $state(1);
+  let activeView = $state('leaderboard');                                       // 'leaderboard' = paginated table view, 'statistics' = aggregated charts
 
   let leaderboardRecords = $state([]);
   let startRank = $state(1);
@@ -15,16 +17,27 @@
   let isLoading = $state(false);
   let loadError = $state(null);
 
+  let stats = $state(null);                                                     // contents of /stats.json once fetched (null until first stats view visit)
+  let statsLoading = $state(false);
+  let statsError = $state(null);
+
   let latestRequestId = 0;                                                      // increment each time we start a fetch, to order responses
 
-  $effect(() => {                                                               // re-runs whenever the URL changes — reads filter + page from the URL and triggers a fresh data fetch
-    const urlParams = $page.url.searchParams;
+  $effect(() => {                                                               // re-runs whenever the URL changes — reads filter + page + view from the URL and triggers the right fetch
+    const urlParams = page.url.searchParams;
     const filterFromUrl = urlParams.get('filter') ?? 'all';
     const pageFromUrl = parseInt(urlParams.get('page') ?? '1', 10);
+    const viewFromUrl = urlParams.get('view') ?? 'leaderboard';
 
     activeFilter = filterFromUrl;
     currentPageNumber = pageFromUrl;
-    fnLoadLeaderboardData(filterFromUrl, pageFromUrl);
+    activeView = viewFromUrl;
+
+    if (viewFromUrl === 'statistics') {                                         // statistics view reads from the static stats.json snapshot, not the live api
+      if (stats === null && !statsLoading) fnLoadStats();
+    } else {
+      fnLoadLeaderboardData(filterFromUrl, pageFromUrl);
+    }
   });
 
   async function fnLoadLeaderboardData(filterToLoad, pageNumberToLoad) {        // called from the URL-watch $effect above and the Retry button in the template
@@ -50,27 +63,48 @@
     }
   }
 
-  function fnSyncUrl(filterToApply, pageNumberToApply) {                        // called from every handler below; the URL change is what triggers the load via the $effect above
+  async function fnLoadStats() {                                                // called from the URL-watch $effect above and the StatisticsView retry callback in the template
+    statsLoading = true;
+    statsError = null;
+    try {
+      const response = await fetch('/stats.json');
+      if (!response.ok) throw new Error(`Stats file missing (HTTP ${response.status})`);
+      stats = await response.json();
+    } catch (err) {
+      statsError = err.message;
+    } finally {
+      statsLoading = false;
+    }
+  }
+
+  function fnSyncUrl(filterToApply, pageNumberToApply, viewToApply) {           // called from every handler below; the URL change is what triggers the load via the $effect above
     const urlParams = new URLSearchParams();
     urlParams.set('filter', filterToApply);
     urlParams.set('page', String(pageNumberToApply));
+    if (viewToApply && viewToApply !== 'leaderboard') {                         // omit the default to keep canonical urls short
+      urlParams.set('view', viewToApply);
+    }
     goto(`/leaderboard?${urlParams}`, { replaceState: false, keepFocus: true, noScroll: true });
   }
 
   function fnHandleFilterChange(selectedFilter) {                               // called from FilterBar onfilterchange in the template below
-    fnSyncUrl(selectedFilter, 1);
+    fnSyncUrl(selectedFilter, 1, activeView);
+  }
+
+  function fnHandleViewChange(selectedView) {                                   // called from FilterBar onviewchange in the template below
+    fnSyncUrl(activeFilter, 1, selectedView);
   }
 
   function fnHandleReset() {                                                    // called from FilterBar onreset in the template below
-    fnSyncUrl('all', 1);
+    fnSyncUrl('all', 1, activeView);
   }
 
   function fnHandlePrev() {                                                     // called from PaginationControls onprev in the template below
-    fnSyncUrl(activeFilter, Math.max(1, currentPageNumber - 1));
+    fnSyncUrl(activeFilter, Math.max(1, currentPageNumber - 1), activeView);
   }
 
   function fnHandleNext() {                                                     // called from PaginationControls onnext in the template below
-    fnSyncUrl(activeFilter, currentPageNumber + 1);
+    fnSyncUrl(activeFilter, currentPageNumber + 1, activeView);
   }
 </script>
 
@@ -87,12 +121,21 @@
   <div>
     <FilterBar
       {activeFilter}
-      activeView="leaderboard"
+      {activeView}
       onfilterchange={fnHandleFilterChange}
+      onviewchange={fnHandleViewChange}
       onreset={fnHandleReset}
     />
 
-    {#if isLoading}
+    {#if activeView === 'statistics'}
+      <StatisticsView
+        filters={stats?.filters}
+        {activeFilter}
+        loading={statsLoading}
+        error={statsError}
+        onretry={fnLoadStats}
+      />
+    {:else if isLoading}
       <div class="scroll-wrap">
         <div class="scroll-inner">
           <LeaderboardTable records={[]} {activeFilter} {startRank} />

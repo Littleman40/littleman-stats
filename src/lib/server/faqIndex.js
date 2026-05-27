@@ -25,7 +25,7 @@ function fnBuildIndexes() {                                                     
   cachedFaqsById = faqsById;
 }
 
-export async function fnGetFaqIndex() {                                                     // returns id title and id fileName maps
+export async function fnGetFaqIndex() {                                                    // returns id title and id fileName maps
   if (!cachedFaqIndex) fnBuildIndexes();
   return cachedFaqIndex;
 }
