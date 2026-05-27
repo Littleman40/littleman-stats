@@ -23,7 +23,7 @@
 
   let latestRequestId = 0;                                                      // increment each time we start a fetch, to order responses
 
-  $effect(() => {                                                               // re-runs whenever the URL changes — reads filter + page + view from the URL and triggers the right fetch
+  $effect(() => {                                                               // re-runs whenever the URL changes - reads filter + page + view from the URL and triggers the right fetch
     const urlParams = page.url.searchParams;
     const filterFromUrl = urlParams.get('filter') ?? 'all';
     const pageFromUrl = parseInt(urlParams.get('page') ?? '1', 10);

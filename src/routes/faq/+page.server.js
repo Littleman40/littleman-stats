@@ -20,7 +20,7 @@ function fnBuildPreviewText(faqMessages, fnResolveChannel) { // called from load
   return fnStripDiscordMarkdown(faqMessages[0]?.content || '', { resolveChannel: fnResolveChannel });
 }
 
-export async function load() { // called by SvelteKit when /faq is requested — renders src/routes/faq/+page.svelte
+export async function load() { // called by SvelteKit when /faq is requested - renders src/routes/faq/+page.svelte
   const { titleByFaqId } = await fnGetFaqIndex();
   const fnResolveChannel = fnMakeMentionResolver(titleByFaqId);
 

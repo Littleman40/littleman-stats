@@ -141,7 +141,7 @@
               <td class="cell-mono">{fnFormatNumber(t.min_score)}</td>
               <td class="cell-mono">{fnFormatNumber(t.lowest_position)}</td>
               <td class="cell-mono">{fnFormatNumber(t.playerCount)}</td>
-              <td class="cell-muted">{PERCENTILES[t.displayName] || '—'}</td>
+              <td class="cell-muted">{PERCENTILES[t.displayName] || '-'}</td>
             </tr>
           {/each}
         </tbody>

@@ -26,7 +26,7 @@
     2: 'Keyboard and Mouse'
   };
 
-  // the labels for all the run times — last bucket clamps everything ≥14 min together
+  // the labels for all the run times - last bucket clamps everything ≥14 min together
   const RUN_TIME_LABELS = Array.from({ length: 15 }, (_, i) => i === 14 ? '≥14' : `>${i}`);   
 
   // colours for crew vs solo graphs
