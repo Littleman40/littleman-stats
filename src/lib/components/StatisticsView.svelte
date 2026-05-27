@@ -561,7 +561,7 @@
 
   .skeleton-row {
     display: grid;
-    gap: 1rem;
+    gap: 0.3rem;
   }
 
   .skeleton-cards { grid-template-columns: repeat(3, 1fr); }
