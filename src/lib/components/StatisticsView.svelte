@@ -30,21 +30,21 @@
   const RUN_TIME_LABELS = Array.from({ length: 15 }, (_, i) => i === 14 ? '≥14' : `>${i}`);   
 
   // colours for crew vs solo graphs
-  const SERIES_COLOR_CREW = '#34d399';
-  const SERIES_COLOR_SOLO = '#ffffff';
+  const SERIES_COLOR_CREW = '#FF4069';
+  const SERIES_COLOR_SOLO = '#36A2EB';
 
   // colour palletes for all charts
-  const PALETTE_MAP     = ['#1E3A8A', '#2563EB', '#3B82F6', '#60A5FA', '#93C5FD', '#BFDBFE'];
-  const PALETTE_INPUT   = ['#9A3412', '#C2410C', '#EA580C', '#F97316', '#FB923C', '#FDBA74'];
-  const PALETTE_TRAFFIC = ['#14532D', '#15803D', '#16A34A', '#22C55E', '#4ADE80', '#86EFAC'];
-  const PALETTE_TYRE    = ['#1E3A8A', '#2563EB', '#38BDF8', '#14B8A6', '#22C55E', '#84CC16', '#EAB308', '#F97316', '#EF4444', '#A855F7'];
-  const PALETTE_CAMERA  = ['#0F172A', '#334155', '#64748B', '#0891B2', '#06B6D4', '#10B981', '#F59E0B', '#F43F5E', '#D946EF', '#8B5CF6'];
+  const PALETTE_MAP     = ['#A78BFB', '#FF6384', '#33D399', '#0F766E', '#F59E0B', '#6D28D9', '#14B8A6'];
+  const PALETTE_INPUT   = ['#A78BFB', '#FF6384', '#33D399'];
+  const PALETTE_TRAFFIC = ['#A78BFB', '#FF6384', '#33D399', '#0F766E', '#F59E0B'];
+  const PALETTE_CAMERA  = ['#0C4A6E', '#0891B2', '#14532D', '#10B981', '#F59E0B', '#FBBF24', '#F43F5E', '#FB7185', '#D946EF', '#C084FC', '#8B5CF6', '#6366F1'];
+  const PALETTE_TYRE    = ['#0C4A6E', '#0891B2', '#14532D', '#10B981', '#F59E0B', '#FBBF24', '#F43F5E', '#FB7185', '#D946EF', '#C084FC', '#8B5CF6', '#6366F1'];
 
   // team chart colours
   const TEAM_SIZE_SERIES_DEFS = [
-    { size: 2, label: '2 Players', color: '#F59E19' },
-    { size: 3, label: '3 Players', color: '#2663EB' },
-    { size: 4, label: '4 Players', color: '#EF4444' },
+    { size: 2, label: '2 Players', color: '#fb923c' },
+    { size: 3, label: '3 Players', color: '#36A2EB' },
+    { size: 4, label: '4 Players', color: '#FF4069' },
     { size: 5, label: '5 Players', color: '#22C55E' }
   ];
 
@@ -78,8 +78,8 @@
     }
 
     return [
-      { label: 'Crew', values: crewPercentages, rawCounts: crewCounts, color: SERIES_COLOR_CREW },
-      { label: 'Solo', values: soloPercentages, rawCounts: soloCounts, color: SERIES_COLOR_SOLO }
+      { label: 'Solo', values: soloPercentages, rawCounts: soloCounts, color: SERIES_COLOR_SOLO },
+      { label: 'Crew', values: crewPercentages, rawCounts: crewCounts, color: SERIES_COLOR_CREW }
     ];
   });
 
@@ -247,7 +247,7 @@
             displayMode="percentage"
             orientation="horizontal"
             stacked={true}
-            title="Rank Distribution by Mode"
+            title="Mode Distribution by Rank"
           />
         </section>
 
@@ -384,7 +384,7 @@
             displayMode="percentage"
             orientation="horizontal"
             stacked={true}
-            title="Run Composition by Rank"
+            title="Mode Distribution by Rank"
           />
         </section>
 
