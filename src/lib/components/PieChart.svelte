@@ -48,8 +48,12 @@
     if (!canvasElement || !hasData) return;
     if (chartInstance) chartInstance.destroy();
 
-    const sliceLabels = Object.keys(distributionMap);
-    const sliceValues = Object.values(distributionMap);
+    // build the doughnut from the SAME breakdownRows the legend uses so slice colours line up exactly with the
+    // legend dots. previously the doughnut coloured slices by insertion order while the legend sorted by count,
+    // so the two never matched. this also folds the tail into one grey "Other" slice, mirroring the legend.
+    const sliceLabels = breakdownRows.map((row) => row.label);
+    const sliceValues = breakdownRows.map((row) => row.count);
+    const sliceColors = breakdownRows.map((row, rowIndex) => row.isOther ? '#555555' : (palette[rowIndex] ?? '#555555'));
 
     import('chart.js/auto').then(({ Chart }) => {  // lazy import so Chart.js isn't bundled into the initial page load
       chartInstance = new Chart(canvasElement, {
@@ -58,7 +62,7 @@
           labels: sliceLabels,
           datasets: [{
             data: sliceValues,
-            backgroundColor: sliceLabels.map((_label, sliceIndex) => palette[sliceIndex % palette.length]),
+            backgroundColor: sliceColors,
             borderColor: '#0a0a0a',
             borderWidth: 2
           }]

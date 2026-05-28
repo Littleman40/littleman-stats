@@ -152,8 +152,8 @@ function fnBumpAggregations(agg, rawRecord) {                   // the function 
     agg.input_distribution[inputKey] += 1;
   }
 
-  // traffic type distribution
-  if (typeof rawRecord.traffic_type === 'string' && rawRecord.traffic_type.length > 0) {
+  // traffic type distribution, a literal "none" value is impossible in-game, so it's treated as bad/missing data and dropped rather than counted
+  if (typeof rawRecord.traffic_type === 'string' && rawRecord.traffic_type.length > 0 && rawRecord.traffic_type.toLowerCase() !== 'none') {
     const trafficType = rawRecord.traffic_type;
     if (agg.traffic_distribution[trafficType] === undefined) {
       agg.traffic_distribution[trafficType] = 0;
