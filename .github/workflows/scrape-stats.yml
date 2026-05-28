@@ -2,7 +2,7 @@ name: Update lb stats
 
 on:
   schedule:
-    - cron: '0 4 * * *'
+    - cron: '30 6 * * *'
   workflow_dispatch:
 
 env:
