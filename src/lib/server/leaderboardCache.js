@@ -52,6 +52,14 @@ async function fnFetchAllInBackground(filterName) {
       if (!upstreamResponse.ok) throw new Error(`Leaderboard API ${upstreamResponse.status}`);
       const responseBody = await upstreamResponse.json();
 
+      if (cacheEntry.totalFilteredCount === null) {                                                  // capture the leaderboard-wide run count from the first upstream page (same for every filter)
+        cacheEntry.totalFilteredCount = responseBody.metadata?.total_filtered_count ?? 0;
+        if (cacheEntry._resolveTotalKnown) {                                                         // let the request handler proceed to its page-range check as soon as we know the total
+          cacheEntry._resolveTotalKnown();
+          cacheEntry._resolveTotalKnown = null;
+        }
+      }
+
       const upstreamRecords = responseBody.data ?? [];
       for (const rawRecord of upstreamRecords) {
         if (fnApplyFilter(rawRecord, filterName)) {
@@ -78,6 +86,10 @@ async function fnFetchAllInBackground(filterName) {
       cacheEntry._resolveFirstPageReady();
       cacheEntry._resolveFirstPageReady = null;
     }
+    if (cacheEntry._resolveTotalKnown) {                                                            // release page-range waiters even if the very first fetch failed before setting the total
+      cacheEntry._resolveTotalKnown();
+      cacheEntry._resolveTotalKnown = null;
+    }
   }
 }
 
@@ -90,13 +102,19 @@ export function fnGetOrCreateCacheEntry(filterName) {                           
   let resolveFirstPageReady;
   const firstPageReadyPromise = new Promise((resolve) => { resolveFirstPageReady = resolve; });
 
+  let resolveTotalKnown;
+  const totalKnownPromise = new Promise((resolve) => { resolveTotalKnown = resolve; });             // resolves once the first upstream page reveals total_filtered_count
+
   const freshCacheEntry = {
     records: [],
     complete: false,
     fetching: true,
     timestamp: Date.now(),
+    totalFilteredCount: null,                                                                       // leaderboard-wide run count, populated by the first upstream fetch
     readyPromise: firstPageReadyPromise,
-    _resolveFirstPageReady: resolveFirstPageReady
+    totalKnownPromise,
+    _resolveFirstPageReady: resolveFirstPageReady,
+    _resolveTotalKnown: resolveTotalKnown
   };
 
   cacheByFilter.set(filterName, freshCacheEntry);
