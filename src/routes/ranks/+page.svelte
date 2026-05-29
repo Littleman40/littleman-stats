@@ -90,7 +90,7 @@
             <th>Rank</th>
             <th>Min Score</th>
             <th>Lowest Position</th>
-            <th>Players</th>
+            <th>Number Of Players</th>
             <th>Percentile</th>
           </tr>
         </thead>
@@ -125,7 +125,7 @@
             <th>Rank</th>
             <th>Min Score</th>
             <th>Lowest Position</th>
-            <th>Players</th>
+            <th>Number Of Players</th>
             <th>Percentile</th>
           </tr>
         </thead>
@@ -179,7 +179,12 @@
     width: 100%;
     border: 1px solid var(--color-border);
     border-radius: 0.7rem;
-    overflow: hidden;
+    overflow-x: auto;
+    color-scheme: dark;
+  }
+
+  .ranks-table {
+    min-width: 600px;
   }
 
   tbody tr:nth-child(odd) {

@@ -410,12 +410,6 @@
 
       <!-- the shared bottom row that every filter uses -->
       <section class="cars-and-extras">
-        <div class="cars-column">
-          <p class="column-title">Cars Used Tally</p>
-          <div class="cars-scroll">
-            <TallyList tally={activeData.cars_tally ?? {}} />
-          </div>
-        </div>
         <div class="extras-column">
           <PieChart
             distribution={activeData.camera_distribution ?? {}}
@@ -432,6 +426,12 @@
             legendColumns={2}
           />
         </div>
+        <div class="cars-column">
+          <p class="column-title">Cars Used Tally</p>
+          <div class="cars-scroll">
+            <TallyList tally={activeData.cars_tally ?? {}} />
+          </div>
+        </div>
       </section>
 
     </div>
@@ -445,6 +445,7 @@
     border: 1px solid var(--color-border);
     border-radius: 0.7rem;
     padding: 0.3rem;
+    min-width: fit-content;
   }
 
   .stats-wrap :global(.pie-wrap),

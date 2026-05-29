@@ -66,7 +66,7 @@
 <div class="page page-wrapper">
   <div class="page-header">
     <h1>Individual User's Stats</h1>
-    <p>Find individual users specific stats, from total runs, run history, points over time and more!</p>
+    <p>Find a users personal best and profile information.</p>
   </div>
 
   <div class="search-wrap">
@@ -75,7 +75,16 @@
       onsubmit={fnHandleUserSearch}
     />
     {#if searchError}
-      <p class="error-msg">{searchError}</p>
+      <div class="error-card">
+        <p class="error-card-title">{searchError}</p>
+        <div class="error-card-tips">
+          <p class="error-tips-heading">How to find your details:</p>
+          <ul>
+            <li><strong>Steam ID</strong> - We require you to search via your SteamID64, which is a 17-digit ID that can be found in your Steam profile URL (e.g. <code>/profiles/76561198000000000</code>).</li>
+            <li><strong>Username</strong> - We require you to use the exact username shown on <a href="https://nohesi.gg" target="_blank" rel="noopener noreferrer">No Hesi website's</a> profile page.</li>
+          </ul>
+        </div>
+      </div>
     {/if}
   </div>
 
@@ -226,10 +235,50 @@
     margin-bottom: 2.5rem;
   }
 
-  .error-msg {
+  .error-card {
     margin-top: 0.75rem;
-    color: var(--color-error);
-    font-size: 0.9rem;
+    background: var(--color-card);
+    border: 1px solid var(--color-border);
+    border-radius: 0.7rem;
+    padding: 1.25rem 1.5rem;
+  }
+
+  .error-card-title {
+    color: var(--color-error, #f87171);
+    font-size: 0.95rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+  }
+
+  .error-card-tips {
+    color: var(--color-muted);
+    font-size: 0.875rem;
+  }
+
+  .error-tips-heading {
+    font-weight: 600;
+    color: var(--color-text);
+    margin-bottom: 0.5rem;
+  }
+
+  .error-card-tips ul {
+    padding-left: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .error-card-tips a {
+    color: #7eb6ff;
+    text-decoration: underline;
+  }
+
+  .error-card-tips code {
+    background: rgba(255, 255, 255, 0.08);
+    padding: 0.1em 0.35em;
+    border-radius: 3px;
+    font-size: 0.85em;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
   }
 
   .sk-block {
@@ -359,6 +408,7 @@
     border-radius: 0.7rem;
     padding: 0.3rem;
     margin-bottom: 3rem;
+    min-width: 320px;
   }
 
   .profile-section :global(.profile-card),

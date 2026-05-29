@@ -115,7 +115,7 @@
 <div class="page page-wrapper">
   <div class="page-header">
     <h1>No Hesi Global Leaderboard</h1>
-    <p>Filter and sort the global leaderboard in all sorts of ways</p>
+    <p>Filter the global leaderboard in all sorts of ways and find specifically tailored statistics for each filter.</p>
   </div>
 
   <div>

@@ -66,7 +66,7 @@
 <div class="page page-wrapper">
   <div class="page-header">
     <h1>No Hesi Help FAQ</h1>
-    <p>Find a solution to 99% of the issues you may face</p>
+    <p>Find a solution to 99% of the issues you may face while playing No Hesi.</p>
   </div>
 
   <div>
