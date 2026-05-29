@@ -8,6 +8,13 @@ export async function GET({ url }) {                                            
   const pageNumber = Math.max(1, parseInt(url.searchParams.get('page') ?? '1', 10));  // reads page number and makes sure the page number is at least 1
 
   const cacheEntry = fnGetOrCreateCacheEntry(filterName);                         // gets cached leaderboard data for filter or starts the fetch
+
+  await cacheEntry.totalKnownPromise;                                             // wait only for the first upstream page so we know the leaderboard-wide run count
+  const maxPage = Math.max(1, Math.ceil(cacheEntry.totalFilteredCount / RESPONSE_PAGE_SIZE)); // hard page cap derived from total runs (20 records per page)
+  if (pageNumber > maxPage) {                                                     // reject out-of-range pages immediately instead of polling forever for records that cannot exist
+    return json({ error: `Page ${pageNumber} is out of range. Maximum page is ${maxPage}.`, maxPage }, { status: 400 });
+  }
+
   await fnWaitForPage(cacheEntry, pageNumber);                                    // waits until enough leaderboard data had loaded for this page
 
   const sliceStart = (pageNumber - 1) * RESPONSE_PAGE_SIZE;                       // calculates the starting index for this page
