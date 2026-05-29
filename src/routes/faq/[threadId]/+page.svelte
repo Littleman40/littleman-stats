@@ -10,7 +10,10 @@
 
 <div class="page-strip">
   <div class="page page-wrapper">
-    <a class="back-link" href="/faq">← Back to FAQs</a>
+    <a class="back-link" href="/faq">
+      <img class="back-arrow" src="/img/back.svg" alt="" aria-hidden="true" />
+      Back to FAQs
+    </a>
 
     <h1 class="title">{currentFaq.title}</h1>
 
@@ -53,15 +56,18 @@
     width: 100%;
     max-width: var(--max-width);
     margin: 0 auto;
+    margin-top: calc(-1 * var(--navbar-height));
   }
 
   .page {
-    padding-top: 2rem;
+    padding-top: calc(var(--navbar-height) + 2rem);
     padding-bottom: 4rem;
   }
 
   .back-link {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
     color: var(--color-muted);
     text-decoration: none;
     font-size: 0.9rem;
@@ -71,6 +77,19 @@
 
   .back-link:hover {
     color: var(--color-text);
+  }
+
+  .back-arrow {
+    flex-shrink: 0;
+    width: 16px;
+    height: 16px;
+    filter: invert(1);
+    opacity: 0.5;
+    transition: opacity 0.15s;
+  }
+
+  .back-link:hover .back-arrow {
+    opacity: 1;
   }
 
   .title {

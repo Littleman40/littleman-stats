@@ -58,7 +58,7 @@
   {#each features as feature, i}
     <div class="feature-card" class:reverse={i % 2 === 1}>
       <div class="feature-image-wrap">
-        <div class="feature-image-placeholder" style="background-image: url('{feature.image}')"></div>
+        <img class="feature-image" src={feature.image} alt="{feature.title} preview" loading="eager" />
       </div>
       <div class="feature-text">
         <h2>{feature.title}</h2>
@@ -189,6 +189,7 @@
     border-radius: var(--radius-card);
     padding: 0.5rem;
     align-items: center;
+    min-width: 320px;
   }
 
   .feature-card.reverse {
@@ -209,15 +210,14 @@
     border-radius: 23px;
     overflow: hidden;
     border: 1px solid rgb(44, 44, 44);
+    background: linear-gradient(135deg, #1e1e1e 0%, #242424 100%);
   }
 
-  .feature-image-placeholder {
+  .feature-image {
     width: 100%;
     height: 100%;
-    background-color: var(--color-card-raised);
-    background-size: cover;
-    background-position: center;
-    background-image: linear-gradient(135deg, #1e1e1e 0%, #242424 100%);
+    object-fit: cover;
+    display: block;
   }
 
   .feature-text {

@@ -168,9 +168,14 @@
     width: 44px;
     height: 44px;
     border-radius: var(--radius-pill);
-    background: #888888;
+    background: transparent;
     transition: background 0.15s;
     border: 1px solid rgb(44, 44, 44);
+  }
+
+  .hamburger:hover,
+  .hamburger.open {
+    background: rgba(0, 0, 0, 0.1);
   }
 
   .hamburger span {

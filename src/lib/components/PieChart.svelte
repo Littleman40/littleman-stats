@@ -63,8 +63,7 @@
           datasets: [{
             data: sliceValues,
             backgroundColor: sliceColors,
-            borderColor: '#0a0a0a',
-            borderWidth: 2
+            borderWidth: 0
           }]
         },
         options: {

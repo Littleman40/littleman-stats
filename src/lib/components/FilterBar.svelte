@@ -65,7 +65,8 @@
     display: flex;
     align-items: center;
     gap: 0.75rem;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
+    flex-shrink: 0;
     padding: 0.3rem;
     padding-left: 0.9rem;
     border: 1px solid var(--color-border);
@@ -85,7 +86,7 @@
   .pills {
     display: flex;
     gap: 0.5rem;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
   }
 
   .pill {
