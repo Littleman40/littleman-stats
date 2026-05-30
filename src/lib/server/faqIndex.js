@@ -1,17 +1,21 @@
-const DISCORD_GUILD_ID = '964645662866173972';                                            // no hesi's guild id
+// no hesi's guild id
+const DISCORD_GUILD_ID = '964645662866173972';
 
-const faqModules = import.meta.glob('../../data/faqs/*.json', { eager: true });           // import all faq json files creating a map of file paths
+// import all faq json files creating a map of file paths
+const faqModules = import.meta.glob('../../data/faqs/*.json', { eager: true });
 
 let cachedFaqIndex = null;
 let cachedFaqsById = null;
 
-function fnBuildIndexes() {                                                               // called once on first access - builds id data, id title, and id fileName maps from the above result
+// called once on first access - builds id data, id title, and id fileName maps from the above result
+function fnBuildIndexes() {
   const titleByFaqId = new Map();
   const fileNameByFaqId = new Map();
   const faqsById = new Map();
 
   for (const [modulePath, loadedModule] of Object.entries(faqModules)) {
-    const jsonFileName = modulePath.split('/').pop();                                     // e.g. 'howToOpenChat.json'
+    // e.g. 'howToOpenChat.json'
+    const jsonFileName = modulePath.split('/').pop();
     const parsedFaqData = loadedModule.default;
     if (!parsedFaqData) continue;
 
@@ -25,32 +29,42 @@ function fnBuildIndexes() {                                                     
   cachedFaqsById = faqsById;
 }
 
-export async function fnGetFaqIndex() {                                                    // returns id title and id fileName maps
+// returns id title and id fileName maps
+export async function fnGetFaqIndex() {
   if (!cachedFaqIndex) fnBuildIndexes();
   return cachedFaqIndex;
 }
 
-export function fnGetAllFaqs() {                                                          // returns array of { id, data } for every faq
+// returns array of { id, data } for every faq
+export function fnGetAllFaqs() {
   if (!cachedFaqsById) fnBuildIndexes();
   return Array.from(cachedFaqsById.entries()).map(([id, data]) => ({ id, data }));
 }
 
-export function fnGetFaqById(faqId) {                                                     // returns the full parsed json for one faq
+// returns the full parsed json for one faq
+export function fnGetFaqById(faqId) {
   if (!cachedFaqsById) fnBuildIndexes();
   return cachedFaqsById.get(faqId) ?? null;
 }
 
-export function fnMakeMentionResolver(titleByFaqId) {                                     // all <#id> mentions resolve to a faq thread or a discord link
+// all <#id> mentions resolve to a faq thread or a discord link
+export function fnMakeMentionResolver(titleByFaqId) {
   return function fnResolveChannel(channelId) {
-    if (!/^\d+$/.test(channelId)) return null;                                            // ensures channel id only has numbers
-    if (titleByFaqId.has(channelId)) {                                                    // checks if channel id exists in faq id
+    
+    // ensures channel id only has numbers
+    if (!/^\d+$/.test(channelId)) return null;
+
+    // checks if channel id exists in faq id
+    if (titleByFaqId.has(channelId)) {
       return {
         href: `/faq/${channelId}`,
         label: titleByFaqId.get(channelId),
         external: false,
       };
     }
-    return {                                                                              // returns discord link if needed
+
+    // returns discord link if needed
+    return {
       href: `https://discord.com/channels/${DISCORD_GUILD_ID}/${channelId}`,
       label: '#redirect-to-discord-channel',
       external: true,

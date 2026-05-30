@@ -1,34 +1,48 @@
-const HTML_ESCAPE_MAP = {                 // variables
-  '&': '&amp;', 
-  '<': '&lt;', 
-  '>': '&gt;', 
-  '"': '&quot;', 
-  "'": '&#39;' 
+// variables
+const HTML_ESCAPE_MAP = {
+  '&': '&amp;',
+  '<': '&lt;',
+  '>': '&gt;',
+  '"': '&quot;',
+  "'": '&#39;'
 };
 
-function fnEscapeHtml(rawText) {         // cleans input text
+// cleans input text
+function fnEscapeHtml(rawText) {
   return rawText.replace(/[&<>"']/g, (char) => HTML_ESCAPE_MAP[char]);
 }
 
-function fnSafeUrl(rawUrl) {                                                        // ensures url's are safe
-  const trimmedUrl = rawUrl.trim();                                                 // removes blank space at start and end
-  if (/^(https?:|mailto:)/i.test(trimmedUrl)) return trimmedUrl;                    // only allow urls that start with https and mailto
-  if (trimmedUrl.startsWith('/') || trimmedUrl.startsWith('#')) return trimmedUrl;  // allows relative paths or page anchors
+// ensures url's are safe
+function fnSafeUrl(rawUrl) {
+  // removes blank space at start and end
+  const trimmedUrl = rawUrl.trim();
+
+  // only allow urls that start with https and mailto
+  if (/^(https?:|mailto:)/i.test(trimmedUrl)) return trimmedUrl;
+
+  // allows relative paths or page anchors
+  if (trimmedUrl.startsWith('/') || trimmedUrl.startsWith('#')) return trimmedUrl;
+
   return null;
 }
 
 function fnProcessInline(escapedText, parseOptions) {
   let workingText = escapedText;
 
-  workingText = workingText.replace(/&lt;(https?:\/\/[^\s&]+)&gt;/g, '$1');                             // remove discord's url wrapping
+  // remove discord's url wrapping
+  workingText = workingText.replace(/&lt;(https?:\/\/[^\s&]+)&gt;/g, '$1');
 
-  workingText = workingText.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_match, linkLabel, linkUrl) => {       // handles url's where labels and urls are together
+  // handles url's where labels and urls are together
+  workingText = workingText.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_match, linkLabel, linkUrl) => {
     const safeLinkUrl = fnSafeUrl(linkUrl);
-    if (!safeLinkUrl) return linkLabel;                                                                  // drop unsafe URL, keep visible text
+
+    // drop unsafe URL, keep visible text
+    if (!safeLinkUrl) return linkLabel;
     return `<a href="${fnEscapeHtml(safeLinkUrl)}" target="_blank" rel="noopener noreferrer">${linkLabel}</a>`;
   });
 
-  workingText = workingText.replace(/&lt;#(\d+)&gt;/g, (_match, channelId) => {                          // turns <#id> into link or faq page
+  // turns <#id> into link or faq page
+  workingText = workingText.replace(/&lt;#(\d+)&gt;/g, (_match, channelId) => {
     const resolvedChannel = parseOptions?.resolveChannel?.(channelId);
     if (!resolvedChannel) return '<span class="dc-mention">#channel</span>';
     const externalAttrs = resolvedChannel.external
@@ -36,33 +50,53 @@ function fnProcessInline(escapedText, parseOptions) {
       : '';
     return `<a class="dc-mention dc-mention-link" href="${fnEscapeHtml(resolvedChannel.href)}"${externalAttrs}>${fnEscapeHtml(resolvedChannel.label)}</a>`;
   });
-  workingText = workingText.replace(/&lt;@&amp;(\d+)&gt;/g, '<span class="dc-mention">@role</span>');   // role mentions
-  workingText = workingText.replace(/&lt;@!?(\d+)&gt;/g, '<span class="dc-mention">@user</span>');      // user mentions
 
-  workingText = workingText.replace(/\|\|([^|]+)\|\|/g, '<span class="dc-spoiler">$1</span>');          // spoilers
-  workingText = workingText.replace(/__([^_]+)__/g, '<u>$1</u>');                                       // underline
-  workingText = workingText.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');                         // bold
-  workingText = workingText.replace(/~~([^~]+)~~/g, '<s>$1</s>');                                       // strikethrough
-  workingText = workingText.replace(/(^|[\s(])\*(?!\s)([^*\n]+?)\*(?=[\s.,!?)]|$)/g, '$1<em>$2</em>');  // italic *
-  workingText = workingText.replace(/(^|[\s(])_(?!\s)([^_\n]+?)_(?=[\s.,!?)]|$)/g, '$1<em>$2</em>');    // italic _
+  // role mentions
+  workingText = workingText.replace(/&lt;@&amp;(\d+)&gt;/g, '<span class="dc-mention">@role</span>');
+
+  // user mentions
+  workingText = workingText.replace(/&lt;@!?(\d+)&gt;/g, '<span class="dc-mention">@user</span>');
+
+  // spoilers
+  workingText = workingText.replace(/\|\|([^|]+)\|\|/g, '<span class="dc-spoiler">$1</span>');
+
+  // underline
+  workingText = workingText.replace(/__([^_]+)__/g, '<u>$1</u>');
+
+  // bold
+  workingText = workingText.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+
+  // strikethrough
+  workingText = workingText.replace(/~~([^~]+)~~/g, '<s>$1</s>');
+
+  // italic *
+  workingText = workingText.replace(/(^|[\s(])\*(?!\s)([^*\n]+?)\*(?=[\s.,!?)]|$)/g, '$1<em>$2</em>');
+
+  // italic _
+  workingText = workingText.replace(/(^|[\s(])_(?!\s)([^_\n]+?)_(?=[\s.,!?)]|$)/g, '$1<em>$2</em>');
 
   return workingText;
 }
 
 function fnClassifyLine(rawLine) {
-  const subtextMatch = /^-#\s+(.*)$/.exec(rawLine);                                                     // very small text
+  // very small text
+  const subtextMatch = /^-#\s+(.*)$/.exec(rawLine);
   if (subtextMatch) return { kind: 'subtext', text: subtextMatch[1] };
 
-  const headingMatch = /^(#{1,3})\s+(.*)$/.exec(rawLine);                                               // ### small / ## normal / # big heading
+  // ### small / ## normal / # big heading
+  const headingMatch = /^(#{1,3})\s+(.*)$/.exec(rawLine);
   if (headingMatch) return { kind: 'heading', level: headingMatch[1].length, text: headingMatch[2] };
 
-  const quoteMatch = /^>\s?(.*)$/.exec(rawLine);                                                        // blockquotes
+  // blockquotes
+  const quoteMatch = /^>\s?(.*)$/.exec(rawLine);
   if (quoteMatch) return { kind: 'quote', text: quoteMatch[1] };
 
-  const bulletMatch = /^[-*]\s+(.*)$/.exec(rawLine);                                                    // bullet points
+  // bullet points
+  const bulletMatch = /^[-*]\s+(.*)$/.exec(rawLine);
   if (bulletMatch) return { kind: 'ul', text: bulletMatch[1] };
 
-  const numberedMatch = /^(\d+)\.\s+(.*)$/.exec(rawLine);                                               // numbered points
+  // numbered points
+  const numberedMatch = /^(\d+)\.\s+(.*)$/.exec(rawLine);
   if (numberedMatch) return { kind: 'ol', text: numberedMatch[2] };
 
   return { kind: 'text', text: rawLine };
@@ -185,28 +219,65 @@ export function fnParseDiscordMarkdown(rawInput, parseOptions) {
 export function fnStripDiscordMarkdown(rawInput, parseOptions) {
   if (!rawInput || typeof rawInput !== 'string') return '';
   return rawInput
-    .replace(/```[\s\S]*?```/g, ' ')              // fenced code → blank
-    .replace(/`([^`\n]+)`/g, '$1')                // inline code → text
-    .replace(/^-#\s+/gm, '')                      // subtext marker
-    .replace(/^>>>\s?/gm, '')                     // triple blockquote marker
-    .replace(/^#{1,3}\s+/gm, '')                  // heading hashes
-    .replace(/^>\s?/gm, '')                       // blockquote markers
-    .replace(/^[-*]\s+/gm, '')                    // bullet markers
-    .replace(/^\d+\.\s+/gm, '')                   // numbered list markers
-    .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')      // links → label only
-    .replace(/<https?:\/\/[^\s>]+>/g, '')         // suppressed-embed urls
-    .replace(/<a?:([a-zA-Z0-9_]+):\d+>/g, ':$1:') // custom emoji → :name:
+    // fenced code -> blank
+    .replace(/```[\s\S]*?```/g, ' ')
+
+    // inline code -> text
+    .replace(/`([^`\n]+)`/g, '$1')
+
+    // subtext marker
+    .replace(/^-#\s+/gm, '')
+
+    // triple blockquote marker
+    .replace(/^>>>\s?/gm, '')
+
+    // heading hashes
+    .replace(/^#{1,3}\s+/gm, '')
+
+    // blockquote markers
+    .replace(/^>\s?/gm, '')
+
+    // bullet markers
+    .replace(/^[-*]\s+/gm, '')
+
+    // numbered list markers
+    .replace(/^\d+\.\s+/gm, '')
+
+    // links -> label only
+    .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
+
+    // suppressed-embed urls
+    .replace(/<https?:\/\/[^\s>]+>/g, '')
+
+    // custom emoji -> :name:
+    .replace(/<a?:([a-zA-Z0-9_]+):\d+>/g, ':$1:')
     .replace(/<#(\d+)>/g, (_match, channelId) => {
       const resolvedChannel = parseOptions?.resolveChannel?.(channelId);
       return resolvedChannel ? resolvedChannel.label : '';
     })
-    .replace(/<@&?!?(\d+)>/g, '')                 // role/user mentions
-    .replace(/\|\|([^|]+)\|\|/g, '$1')            // spoilers
-    .replace(/__([^_]+)__/g, '$1')                // underline
-    .replace(/\*\*([^*]+)\*\*/g, '$1')            // bold
-    .replace(/~~([^~]+)~~/g, '$1')                // strikethrough
-    .replace(/\*([^*\n]+)\*/g, '$1')              // italic *
-    .replace(/_([^_\n]+)_/g, '$1')                // italic _
-    .replace(/\s+/g, ' ')                         // collapse whitespace
+
+    // role/user mentions
+    .replace(/<@&?!?(\d+)>/g, '')
+
+    // spoilers
+    .replace(/\|\|([^|]+)\|\|/g, '$1')
+
+    // underline
+    .replace(/__([^_]+)__/g, '$1')
+
+    // bold
+    .replace(/\*\*([^*]+)\*\*/g, '$1')
+
+    // strikethrough
+    .replace(/~~([^~]+)~~/g, '$1')
+
+    // italic *
+    .replace(/\*([^*\n]+)\*/g, '$1')
+
+    // italic _
+    .replace(/_([^_\n]+)_/g, '$1')
+
+    // collapse whitespace
+    .replace(/\s+/g, ' ')
     .trim();
 }
