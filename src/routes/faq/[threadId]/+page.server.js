@@ -6,7 +6,8 @@ import { fnGetFaqIndex, fnGetFaqById, fnMakeMentionResolver } from '$lib/server/
 const VIDEO_EXTENSIONS = ['.mp4', '.webm', '.mov', '.m4v'];
 const IMAGE_EXTENSIONS = ['.png', '.jpg', '.jpeg', '.gif', '.webp', '.avif'];
 
-function fnClassifyAttachment(attachmentUrl) {                                                // called from load() below (one call per attachment per message)
+// called from load() below (one call per attachment per message)
+function fnClassifyAttachment(attachmentUrl) {
   if (typeof attachmentUrl !== 'string') return { kind: 'other', url: attachmentUrl };
   const lowerUrl = attachmentUrl.toLowerCase().split('?')[0];
   const fileExt = extname(lowerUrl);

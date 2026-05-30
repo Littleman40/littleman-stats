@@ -1,57 +1,101 @@
-import { json } from '@sveltejs/kit';                                               // sveltes helper for returning json responses
-import { fnGetCached, fnSetCached } from '$lib/server/userSearchCache.js';          // our cache helpers
+// sveltes helper for returning json responses
+import { json } from '@sveltejs/kit';
 
-const LEADERBOARD_API_URL = 'https://leaderboard-06nkmjf5r0.nohesi.gg';             // no hesi leaderboard api base
-const PROFILE_API_URL = 'https://api.nohesi.gg';                                    // no hesi profile api base, used to resolve no hesi username to steam id
+// our cache helpers
+import { fnGetCached, fnSetCached } from '$lib/server/userSearchCache.js';
 
-async function fnResolveUsernameToSteamId(usernameQuery, abortSignal) {             // called from GET() when type === 'username'; abortSignal lets the upstream fetch cancel if the client disconnects
-  const profileResponse = await fetch(`${PROFILE_API_URL}/functions/user-profile/${encodeURIComponent(usernameQuery)}`, { signal: abortSignal }); // fetches user profile from the api
-  if (!profileResponse.ok) return { error: 'No No Hesi account found for that username.' };   // error handling
+// no hesi leaderboard api base
+const LEADERBOARD_API_URL = 'https://leaderboard-06nkmjf5r0.nohesi.gg';
 
-  const profileBody = await profileResponse.json();                                 // parse profile api response
-  const connectedProviders = profileBody?.data?.connected_providers ?? [];          // extract any liked accounts
-  const steamProvider = connectedProviders.find((provider) => provider.provider === 'steam'); // find steam connection inside of linked accounts
+// no hesi profile api base, used to resolve no hesi username to steam id
+const PROFILE_API_URL = 'https://api.nohesi.gg';
 
-  if (!steamProvider?.id) return { error: 'This user has no linked Steam account.' }; // error handling
-  return { steamId: steamProvider.id };                                             // returns steam id
+// called from GET() when type === 'username'; abortSignal lets the upstream fetch cancel if the client disconnects
+async function fnResolveUsernameToSteamId(usernameQuery, abortSignal) {
+  // fetches user profile from the api
+  const profileResponse = await fetch(`${PROFILE_API_URL}/functions/user-profile/${encodeURIComponent(usernameQuery)}`, { signal: abortSignal });
+
+  // error handling
+  if (!profileResponse.ok) return { error: 'No No Hesi account found for that username.' };
+
+  // parse profile api response
+  const profileBody = await profileResponse.json();
+
+  // extract any liked accounts
+  const connectedProviders = profileBody?.data?.connected_providers ?? [];
+
+  // find steam connection inside of linked accounts
+  const steamProvider = connectedProviders.find((provider) => provider.provider === 'steam');
+
+  // error handling
+  if (!steamProvider?.id) return { error: 'This user has no linked Steam account.' };
+
+  // returns steam id
+  return { steamId: steamProvider.id };
 }
 
-export async function GET({ url, request }) {                                       // called by SvelteKit on GET /api/user-search/pb, fetched from fnHandleUserSearch() in src/routes/user-search/+page.svelte
-  const rawQuery = url.searchParams.get('query')?.trim();                           // extract the search query
-  const queryType = url.searchParams.get('type');                                   // extract the query type - username or steam id
+// called by SvelteKit on GET /api/user-search/pb, fetched from fnHandleUserSearch() in src/routes/user-search/+page.svelte
+export async function GET({ url, request }) {
+  // extract the search query
+  const rawQuery = url.searchParams.get('query')?.trim();
 
-  if (!rawQuery) return json({ error: 'Missing query parameter.' }, { status: 400 }); // reject if its missing
+  // extract the query type - username or steam id
+  const queryType = url.searchParams.get('type');
 
-  let resolvedSteamId;                                                              // stores steam id
+  // reject if its missing
+  if (!rawQuery) return json({ error: 'Missing query parameter.' }, { status: 400 });
+
+  // stores steam id
+  let resolvedSteamId;
 
   try {
-    if (queryType === 'username') {                                                 // if user searched by username, we resolve that first
-      const usernameCacheKey = `username:${rawQuery.toLowerCase()}`;                // cache key for username -> steam id
-      const cachedUsername = fnGetCached(usernameCacheKey);                         // checks if its already been cached
-      if (cachedUsername) {                                                         // uses cached username if its already been found
+    // if user searched by username, we resolve that first
+    if (queryType === 'username') {
+      // cache key for username -> steam id
+      const usernameCacheKey = `username:${rawQuery.toLowerCase()}`;
+
+      // checks if its already been cached
+      const cachedUsername = fnGetCached(usernameCacheKey);
+
+      // uses cached username if its already been found
+      if (cachedUsername) {
         resolvedSteamId = cachedUsername.steamId;
-      } else {                                                                      // calls no hesi's api to find steam id
-        const resolveResult = await fnResolveUsernameToSteamId(rawQuery, request.signal); 
-        if (resolveResult.error) return json({ error: resolveResult.error }, { status: 404 });  // error handling
+
+      // calls no hesi's api to find steam id
+      } else {
+        const resolveResult = await fnResolveUsernameToSteamId(rawQuery, request.signal);
+
+        // error handling
+        if (resolveResult.error) return json({ error: resolveResult.error }, { status: 404 });
         resolvedSteamId = resolveResult.steamId;
         fnSetCached(usernameCacheKey, { steamId: resolvedSteamId });
       }
     } else {
-      resolvedSteamId = rawQuery;                                                     // if searched by steam id, just use it
+      // if searched by steam id, just use it
+      resolvedSteamId = rawQuery;
     }
 
-    const pbCacheKey = `pb:${resolvedSteamId}`;                                       // cache key for pb lookup
-    const cachedPb = fnGetCached(pbCacheKey);                                         // checks if pb result is already cached
-    if (cachedPb) return json(cachedPb);                                              // returns cached info if its there
+    // cache key for pb lookup
+    const pbCacheKey = `pb:${resolvedSteamId}`;
 
-    const pbResponse = await fetch(`${LEADERBOARD_API_URL}/scores/${resolvedSteamId}`, { signal: request.signal }); // finds personal best
-    if (!pbResponse.ok) return json({ error: 'No player found with that Steam ID.' }, { status: 404 }); // error handling
+    // checks if pb result is already cached
+    const cachedPb = fnGetCached(pbCacheKey);
+
+    // returns cached info if its there
+    if (cachedPb) return json(cachedPb);
+
+    // finds personal best
+    const pbResponse = await fetch(`${LEADERBOARD_API_URL}/scores/${resolvedSteamId}`, { signal: request.signal });
+
+    // error handling
+    if (!pbResponse.ok) return json({ error: 'No player found with that Steam ID.' }, { status: 404 });
 
     const pbData = await pbResponse.json();
-    if (!pbData || (!pbData.score && pbData.score !== 0)) {                         // runs if no hesi returned an object with no score, treat as no PB recorded
+
+    // runs if no hesi returned an object with no score, treat as no PB recorded
+    if (!pbData || (!pbData.score && pbData.score !== 0)) {
       return json({ error: 'This player has no personal best recorded yet.' }, { status: 404 });
     }
-
 
     // player run data
     const rankingData = pbData.ranking;
@@ -73,15 +117,20 @@ export async function GET({ url, request }) {                                   
       tier_name: rankingData?.tier_name,
       rank_position: rankingData?.position,
       mode: pbData.mode,
-      team_names: pbData.mode === 'team' ? (teamData ?? []).map((teammate) => teammate.nohesi_name ?? '') : [],
-      total_runs: 0                                                                 // filled in by the totals endpoint after this returns
+      team_names: pbData.mode === 'team' ? (teamData ?? []).map((teammate) => teammate.nohesi_name ?? '') : []
     };
 
-    const responseResult = { steamId: resolvedSteamId, profile };                   // final result structure
-    fnSetCached(pbCacheKey, responseResult);                                        // stores pb in cache
-    return json(responseResult);                                                    // returns response to client
+    // final result structure
+    const responseResult = { steamId: resolvedSteamId, profile };
+
+    // stores pb in cache
+    fnSetCached(pbCacheKey, responseResult);
+
+    // returns response to client
+    return json(responseResult);
   } catch (err) {
-    if (err?.name === 'AbortError') return new Response(null, { status: 499 });     // client disconnected so abort
+    // client disconnected so abort
+    if (err?.name === 'AbortError') return new Response(null, { status: 499 });
     throw err;
   }
 }

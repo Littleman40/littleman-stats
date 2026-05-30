@@ -3,7 +3,8 @@ import { fnGetFaqIndex, fnGetAllFaqs, fnMakeMentionResolver } from '$lib/server/
 
 const IMAGE_EXTENSIONS = ['.png', '.jpg', '.jpeg', '.gif', '.webp', '.avif'];
 
-function fnPickPreviewImage(faqMessages) { // called from load() below (one call per FAQ)
+// called from load() below (one call per FAQ)
+function fnPickPreviewImage(faqMessages) {
   if (!Array.isArray(faqMessages) || faqMessages.length === 0) return null;
   const firstMessage = faqMessages[0];
   if (!firstMessage?.attachments?.length) return null;
@@ -15,12 +16,14 @@ function fnPickPreviewImage(faqMessages) { // called from load() below (one call
   return null;
 }
 
-function fnBuildPreviewText(faqMessages, fnResolveChannel) { // called from load() below (one call per FAQ)
+// called from load() below (one call per FAQ)
+function fnBuildPreviewText(faqMessages, fnResolveChannel) {
   if (!Array.isArray(faqMessages) || faqMessages.length === 0) return '';
   return fnStripDiscordMarkdown(faqMessages[0]?.content || '', { resolveChannel: fnResolveChannel });
 }
 
-export async function load() { // called by SvelteKit when /faq is requested - renders src/routes/faq/+page.svelte
+// called by SvelteKit when /faq is requested - renders src/routes/faq/+page.svelte
+export async function load() {
   const { titleByFaqId } = await fnGetFaqIndex();
   const fnResolveChannel = fnMakeMentionResolver(titleByFaqId);
 

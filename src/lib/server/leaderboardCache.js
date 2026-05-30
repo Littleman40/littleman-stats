@@ -1,18 +1,34 @@
-const LEADERBOARD_API_URL = 'https://leaderboard-06nkmjf5r0.nohesi.gg/scores';    // upstream api endpoint
-const API_PAGE_SIZE = 100;                                                        // records per upstream api call, as per its pagination
-const CACHE_TTL_MS = 5 * 60 * 1000;                                               // 5 minutes - how long a cached filter is reused before refetching
-const RESPONSE_PAGE_SIZE = 20;                                                    // records returned to the client per response page
-const POLL_INTERVAL_MS = 150;                                                     // how long fnWaitForPage sleeps between record-count checks
+// upstream api endpoint
+const LEADERBOARD_API_URL = 'https://leaderboard-06nkmjf5r0.nohesi.gg/scores';
+
+// records per upstream api call, as per its pagination
+const API_PAGE_SIZE = 100;
+
+// 5 minutes - how long a cached filter is reused before refetching
+const CACHE_TTL_MS = 5 * 60 * 1000;
+
+// records returned to the client per response page (imported by src/routes/api/leaderboard/+server.js so both stay in sync)
+export const RESPONSE_PAGE_SIZE = 20;
+
+// how long fnWaitForPage sleeps between record-count checks
+const POLL_INTERVAL_MS = 150;
 
 const cacheByFilter = new Map();
 
-export function fnApplyFilter(rawRecord, filterName) {
+function fnApplyFilter(rawRecord, filterName) {
   switch (filterName) {
-    case 'crew': return rawRecord.mode === 'team';                                // 'crew' = team mode
-    case 'solo': return rawRecord.mode === 'solo';                                // 'solo' = solo mode
-    case 'realistic':                                                             // 'realistic' = solo runs in a car whose model name contains 'realistic'
+    // 'crew' = team mode
+    case 'crew': return rawRecord.mode === 'team';
+
+    // 'solo' = solo mode
+    case 'solo': return rawRecord.mode === 'solo';
+
+    // 'realistic' = solo runs in a car whose model name contains 'realistic'
+    case 'realistic':
       return rawRecord.mode === 'solo' && rawRecord.car_model?.toLowerCase().includes('realistic');
-    default: return true;                                                         // 'all' / unknown - keep everything
+
+    // 'all' / unknown - keep everything
+    default: return true;
   }
 }
 
@@ -30,7 +46,9 @@ function fnMapRecord(rawRecord) {
     camera_type: rawRecord.camera_type,
     rank_position: rawRecord.ranking?.position,
     tier_name: rawRecord.ranking?.tier_name,
-    team_names: rawRecord.mode === 'team'                                         // for team runs collect every teammate's name
+
+    // for team runs collect every teammate's name
+    team_names: rawRecord.mode === 'team'
       ? (rawRecord.team ?? []).map((teammate) => teammate.nohesi_name)
       : []
   };
@@ -47,14 +65,18 @@ async function fnFetchAllInBackground(filterName) {
   let pageOffset = 0;
 
   try {
-    while (true) {                                                                                  // loop every upstream page until none remain
+    // loop every upstream page until none remain
+    while (true) {
       const upstreamResponse = await fetch(`${LEADERBOARD_API_URL}?offset=${pageOffset}&limit=${API_PAGE_SIZE}`);
       if (!upstreamResponse.ok) throw new Error(`Leaderboard API ${upstreamResponse.status}`);
       const responseBody = await upstreamResponse.json();
 
-      if (cacheEntry.totalFilteredCount === null) {                                                  // capture the leaderboard-wide run count from the first upstream page (same for every filter)
+      // capture the leaderboard-wide run count from the first upstream page (same for every filter)
+      if (cacheEntry.totalFilteredCount === null) {
         cacheEntry.totalFilteredCount = responseBody.metadata?.total_filtered_count ?? 0;
-        if (cacheEntry._resolveTotalKnown) {                                                         // let the request handler proceed to its page-range check as soon as we know the total
+
+        // let the request handler proceed to its page-range check as soon as we know the total
+        if (cacheEntry._resolveTotalKnown) {
           cacheEntry._resolveTotalKnown();
           cacheEntry._resolveTotalKnown = null;
         }
@@ -67,7 +89,8 @@ async function fnFetchAllInBackground(filterName) {
         }
       }
 
-      if (cacheEntry._resolveFirstPageReady && cacheEntry.records.length >= RESPONSE_PAGE_SIZE) {   // once we have a full first response page, let any waiter on readyPromise proceed
+      // once we have a full first response page, let any waiter on readyPromise proceed
+      if (cacheEntry._resolveFirstPageReady && cacheEntry.records.length >= RESPONSE_PAGE_SIZE) {
         cacheEntry._resolveFirstPageReady();
         cacheEntry._resolveFirstPageReady = null;
       }
@@ -82,18 +105,23 @@ async function fnFetchAllInBackground(filterName) {
   } finally {
     cacheEntry.complete = true;
     cacheEntry.fetching = false;
-    if (cacheEntry._resolveFirstPageReady) {                                                        // resolve even if we never hit a full page (rare empty/short result)
+
+    // resolve even if we never hit a full page (rare empty/short result)
+    if (cacheEntry._resolveFirstPageReady) {
       cacheEntry._resolveFirstPageReady();
       cacheEntry._resolveFirstPageReady = null;
     }
-    if (cacheEntry._resolveTotalKnown) {                                                            // release page-range waiters even if the very first fetch failed before setting the total
+
+    // release page-range waiters even if the very first fetch failed before setting the total
+    if (cacheEntry._resolveTotalKnown) {
       cacheEntry._resolveTotalKnown();
       cacheEntry._resolveTotalKnown = null;
     }
   }
 }
 
-export function fnGetOrCreateCacheEntry(filterName) {                                               // called from GET() in src/routes/api/leaderboard/+server.js
+// called from GET() in src/routes/api/leaderboard/+server.js
+export function fnGetOrCreateCacheEntry(filterName) {
   const existingEntry = cacheByFilter.get(filterName);
   if (existingEntry && !fnIsCacheEntryStale(existingEntry)) {
     return existingEntry;
@@ -102,15 +130,18 @@ export function fnGetOrCreateCacheEntry(filterName) {                           
   let resolveFirstPageReady;
   const firstPageReadyPromise = new Promise((resolve) => { resolveFirstPageReady = resolve; });
 
+  // resolves once the first upstream page reveals total_filtered_count
   let resolveTotalKnown;
-  const totalKnownPromise = new Promise((resolve) => { resolveTotalKnown = resolve; });             // resolves once the first upstream page reveals total_filtered_count
+  const totalKnownPromise = new Promise((resolve) => { resolveTotalKnown = resolve; });
 
   const freshCacheEntry = {
     records: [],
     complete: false,
     fetching: true,
     timestamp: Date.now(),
-    totalFilteredCount: null,                                                                       // leaderboard-wide run count, populated by the first upstream fetch
+
+    // leaderboard-wide run count, populated by the first upstream fetch
+    totalFilteredCount: null,
     readyPromise: firstPageReadyPromise,
     totalKnownPromise,
     _resolveFirstPageReady: resolveFirstPageReady,
@@ -119,17 +150,20 @@ export function fnGetOrCreateCacheEntry(filterName) {                           
 
   cacheByFilter.set(filterName, freshCacheEntry);
 
-  fnFetchAllInBackground(filterName);                                                               // kick off the background scrape; caller can await readyPromise
+  // kick off the background scrape; caller can await readyPromise
+  fnFetchAllInBackground(filterName);
 
   return freshCacheEntry;
 }
 
-export async function fnWaitForPage(cacheEntry, pageNumber) {                                       // called from GET() in src/routes/api/leaderboard/+server.js
+// called from GET() in src/routes/api/leaderboard/+server.js
+export async function fnWaitForPage(cacheEntry, pageNumber) {
   const lastRecordIndex = pageNumber * RESPONSE_PAGE_SIZE;
 
   if (pageNumber === 1) {
     await cacheEntry.readyPromise;
-  } else {                                                                                          // pages beyond 1 need enough records buffered; poll until ready or scrape completes
+  } else {
+    // pages beyond 1 need enough records buffered; poll until ready or scrape completes
     while (cacheEntry.records.length < lastRecordIndex && !cacheEntry.complete) {
       await new Promise((resolve) => setTimeout(resolve, POLL_INTERVAL_MS));
     }
