@@ -65,7 +65,7 @@
 <style>
   .pagination-box {
     margin-top: 1.5rem;
-    padding: 0.75rem 1rem;
+    padding: 0.3rem 0.3rem;
     background: var(--color-card-raised);
     border: 1px solid rgb(44, 44, 44);
     border-radius: 1rem;
@@ -83,7 +83,7 @@
     padding: 0.5rem 1rem;
     background: var(--color-card-raised);
     border: 1px solid rgb(44, 44, 44);
-    border-radius: var(--radius-btn);
+    border-radius: 0.7rem;
     color: var(--color-text);
     font-family: inherit;
     font-size: 0.875rem;
