@@ -28,12 +28,12 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          git add static/stats.json
+          git add static/stats.json static/ranks.json
 
           if git diff --cached --quiet; then
             echo "No changes"
             exit 0
           fi
 
-          git commit -m "update stats"
+          git commit -m "update stats and ranks"
           git push
