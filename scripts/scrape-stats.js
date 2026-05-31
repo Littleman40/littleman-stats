@@ -27,6 +27,32 @@ const TEST_MAX_PAGES = null;
 // saves the json file to where the process was run, which is what process.cwd does
 const OUTPUT_PATH = resolve(process.cwd(), 'static', 'stats.json');
 
+// the rank breakdown is written to the same static dir so the frontend can fetch it directly, just like stats.json
+const RANKS_OUTPUT_PATH = resolve(process.cwd(), 'static', 'ranks.json');
+
+// every rank tier from best to worst - used to seed and order the rank breakdown so even an empty tier still shows up in the right spot
+const RANK_TIER_ORDER = [
+  { rank: 'Certified',  tier: 0 },
+  { rank: 'Sanctioned', tier: 3 },
+  { rank: 'Sanctioned', tier: 2 },
+  { rank: 'Sanctioned', tier: 1 },
+  { rank: 'Ghost',      tier: 3 },
+  { rank: 'Ghost',      tier: 2 },
+  { rank: 'Ghost',      tier: 1 },
+  { rank: 'Licensed',   tier: 3 },
+  { rank: 'Licensed',   tier: 2 },
+  { rank: 'Licensed',   tier: 1 },
+  { rank: 'Marked',     tier: 3 },
+  { rank: 'Marked',     tier: 2 },
+  { rank: 'Marked',     tier: 1 },
+  { rank: 'Noticed',    tier: 3 },
+  { rank: 'Noticed',    tier: 2 },
+  { rank: 'Noticed',    tier: 1 },
+  { rank: 'Listed',     tier: 3 },
+  { rank: 'Listed',     tier: 2 },
+  { rank: 'Listed',     tier: 1 }
+];
+
 // all the different buckets the leaderboard records can belong to
 const FILTER_NAMES = ['all', 'crew', 'solo', 'realistic'];
 
@@ -128,6 +154,70 @@ function fnExtractBaseRank(rawRecord) {
   const baseRank = parts[0];
 
   return baseRank;
+}
+
+// builds the combined tier label used as the bucket key - certified has no number suffix, every other tier does
+function fnBuildTierName(rankName, tier) {
+  if (tier === 0) {
+    return rankName;
+  }
+  return rankName + ' ' + tier;
+}
+
+// creates the empty rank breakdown - one bucket per tier, pre-seeded in best-to-worst order
+function fnCreateEmptyRankTotals() {
+  const rankTotals = {};
+  for (const entry of RANK_TIER_ORDER) {
+    const tierName = fnBuildTierName(entry.rank, entry.tier);
+    rankTotals[tierName] = {
+      rank: entry.rank,
+      tier: entry.tier,
+      player_count: 0,
+      min_score: null,
+      lowest_position: null
+    };
+  }
+  return rankTotals;
+}
+
+// folds one record into the rank breakdown - counts players in the tier, and tracks the lowest score and the worst (highest) position seen
+function fnBumpRankTotals(rankTotals, rawRecord) {
+  // everything we need lives in the ranking block
+  const ranking = rawRecord.ranking;
+  if (ranking === undefined || ranking === null) {
+    return;
+  }
+
+  // tier_name is the key we bucket by, e.g. "Sanctioned 2"
+  const tierName = ranking.tier_name;
+  if (typeof tierName !== 'string' || tierName.length === 0) {
+    return;
+  }
+
+  // ignore anything that isn't one of the known tiers we seeded
+  const bucket = rankTotals[tierName];
+  if (bucket === undefined) {
+    return;
+  }
+
+  // one more player in this tier
+  bucket.player_count += 1;
+
+  // lowest score in the tier becomes the rank's minimum score
+  const score = Number(rawRecord.score);
+  if (Number.isFinite(score) && score > 0) {
+    if (bucket.min_score === null || score < bucket.min_score) {
+      bucket.min_score = score;
+    }
+  }
+
+  // worst (largest) position in the tier is the rank's lowest position
+  const position = Number(ranking.position);
+  if (Number.isFinite(position) && position > 0) {
+    if (bucket.lowest_position === null || position > bucket.lowest_position) {
+      bucket.lowest_position = position;
+    }
+  }
 }
 
 // the function that creates the stats for each record
@@ -306,6 +396,9 @@ async function fnRunScrape() {
     aggregationsByFilter[filterName] = fnCreateEmptyAggregations(filterName);
   }
 
+  // rank breakdown is global (not per-filter) so it gets its own accumulator
+  const rankTotals = fnCreateEmptyRankTotals();
+
   // raw scores collected during the scrape - used after the loop to compute score_histogram for the solo filter
   const soloScores = [];
 
@@ -366,6 +459,9 @@ async function fnRunScrape() {
       for (const filterName of matchingFilters) {
         fnBumpAggregations(aggregationsByFilter[filterName], rawRecord);
       }
+
+      // fold the record into the global rank breakdown
+      fnBumpRankTotals(rankTotals, rawRecord);
 
       // collect solo scores for the post-loop histogram - only valid positive numbers
       if (rawRecord.mode === 'solo') {
@@ -463,6 +559,31 @@ async function fnRunScrape() {
 
   // write the json
   writeFileSync(OUTPUT_PATH, JSON.stringify(output, null, 2));
+
+  // build the rank breakdown output in canonical best-to-worst order
+  const rankThresholds = [];
+  for (const entry of RANK_TIER_ORDER) {
+    const tierName = fnBuildTierName(entry.rank, entry.tier);
+    const bucket = rankTotals[tierName];
+    rankThresholds.push({
+      rank: bucket.rank,
+      tier: bucket.tier,
+      tier_name: tierName,
+      min_score: bucket.min_score,
+      lowest_position: bucket.lowest_position,
+      player_count: bucket.player_count
+    });
+  }
+
+  const ranksOutput = {
+    generated_at: new Date().toISOString(),
+    total_players: upstreamTotal,
+    thresholds: rankThresholds
+  };
+
+  // write the rank breakdown alongside stats.json
+  writeFileSync(RANKS_OUTPUT_PATH, JSON.stringify(ranksOutput, null, 2));
+  console.log('[scrape] wrote ' + RANKS_OUTPUT_PATH);
 
   // total time taken
   const elapsedMs = Date.now() - scrapeStartMs;

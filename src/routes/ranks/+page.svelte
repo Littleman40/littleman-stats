@@ -30,16 +30,11 @@
 
   let refreshTimer;
 
-  const processedThresholds = $derived(                                                 // adds information to the api response
-    thresholds.map((threshold, i) => {
-      const prevLowestPosition = i === 0 ? 0 : thresholds[i - 1].lowest_position;
-      const playerCount = threshold.lowest_position - prevLowestPosition;               // players in this rank = gap between this rank's lowest position and the previous rank's
-      const iconSlug = threshold.tier === 0                                             // tier 0 means no number suffix, just for certi, otherwise append the tier number
-        ? threshold.rank.toLowerCase().replace(/\s+/g, '_')                             // spaces turn into underscores to match the cdn filename format
-        : `${threshold.rank.toLowerCase().replace(/\s+/g, '_')}_${threshold.tier}`;
+  const processedThresholds = $derived(                                                 // adds icon + display name to the scraped rank breakdown
+    thresholds.map((threshold) => {
+      const iconSlug = threshold.tier_name.toLowerCase().replace(/\s+/g, '_');          // "Sanctioned 2" -> "sanctioned_2", matching the cdn filename format
       const iconUrl = `https://cdn.nohesi.gg/images/rankicons/${iconSlug}.svg`;
-      const displayName = threshold.tier === 0 ? threshold.rank : `${threshold.rank} ${threshold.tier}`;
-      return { ...threshold, playerCount, iconUrl, displayName };
+      return { ...threshold, iconUrl, displayName: threshold.tier_name };
     })
   );
 
@@ -47,12 +42,12 @@
     isLoading = true;
     loadError = null;
     try {
-      const response = await fetch('/api/ranks');
-      if (!response.ok) throw new Error('API error');
+      const response = await fetch('/ranks.json');
+      if (!response.ok) throw new Error('Rank file missing (HTTP ' + response.status + ')');
       const data = await response.json();
       if (data.error) throw new Error(data.error);
       thresholds = data.thresholds ?? [];
-      lastUpdated = data.last_updated ? new Date(data.last_updated) : null;
+      lastUpdated = data.generated_at ? new Date(data.generated_at) : null;
     } catch {
       loadError = 'Failed to load rank data. Please try again.';
     } finally {
@@ -138,9 +133,9 @@
                   <span class="rank-name">{t.displayName}</span>
                 </div>
               </td>
-              <td class="cell-mono">{fnFormatNumber(t.min_score)}</td>
-              <td class="cell-mono">{fnFormatNumber(t.lowest_position)}</td>
-              <td class="cell-mono">{fnFormatNumber(t.playerCount)}</td>
+              <td class="cell-mono">{t.min_score != null ? fnFormatNumber(t.min_score) : '-'}</td>
+              <td class="cell-mono">{t.lowest_position != null ? fnFormatNumber(t.lowest_position) : '-'}</td>
+              <td class="cell-mono">{fnFormatNumber(t.player_count)}</td>
               <td class="cell-muted">{PERCENTILES[t.displayName] || '-'}</td>
             </tr>
           {/each}
