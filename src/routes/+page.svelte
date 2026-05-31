@@ -51,7 +51,7 @@
       </span>
     </a>
   </div>
-  <div class="scroll-hint">Scroll ↓</div>
+  <div class="scroll-hint"><span class="scroll-hint-icon"></span></div>
 </section>
 
 <section class="features page-wrapper">
@@ -163,13 +163,20 @@
 
   .scroll-hint {
     position: absolute;
-    bottom: 2rem;
+    bottom: 1rem;
     left: 50%;
     transform: translateX(-50%);
-    color: var(--color-muted);
-    font-size: 0.8rem;
-    letter-spacing: 0.05em;
     z-index: 2;
+  }
+
+  .scroll-hint-icon {
+    display: block;
+    width: 1.2rem;
+    height: 1.2rem;
+    background-color: var(--color-muted);
+    -webkit-mask: url('/img/arrowdown.svg') no-repeat center / contain;
+    mask: url('/img/arrowdown.svg') no-repeat center / contain;
+    display: inline-block;
   }
 
   .features {
