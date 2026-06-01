@@ -1,6 +1,11 @@
 <script>
   let { data } = $props();                      // server-loaded data passed in from +page.server.js
   const currentFaq = $derived(data.faq);        // reference to the FAQ thread being displayed
+
+  let lightboxSrc = $state(null);
+
+  function openLightbox(src) { lightboxSrc = src; }
+  function closeLightbox() { lightboxSrc = null; }
 </script>
 
 <svelte:head>
@@ -29,7 +34,12 @@
           <div class="attachments">
             {#each faqMessage.attachments as attachment}
               {#if attachment.kind === 'image'}
-                <img class="att-image" src={attachment.url} alt="" loading="lazy" />
+                <div class="image-wrapper">
+                  <img class="att-image" src={attachment.url} alt="" loading="lazy" />
+                  <button class="fullscreen-btn" onclick={() => openLightbox(attachment.url)} aria-label="View full size">
+                    <img src="/img/enterFullScreen.svg" alt="" aria-hidden="true" />
+                  </button>
+                </div>
               {:else if attachment.kind === 'video'}
                 <!-- svelte-ignore a11y_media_has_caption -->
                 <video class="att-video" src={attachment.url} controls preload="metadata"></video>
@@ -46,6 +56,17 @@
     </article>
   </div>
 </div>
+
+{#if lightboxSrc}
+  <div class="lightbox-overlay" role="button" tabindex="0" onclick={closeLightbox} onkeydown={(e) => closeLightbox()}>
+    <div class="lightbox-inner" role="presentation" onclick={(e) => e.stopPropagation()}>
+      <img class="lightbox-img" src={lightboxSrc} alt="" />
+      <button class="fullscreen-btn lightbox-close" onclick={closeLightbox} aria-label="Close full size">
+        <img src="/img/exitFullScreen.svg" alt="" aria-hidden="true" />
+      </button>
+    </div>
+  </div>
+{/if}
 
 <style>
   .page-strip {
@@ -215,11 +236,87 @@
     margin-top: 1rem;
   }
 
-  .att-image,
+  .image-wrapper { 
+    --img-max-height: 500px; 
+    --img-max-width: 1000px; 
+  }
+
+  .image-wrapper {
+    position: relative;
+    display: inline-block;
+    align-self: flex-start;
+  }
+
+  .att-image {
+    display: block;
+    max-height: var(--img-max-height);
+    max-width: var(--img-max-width);
+    width: auto;
+    height: auto;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+
   .att-video {
     max-width: 100%;
     border-radius: 6px;
     display: block;
+  }
+
+  .fullscreen-btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--color-muted);
+    border: none;
+    padding: 5px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .fullscreen-btn:hover { 
+    background: var(--color-muted); 
+  }
+
+  .fullscreen-btn img {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  .lightbox-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.82);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+  }
+
+  .lightbox-inner {
+    position: relative;
+    max-width: 90vw;
+    max-height: 90vh;
+  }
+
+  .lightbox-img {
+    display: block;
+    max-width: 90vw;
+    max-height: 90vh;
+    border-radius: 8px;
+    object-fit: contain;
+  }
+
+  .lightbox-close {
+    width: 32px;
+    height: 32px;
+    padding: 6px;
   }
 
   .att-video {
