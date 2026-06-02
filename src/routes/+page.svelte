@@ -171,8 +171,8 @@
 
   .scroll-hint-icon {
     display: block;
-    width: 1.2rem;
-    height: 1.2rem;
+    width: 2rem;
+    height: 2rem;
     background-color: var(--color-muted);
     -webkit-mask: url('/img/arrowdown.svg') no-repeat center / contain;
     mask: url('/img/arrowdown.svg') no-repeat center / contain;
