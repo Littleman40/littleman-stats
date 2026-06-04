@@ -17,6 +17,7 @@ const rateLimitByIp = new Map();
 // last time we purged expired IP entries
 let lastSweep = Date.now();
 
+
 // drop stale entries so the map cannot grow unbounded on a long-lived instance
 function fnSweepExpired(now) {
   if (now - lastSweep < RATE_LIMIT_WINDOW_MS) return;
@@ -27,6 +28,7 @@ function fnSweepExpired(now) {
 
   lastSweep = now;
 }
+
 
 // fixed-window counter: returns true once an IP exceeds RATE_LIMIT_MAX in the current window
 function fnIsRateLimited(clientIp) {
@@ -43,6 +45,7 @@ function fnIsRateLimited(clientIp) {
   entry.count += 1;
   return entry.count > RATE_LIMIT_MAX;
 }
+
 
 // called by SvelteKit on every incoming request - name is required by the framework
 export async function handle({ event, resolve }) {

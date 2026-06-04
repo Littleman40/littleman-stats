@@ -1,14 +1,16 @@
 <script>
-  import { goto } from '$app/navigation';                                       // for updating the URL without a full page refresh
-  import { page } from '$app/state';                                            // reactive page object that works natively with svelte 5 runes ($app/stores subscriptions don't track in $effect)
-  import FilterBar from '$lib/components/FilterBar.svelte';                     // the filter + view selector bar above the table
-  import LeaderboardTable from '$lib/components/LeaderboardTable.svelte';       // the table of leaderboard entries
-  import PaginationControls from '$lib/components/PaginationControls.svelte';   // prev/next/jump page controls
-  import StatisticsView from '$lib/components/StatisticsView.svelte';           // aggregated charts shown when activeView === 'statistics'
+  // for updating the URL without a full page refresh
+  import { goto } from '$app/navigation';
+  // provides access to current url
+  import { page } from '$app/state';
+  import FilterBar from '$lib/components/FilterBar.svelte';
+  import LeaderboardTable from '$lib/components/LeaderboardTable.svelte';
+  import PaginationControls from '$lib/components/PaginationControls.svelte';
+  import StatisticsView from '$lib/components/StatisticsView.svelte';
 
   let activeFilter = $state('all');
   let currentPageNumber = $state(1);
-  let activeView = $state('leaderboard');                                       // 'leaderboard' = paginated table view, 'statistics' = aggregated charts
+  let activeView = $state('leaderboard');
 
   let leaderboardRecords = $state([]);
   let startRank = $state(1);
@@ -17,57 +19,93 @@
   let isLoading = $state(false);
   let loadError = $state(null);
 
-  let stats = $state(null);                                                     // contents of /stats.json once fetched (null until first stats view visit)
+  let stats = $state(null);
   let statsLoading = $state(false);
   let statsError = $state(null);
 
-  let latestRequestId = 0;                                                      // increment each time we start a fetch, to order responses
+  // increment each time we start a fetch, to order responses
+  let latestRequestId = 0;
 
-  $effect(() => {                                                               // re-runs whenever the URL changes - reads filter + page + view from the URL and triggers the right fetch
+  // re-runs whenever the URL changes - reads filter + page + view from the URL and triggers the right fetch
+  $effect(() => {
+    // reads current url
     const urlParams = page.url.searchParams;
+
+    // reads filter, and defaults to all 
     const filterFromUrl = urlParams.get('filter') ?? 'all';
+
+    // reads page number and defaults to 1
     const pageFromUrl = parseInt(urlParams.get('page') ?? '1', 10);
+
+    // reads view and defaults to leaderboard
     const viewFromUrl = urlParams.get('view') ?? 'leaderboard';
 
     activeFilter = filterFromUrl;
     currentPageNumber = pageFromUrl;
     activeView = viewFromUrl;
 
-    if (viewFromUrl === 'statistics') {                                         // statistics view reads from the static stats.json snapshot, not the live api
+    // statistics view reads from the static stats.json snapshot, not the live api
+    if (viewFromUrl === 'statistics') {
       if (stats === null && !statsLoading) fnLoadStats();
     } else {
+
+      // loads leaderboard when not in stats mode
       fnLoadLeaderboardData(filterFromUrl, pageFromUrl);
     }
   });
 
-  async function fnLoadLeaderboardData(filterToLoad, pageNumberToLoad) {        // called from the URL-watch $effect above and the Retry button in the template
+
+
+  // fetches the leaderboard data - called from the URL-watch $effect above and the Retry button in the template
+  async function fnLoadLeaderboardData(filterToLoad, pageNumberToLoad) {
+    
+    // marks this request as the newest
     const thisRequestId = ++latestRequestId;
     isLoading = true;
     loadError = null;
     leaderboardRecords = [];
 
     try {
+
+      // calls api
       const apiResponse = await fetch(`/api/leaderboard?filter=${filterToLoad}&page=${pageNumberToLoad}`);
-      if (thisRequestId !== latestRequestId) return;                            // a newer fetch started while we were waiting - discard this stale response
+      
+      // a newer fetch started while we were waiting - discard this stale response
+      if (thisRequestId !== latestRequestId) return;
+
+      // fails on bad response
       if (!apiResponse.ok) throw new Error('API error');
+
       const responseBody = await apiResponse.json();
+
       leaderboardRecords = responseBody.records ?? [];
       startRank = responseBody.startRank ?? 1;
       canGoNext = responseBody.hasNext ?? false;
       canGoPrev = responseBody.hasPrev ?? false;
+
     } catch {
-      if (thisRequestId !== latestRequestId) return;                            // same staleness check on the error path so a stale failure doesn't overwrite a fresh success
+
+      // same staleness check on the error path so a stale failure doesn't overwrite a fresh success
+      if (thisRequestId !== latestRequestId) return;
       loadError = 'Failed to load data. Please try again.';
     } finally {
-      if (thisRequestId === latestRequestId) isLoading = false;                 // only the latest fetch is allowed to flip the loading flag off
+
+      // only the latest fetch is allowed to flip the loading flag off
+      if (thisRequestId === latestRequestId) isLoading = false;
     }
   }
 
-  async function fnLoadStats() {                                                // called from the URL-watch $effect above and the StatisticsView retry callback in the template
+
+  // loads static stats - called from the URL-watch $effect above and the StatisticsView retry callback in the template
+  async function fnLoadStats() {
     statsLoading = true;
     statsError = null;
     try {
+
+      // fetches file
       const response = await fetch('/stats.json');
+
+      // fails on bad response
       if (!response.ok) throw new Error(`Stats file missing (HTTP ${response.status})`);
       stats = await response.json();
     } catch (err) {
@@ -77,33 +115,44 @@
     }
   }
 
-  function fnSyncUrl(filterToApply, pageNumberToApply, viewToApply) {           // called from every handler below; the URL change is what triggers the load via the $effect above
+
+  // builds and navigates to the url - called from every handler below; the URL change is what triggers the load via the $effect above
+  function fnSyncUrl(filterToApply, pageNumberToApply, viewToApply) {
     const urlParams = new URLSearchParams();
     urlParams.set('filter', filterToApply);
     urlParams.set('page', String(pageNumberToApply));
-    if (viewToApply && viewToApply !== 'leaderboard') {                         // omit the default to keep canonical urls short
+
+    // omit the default to keep canonical urls short
+    if (viewToApply && viewToApply !== 'leaderboard') {
       urlParams.set('view', viewToApply);
     }
+
+    // navigate to new url without reloading
     goto(`/leaderboard?${urlParams}`, { replaceState: false, keepFocus: true, noScroll: true });
   }
 
-  function fnHandleFilterChange(selectedFilter) {                               // called from FilterBar onfilterchange in the template below
+  // called from FilterBar onfilterchange in the template below
+  function fnHandleFilterChange(selectedFilter) {
     fnSyncUrl(selectedFilter, 1, activeView);
   }
 
-  function fnHandleViewChange(selectedView) {                                   // called from FilterBar onviewchange in the template below
+  // called from FilterBar onviewchange in the template below
+  function fnHandleViewChange(selectedView) {
     fnSyncUrl(activeFilter, 1, selectedView);
   }
 
-  function fnHandleReset() {                                                    // called from FilterBar onreset in the template below
+  // called from FilterBar onreset in the template below
+  function fnHandleReset() {
     fnSyncUrl('all', 1, activeView);
   }
 
-  function fnHandlePrev() {                                                     // called from PaginationControls onprev in the template below
+  // called from PaginationControls onprev in the template below
+  function fnHandlePrev() {
     fnSyncUrl(activeFilter, Math.max(1, currentPageNumber - 1), activeView);
   }
 
-  function fnHandleNext() {                                                     // called from PaginationControls onnext in the template below
+  // called from PaginationControls onnext in the template below
+  function fnHandleNext() {
     fnSyncUrl(activeFilter, currentPageNumber + 1, activeView);
   }
 </script>

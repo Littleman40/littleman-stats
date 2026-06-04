@@ -3,9 +3,15 @@ const CACHE_TTL_MS = 30 * 60 * 1000;
 
 const cacheByKey = new Map();
 
-// called from the user-search pb api endpoint
+
+
+// retrieve cached data using the key - called from the user-search pb api endpoint
 export function fnGetCached(cacheKey) {
+
+  // looks up cache entry for that key
   const cacheEntry = cacheByKey.get(cacheKey);
+
+  // if nothing exists return null
   if (!cacheEntry) return null;
 
   // expired - discard and miss
@@ -14,10 +20,13 @@ export function fnGetCached(cacheKey) {
     return null;
   }
 
+  // return the actual data
   return cacheEntry.data;
 }
 
-// called from the user-search pb api endpoint
+
+
+// stores data in cache with expiry time - called from the user-search pb api endpoint
 export function fnSetCached(cacheKey, data) {
   cacheByKey.set(cacheKey, { data, expiresAt: Date.now() + CACHE_TTL_MS });
 }
