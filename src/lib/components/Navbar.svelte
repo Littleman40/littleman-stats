@@ -21,7 +21,7 @@
 
   $effect(() => {                                 // auto-close the dropdown when the viewport widens past the hamburger breakpoint
     if (typeof window === 'undefined') return;    // stops the code being run on the server
-    const mediaQuery = window.matchMedia('(min-width: 761px)');
+    const mediaQuery = window.matchMedia('(min-width: 900px)');
     function fnHandleViewportChange(event) {
       if (event.matches) isMobileMenuOpen = false;
     }
@@ -227,7 +227,7 @@
     color: var(--color-text-on-light);
   }
 
-  @media (max-width: 760px) {
+  @media (max-width: 900px) {
     .nav-links {
       display: none;
     }
