@@ -64,13 +64,13 @@
   .group {
     display: flex;
     align-items: center;
-    gap: 0.75rem;
-    flex-wrap: nowrap;
-    flex-shrink: 0;
-    padding: 0.3rem;
+    flex-wrap: wrap;
+    gap: 0.4rem 0.7rem;
+    max-width: 100%;
+    padding: 0.4rem;
     padding-left: 0.9rem;
     border: 1px solid var(--color-border);
-    border-radius: 3rem;
+    border-radius: 1.5rem;
     background: var(--color-card-elevated);
   }
 
@@ -84,9 +84,7 @@
   }
 
   .pills {
-    display: flex;
-    gap: 0.5rem;
-    flex-wrap: nowrap;
+    display: contents;
   }
 
   .pill {
