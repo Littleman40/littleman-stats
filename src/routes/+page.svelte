@@ -51,7 +51,9 @@
       </span>
     </a>
   </div>
-  <div class="scroll-hint"><span class="scroll-hint-icon"></span></div>
+  <div class="scroll-hint">
+    <img src="/img/smallDownArrow.svg" alt="" class="scroll-hint-icon" />
+  </div>
 </section>
 
 <section class="features page-wrapper">
@@ -163,7 +165,7 @@
 
   .scroll-hint {
     position: absolute;
-    bottom: 1rem;
+    bottom: 1.5rem;
     left: 50%;
     transform: translateX(-50%);
     z-index: 2;
@@ -171,12 +173,22 @@
 
   .scroll-hint-icon {
     display: block;
-    width: 2rem;
-    height: 2rem;
-    background-color: var(--color-muted);
-    -webkit-mask: url('/img/arrowdown.svg') no-repeat center / contain;
-    mask: url('/img/arrowdown.svg') no-repeat center / contain;
-    display: inline-block;
+    width: 4rem;
+    height: 4rem;
+    filter: invert(1) opacity(0.5);
+    animation: bounce 3s infinite;
+  }
+
+  @keyframes bounce {
+    0%, 20%, 50%, 80%, 100% { 
+      transform: translateY(0); 
+    }
+    40% { 
+      transform: translateY(-12px); 
+    }
+    60% { 
+      transform: translateY(-6px); 
+    }
   }
 
   .features {
