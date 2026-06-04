@@ -31,6 +31,7 @@
         <ul>
           <li><span class="muted">LittleManStats is not affiliated with No Hesi.</span></li>
           <li><a href="/terms">Terms of Use</a></li>
+          <li><a href="/about">About</a></li>
         </ul>
       </div>
     </div>
