@@ -1,7 +1,9 @@
 <script>
-  const REFRESH_INTERVAL_MS = 30 * 60 * 1000;     // auto-refresh rank data every 30 minutes
+  // auto-refresh rank data every 30 minutes
+  const REFRESH_INTERVAL_MS = 30 * 60 * 1000;
 
-  const PERCENTILES = {                           // hardcoded percentile labels for each rank
+  // hardcoded percentile labels for each rank
+  const PERCENTILES = {
     'Certified':    '0.1% (capped at 75)',
     'Sanctioned 3': '0.4%',
     'Sanctioned 2': '0.7%',
@@ -30,38 +32,59 @@
 
   let refreshTimer;
 
-  const processedThresholds = $derived(                                                 // adds icon + display name to the scraped rank breakdown
+  // transforms raw api data into ui ready format
+  const processedThresholds = $derived(
     thresholds.map((threshold) => {
-      const iconSlug = threshold.tier_name.toLowerCase().replace(/\s+/g, '_');          // "Sanctioned 2" -> "sanctioned_2", matching the cdn filename format
+
+      // "Sanctioned 2" -> "sanctioned_2", matching the cdn filename format
+      const iconSlug = threshold.tier_name.toLowerCase().replace(/\s+/g, '_');          
+      
+      // gets icon url
       const iconUrl = `https://cdn.nohesi.gg/images/rankicons/${iconSlug}.svg`;
+
+      // returns icon url and display name
       return { ...threshold, iconUrl, displayName: threshold.tier_name };
     })
   );
 
-  async function fnLoadRanks() {                                                        // fetches rank thresholds from the API and schedules the next auto-refresh
+
+  // fetches rank thresholds from the API and schedules the next auto-refresh
+  async function fnLoadRanks() {
     isLoading = true;
     loadError = null;
     try {
+
+      // fetches file
       const response = await fetch('/ranks.json');
+
+      // error if bad response
       if (!response.ok) throw new Error('Rank file missing (HTTP ' + response.status + ')');
+      
       const data = await response.json();
+      
       if (data.error) throw new Error(data.error);
       thresholds = data.thresholds ?? [];
       lastUpdated = data.generated_at ? new Date(data.generated_at) : null;
     } catch {
       loadError = 'Failed to load rank data. Please try again.';
-    } finally {
+    } finally { 
       isLoading = false;
     }
+
+    // auto refresh logic
     clearTimeout(refreshTimer);
     refreshTimer = setTimeout(fnLoadRanks, REFRESH_INTERVAL_MS);
   }
 
   $effect(() => {
     fnLoadRanks();
-    return () => clearTimeout(refreshTimer);                                             // cancel the pending auto-refresh when the page is left so we don't fetch in the background
-  });
 
+    // cancel the pending auto-refresh when the page is left so we don't fetch in the background
+    return () => clearTimeout(refreshTimer);
+  });
+  
+
+  // formats number to include commas
   function fnFormatNumber(n) {
     return n.toLocaleString();
   }

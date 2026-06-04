@@ -10,14 +10,18 @@
 
   let activeAbortController = null;
 
+  // detects if the query is a steam id or username
   function fnDetectQueryType(typedQuery) {
     return /^\d{17}$/.test(typedQuery) ? 'steamid' : 'username';
   }
+
 
   function fnIsAbortError(err) {
     return err?.name === 'AbortError';
   }
 
+
+  // maps input numbers to labels for display
   const inputLabel = $derived(
     playerProfile?.input === 0 ? 'Wheel'
     : playerProfile?.input === 1 ? 'Controller'
@@ -26,10 +30,16 @@
     : 'Unknown'
   );
 
+
+  // main function to handle user search
   async function fnHandleUserSearch(typedQuery) {
+    
+    // cancels any previous search
     if (activeAbortController) {
       activeAbortController.abort();
     }
+
+    // starts new search
     const localController = new AbortController();
     activeAbortController = localController;
     const signal = localController.signal;
@@ -38,15 +48,20 @@
     searchError = null;
     playerProfile = null;
 
+    // detects query type
     const queryType = fnDetectQueryType(typedQuery);
 
     try {
+      // calls api
       const pbResponse = await fetch(`/api/user-search/pb?query=${encodeURIComponent(typedQuery)}&type=${queryType}`, { signal });
       const pbData = await pbResponse.json();
+      
       if (!pbResponse.ok || pbData.error) {
         searchError = pbData.error ?? 'Something went wrong. Please try again.';
         return;
       }
+
+      // returns profile data
       playerProfile = pbData.profile;
     } catch (err) {
       if (fnIsAbortError(err)) return;

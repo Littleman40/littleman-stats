@@ -4,8 +4,11 @@ import { json } from '@sveltejs/kit';
 // import our cache functions and the shared response page size
 import { fnGetOrCreateCacheEntry, fnWaitForPage, RESPONSE_PAGE_SIZE } from '$lib/server/leaderboardCache.js';
 
+
+
 // called by SvelteKit on GET /api/leaderboard, name is required by the framework. fetched from fnLoadLeaderboardData() in src/routes/leaderboard/+page.svelte
 export async function GET({ url }) {
+  
   // gets the filter from the url, and defaults to all if none exist
   const filterName = url.searchParams.get('filter') ?? 'all';
 

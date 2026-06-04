@@ -7,18 +7,29 @@ const HTML_ESCAPE_MAP = {
   "'": '&#39;'
 };
 
+
+
 // cleans input text
 function fnEscapeHtml(rawText) {
+
+  // replaces everything with the escaped version above, helps prevent malicious inputs
   return rawText.replace(/[&<>"']/g, (char) => HTML_ESCAPE_MAP[char]);
 }
 
+
+
 // ensures url's are safe
 function fnSafeUrl(rawUrl) {
+
   // removes blank space at start and end
   const trimmedUrl = rawUrl.trim();
 
   // only allow urls that start with https and mailto
-  if (/^(https?:|mailto:)/i.test(trimmedUrl)) return trimmedUrl;
+  if (
+    trimmedUrl.startsWith("http:") ||
+    trimmedUrl.startsWith("https:") ||
+    trimmedUrl.startsWith("mailto:")
+  ) return trimmedUrl;
 
   // allows relative paths or page anchors
   if (trimmedUrl.startsWith('/') || trimmedUrl.startsWith('#')) return trimmedUrl;
@@ -26,6 +37,9 @@ function fnSafeUrl(rawUrl) {
   return null;
 }
 
+
+
+// converts discord formatting to our html formatting
 function fnProcessInline(escapedText, parseOptions) {
   let workingText = escapedText;
 
@@ -34,12 +48,17 @@ function fnProcessInline(escapedText, parseOptions) {
 
   // handles url's where labels and urls are together
   workingText = workingText.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_match, linkLabel, linkUrl) => {
+    
+    // checks url is safe
     const safeLinkUrl = fnSafeUrl(linkUrl);
 
     // drop unsafe URL, keep visible text
     if (!safeLinkUrl) return linkLabel;
+
+    // create html link
     return `<a href="${fnEscapeHtml(safeLinkUrl)}" target="_blank" rel="noopener noreferrer">${linkLabel}</a>`;
   });
+
 
   // turns <#id> into link or faq page
   workingText = workingText.replace(/&lt;#(\d+)&gt;/g, (_match, channelId) => {
@@ -78,7 +97,11 @@ function fnProcessInline(escapedText, parseOptions) {
   return workingText;
 }
 
+
+
+// more discord formatting like headings etc
 function fnClassifyLine(rawLine) {
+
   // very small text
   const subtextMatch = /^-#\s+(.*)$/.exec(rawLine);
   if (subtextMatch) return { kind: 'subtext', text: subtextMatch[1] };
@@ -102,13 +125,18 @@ function fnClassifyLine(rawLine) {
   return { kind: 'text', text: rawLine };
 }
 
+
+// converts the line of text into the correct html depending on formatting
 function fnRenderBlocks(allLines, parseOptions) {
+
+  // stores final html 
   const outputParts = [];
   let openBlockKind = null;
   let paragraphBuffer = [];
 
   const fnInline = (rawText) => fnProcessInline(fnEscapeHtml(rawText), parseOptions);
 
+  // close any html tags we have open
   const fnCloseOpenBlock = () => {
     if (openBlockKind === 'quote') outputParts.push('</blockquote>');
     else if (openBlockKind === 'ul') outputParts.push('</ul>');
@@ -120,7 +148,11 @@ function fnRenderBlocks(allLines, parseOptions) {
     openBlockKind = null;
   };
 
+
+  // the main loop for each line
   for (const currentLine of allLines) {
+
+    // if the line if blank - move on
     if (currentLine.trim() === '') {
       fnCloseOpenBlock();
       continue;
@@ -192,6 +224,9 @@ function fnBridgeBlockquotes(allLines) {
   return bridgedLines;
 }
 
+
+
+// main function that takes raw text and returns html with everything
 export function fnParseDiscordMarkdown(rawInput, parseOptions) {
   if (!rawInput || typeof rawInput !== 'string') return '';
 
@@ -216,6 +251,8 @@ export function fnParseDiscordMarkdown(rawInput, parseOptions) {
   return renderedHtml;
 }
 
+
+// removes all formatting to just plain text
 export function fnStripDiscordMarkdown(rawInput, parseOptions) {
   if (!rawInput || typeof rawInput !== 'string') return '';
   return rawInput

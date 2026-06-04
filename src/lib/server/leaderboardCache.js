@@ -13,8 +13,11 @@ export const RESPONSE_PAGE_SIZE = 20;
 // how long fnWaitForPage sleeps between record-count checks
 const POLL_INTERVAL_MS = 150;
 
+// stores cahced leaderboard data for each filter
 const cacheByFilter = new Map();
 
+
+// applies the filter to a raw record
 function fnApplyFilter(rawRecord, filterName) {
   switch (filterName) {
     // 'crew' = team mode
@@ -25,13 +28,18 @@ function fnApplyFilter(rawRecord, filterName) {
 
     // 'realistic' = solo runs in a car whose model name contains 'realistic'
     case 'realistic':
-      return rawRecord.mode === 'solo' && rawRecord.car_model?.toLowerCase().includes('realistic');
+      const model = rawRecord.car_model;
+      if (!model) return false;
+      return rawRecord.mode === 'solo '&& model.toLowerCase().includes('realistic');
 
     // 'all' / unknown - keep everything
     default: return true;
   }
 }
 
+
+
+// converts the api data into a cleaned format for the front end
 function fnMapRecord(rawRecord) {
   return {
     nohesi_name: rawRecord.nohesi_name,
@@ -54,21 +62,36 @@ function fnMapRecord(rawRecord) {
   };
 }
 
+
+
+// cache checker to see if its expired
 function fnIsCacheEntryStale(cacheEntry) {
   return Date.now() - cacheEntry.timestamp > CACHE_TTL_MS;
 }
 
+
+
+// downloads all leaderboard pages in background and fills the cache
 async function fnFetchAllInBackground(filterName) {
+
+  // if there was no cache entry, just exit
   const cacheEntry = cacheByFilter.get(filterName);
   if (!cacheEntry) return;
 
+  // start with first page
   let pageOffset = 0;
 
   try {
     // loop every upstream page until none remain
     while (true) {
+
+      // fetch 100 records starting from the offset
       const upstreamResponse = await fetch(`${LEADERBOARD_API_URL}?offset=${pageOffset}&limit=${API_PAGE_SIZE}`);
+
+      // if api fails throw error
       if (!upstreamResponse.ok) throw new Error(`Leaderboard API ${upstreamResponse.status}`);
+
+      // convert the response to json
       const responseBody = await upstreamResponse.json();
 
       // capture the leaderboard-wide run count from the first upstream page (same for every filter)
@@ -82,6 +105,7 @@ async function fnFetchAllInBackground(filterName) {
         }
       }
 
+      // apply the filter to each record we just scraped
       const upstreamRecords = responseBody.data ?? [];
       for (const rawRecord of upstreamRecords) {
         if (fnApplyFilter(rawRecord, filterName)) {
@@ -94,14 +118,17 @@ async function fnFetchAllInBackground(filterName) {
         cacheEntry._resolveFirstPageReady();
         cacheEntry._resolveFirstPageReady = null;
       }
-
+      
+      // checks if there are any more pages to fetch based of total count and offset
       const totalFilteredCount = responseBody.metadata?.total_filtered_count ?? 0;
       const moreUpstreamPagesExist = pageOffset + upstreamRecords.length < totalFilteredCount;
       if (!moreUpstreamPagesExist) break;
       pageOffset += API_PAGE_SIZE;
     }
+
   } catch (fetchErr) {
     console.error(`Leaderboard cache fetch error (filter=${filterName}):`, fetchErr);
+  
   } finally {
     cacheEntry.complete = true;
     cacheEntry.fetching = false;
@@ -120,13 +147,20 @@ async function fnFetchAllInBackground(filterName) {
   }
 }
 
-// called from GET() in src/routes/api/leaderboard/+server.js
+
+
+// gets cache if its valid, otherwise creates it - called from GET() in src/routes/api/leaderboard/+server.js
 export function fnGetOrCreateCacheEntry(filterName) {
+
+  // gets cached entry for the filter
   const existingEntry = cacheByFilter.get(filterName);
+
+  // if one exists then return it
   if (existingEntry && !fnIsCacheEntryStale(existingEntry)) {
     return existingEntry;
   }
 
+  // creates promise that resolved once the first page is finished
   let resolveFirstPageReady;
   const firstPageReadyPromise = new Promise((resolve) => { resolveFirstPageReady = resolve; });
 
@@ -148,21 +182,27 @@ export function fnGetOrCreateCacheEntry(filterName) {
     _resolveTotalKnown: resolveTotalKnown
   };
 
+  // stores in cache
   cacheByFilter.set(filterName, freshCacheEntry);
 
   // kick off the background scrape; caller can await readyPromise
   fnFetchAllInBackground(filterName);
 
+  // returns cache
   return freshCacheEntry;
 }
 
-// called from GET() in src/routes/api/leaderboard/+server.js
+
+
+// waits until enough data exists for the requested page - called from GET() in src/routes/api/leaderboard/+server.js
 export async function fnWaitForPage(cacheEntry, pageNumber) {
   const lastRecordIndex = pageNumber * RESPONSE_PAGE_SIZE;
 
+  // first page waits for the minimum data
   if (pageNumber === 1) {
     await cacheEntry.readyPromise;
   } else {
+    
     // pages beyond 1 need enough records buffered; poll until ready or scrape completes
     while (cacheEntry.records.length < lastRecordIndex && !cacheEntry.complete) {
       await new Promise((resolve) => setTimeout(resolve, POLL_INTERVAL_MS));

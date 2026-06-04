@@ -10,8 +10,11 @@ const LEADERBOARD_API_URL = 'https://leaderboard-06nkmjf5r0.nohesi.gg';
 // no hesi profile api base, used to resolve no hesi username to steam id
 const PROFILE_API_URL = 'https://api.nohesi.gg';
 
+
+
 // called from GET() when type === 'username'; abortSignal lets the upstream fetch cancel if the client disconnects
 async function fnResolveUsernameToSteamId(usernameQuery, abortSignal) {
+  
   // fetches user profile from the api
   const profileResponse = await fetch(`${PROFILE_API_URL}/functions/user-profile/${encodeURIComponent(usernameQuery)}`, { signal: abortSignal });
 
@@ -33,6 +36,8 @@ async function fnResolveUsernameToSteamId(usernameQuery, abortSignal) {
   // returns steam id
   return { steamId: steamProvider.id };
 }
+
+
 
 // called by SvelteKit on GET /api/user-search/pb, fetched from fnHandleUserSearch() in src/routes/user-search/+page.svelte
 export async function GET({ url, request }) {

@@ -1,9 +1,10 @@
 <script>
-  import '../app.css';                                              // global styles, design tokens, and base resets applied to the whole site
-  import Navbar from '$lib/components/Navbar.svelte';               // top navigation bar shown on every page
-  import Footer from '$lib/components/Footer.svelte';               // bottom footer shown on every page
+  import '../app.css';
+  import Navbar from '$lib/components/Navbar.svelte';
+  import Footer from '$lib/components/Footer.svelte';
 
-  let { children } = $props();                                      // the current page's content, passed in by SvelteKit's router
+  // the current page's content, passed in by SvelteKit's router
+  let { children } = $props();
 </script>
 
 <Navbar />

@@ -1,6 +1,6 @@
 # Littleman Stats
 
-This is a data driven website built as my Year 12 NSW Enterprise Computing Major Project. This project aims to use public api endpoints, to allow users to find statistics about themselves and others, for No Hesi servers. Furthermore, it will contain a Help-FAQ section, and the ability to filter the global leaderboard.
+This is a data-driven website built as my Year 12 NSW Enterprise Computing Major Project. This project aims to use public API endpoints to enable users to filter the leaderboard, see leaderboard statistics, and to find users' personal bests through steamIDs or their username. It also contains a Help-FAQ section and the ability to see information regarding all ranks.
 
 ## Current Features
 - [x] Leaderboard Filters
@@ -8,9 +8,6 @@ This is a data driven website built as my Year 12 NSW Enterprise Computing Major
 - [x] Per User Search 
 - [x] Ranks
 - [x] Leaderboard Statistics
-
-## Upcoming Features
-- [ ] Score Predictor / Analysis
 
 ## Screenshots
 <img src="https://i.imgur.com/9So0gy2.png" width=400> <img src="https://i.imgur.com/UobIcCU.png" width=400> 
