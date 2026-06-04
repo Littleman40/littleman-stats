@@ -181,11 +181,19 @@ function fnCreateEmptyRankTotals() {
 }
 
 // folds one record into the rank breakdown - counts players in the tier, and tracks the lowest score and the worst (highest) position seen
-function fnBumpRankTotals(rankTotals, rawRecord) {
+function fnBumpRankTotals(rankTotals, rawRecord, seenPositions) {
   // everything we need lives in the ranking block
   const ranking = rawRecord.ranking;
   if (ranking === undefined || ranking === null) {
     return;
+  }
+
+  const dedupePosition = Number(ranking.position);
+  if (Number.isFinite(dedupePosition) && dedupePosition > 0) {
+    if (seenPositions.has(dedupePosition)) {
+      return;
+    }
+    seenPositions.add(dedupePosition);
   }
 
   // tier_name is the key we bucket by, e.g. "Sanctioned 2"
@@ -399,6 +407,10 @@ async function fnRunScrape() {
   // rank breakdown is global (not per-filter) so it gets its own accumulator
   const rankTotals = fnCreateEmptyRankTotals();
 
+  // tracks which leaderboard positions have been folded into the rank breakdown so
+  // duplicate/junk rows that reuse a position are only counted once (see fnBumpRankTotals)
+  const seenRankPositions = new Set();
+
   // raw scores collected during the scrape - used after the loop to compute score_histogram for the solo filter
   const soloScores = [];
 
@@ -460,8 +472,8 @@ async function fnRunScrape() {
         fnBumpAggregations(aggregationsByFilter[filterName], rawRecord);
       }
 
-      // fold the record into the global rank breakdown
-      fnBumpRankTotals(rankTotals, rawRecord);
+      // fold the record into the global rank breakdown (deduped by position)
+      fnBumpRankTotals(rankTotals, rawRecord, seenRankPositions);
 
       // collect solo scores for the post-loop histogram - only valid positive numbers
       if (rawRecord.mode === 'solo') {

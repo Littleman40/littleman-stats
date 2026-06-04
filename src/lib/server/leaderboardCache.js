@@ -30,7 +30,7 @@ function fnApplyFilter(rawRecord, filterName) {
     case 'realistic':
       const model = rawRecord.car_model;
       if (!model) return false;
-      return rawRecord.mode === 'solo '&& model.toLowerCase().includes('realistic');
+      return rawRecord.mode === 'solo' && model.toLowerCase().includes('realistic');
 
     // 'all' / unknown - keep everything
     default: return true;
