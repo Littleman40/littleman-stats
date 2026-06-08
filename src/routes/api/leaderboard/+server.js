@@ -51,7 +51,7 @@ export async function GET({ url }) {
     car_model: record.car_model,
     input: record.input,
     tier_name: record.tier_name,
-    team_names: record.team_names
+    team_members: record.team_members
   }));
 
   // sends the json back to the front end
