@@ -48,12 +48,25 @@
             <div class="player">
               {#if runRecord.mode === 'team'}
                 <div class="player-names">                                                <!-- if its a crew run, display the number of people in the crew - or go to 0 for any null data -->
-                  <span class="team-members">{(runRecord.team_names?.length ?? 0)} Player Crew</span>
-                  {#if runRecord.team_names?.length}
-                    <span class="player-name">{runRecord.team_names.join(', ')}</span>
+                  <span class="team-members">{(runRecord.team_members?.length ?? 0)} Player Crew</span>
+                  {#if runRecord.team_members?.length}
+                    <span class="crew-list">
+                      {#each runRecord.team_members as member, i}
+                        <span class="crew-member">
+                          {#if member.pfp}
+                            <img src={member.pfp} alt="" class="crew-pfp" />
+                          {:else}
+                            <div class="crew-pfp crew-pfp-placeholder"></div>
+                          {/if}
+                          {member.name}{i < runRecord.team_members.length - 1 ? ',' : ''}
+                        </span>
+                      {/each}
+                    </span>
                   {/if}
                 </div>
+
               {:else}
+              
                 {#if runRecord.nohesi_pfp}                                                <!-- solo runs display profile picture and then the player name -->
                   <img src={runRecord.nohesi_pfp} alt="" class="pfp" />
                 {:else}
@@ -180,6 +193,33 @@
   .team-members {
     font-size: 0.75rem;
     color: var(--color-muted);
+  }
+
+  .crew-list {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .crew-member {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    white-space: nowrap;
+    font-weight: 500;
+  }
+
+  .crew-pfp {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    object-fit: cover;
+  }
+
+  .crew-pfp-placeholder {
+    background: var(--color-card-raised);
+    border: 1px solid var(--color-border);
   }
 
   .num {

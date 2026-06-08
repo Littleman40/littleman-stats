@@ -54,10 +54,8 @@ function fnMapRecord(rawRecord) {
     camera_type: rawRecord.camera_type,
     rank_position: rawRecord.ranking?.position,
     tier_name: rawRecord.ranking?.tier_name,
-
-    // for team runs collect every teammate's name
-    team_names: rawRecord.mode === 'team'
-      ? (rawRecord.team ?? []).map((teammate) => teammate.nohesi_name)
+    team_members: rawRecord.mode === 'team'
+      ? (rawRecord.team ?? []).map((teammate) => ({ name: teammate.nohesi_name, pfp: teammate.nohesi_pfp }))
       : []
   };
 }
