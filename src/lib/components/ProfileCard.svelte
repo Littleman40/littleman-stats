@@ -1,5 +1,7 @@
 <script>
-  let {                                  // local variables
+
+  // local variables
+  let {
     nohesi_pfp, 
     nohesi_name, 
     steam_id, 
@@ -9,7 +11,8 @@
     team_names 
   } = $props();
 
-  const rankIconUrl = $derived(          // builds the rank-icon url from the tier name
+  // builds the rank-icon url from the tier name
+  const rankIconUrl = $derived(
     tier_name
       ? `https://cdn.nohesi.gg/images/rankicons/${tier_name.toLowerCase().replace(/\s+/g, '_')}.svg`
       : null
@@ -19,7 +22,9 @@
 </script>
 
 <div class="profile-card">
-  <div class="identity">      <!-- top section of profile card -->
+
+  <!-- top section of profile card -->
+  <div class="identity">
     <div class="avatar-wrap">
       {#if nohesi_pfp}
         <img src={nohesi_pfp} alt="{nohesi_name} avatar" class="avatar" />
@@ -35,7 +40,8 @@
 
   <div class="divider"></div>
 
-  <div class="stat-rows">   <!-- bottom section of profile card -->
+  <!-- bottom section of profile card -->
+  <div class="stat-rows">
     <div class="stat-row">
       <span class="stat-label">Position</span>
       <span class="stat-value">{rank_position != null ? `#${rank_position}` : '-'}</span>
@@ -45,8 +51,10 @@
       <span class="stat-value rank-value">
         <span>{tier_name ?? '-'}</span>
         {#if rankIconUrl && showTeamSection}
+
           <!-- for crew pbs, keep the icon inline so the team list fits -->
           <img src={rankIconUrl} alt="{tier_name} rank icon" class="rank-icon-inline" />
+          
         {/if}
       </span>
     </div>

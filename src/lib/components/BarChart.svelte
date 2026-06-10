@@ -18,7 +18,7 @@
   const hasData = $derived(barValues.some((value) => value > 0));
 
   // pre-computes percentages so both y-axis and tooltips can read from the same source
-  const computedPercentages = $derived.by(() => {                
+  const computedPercentages = $derived.by(() => {
     const total = barValues.reduce((sum, value) => sum + (value ?? 0), 0);
     if (total === 0) return barValues.map(() => 0);
     return barValues.map((value) => ((value ?? 0) / total) * 100);
@@ -32,7 +32,9 @@
     const yAxisData = isPercentageMode ? [...computedPercentages] : [...barValues];
     const labelsCopy = [...barLabels];
 
-    import('chart.js/auto').then(({ Chart }) => {                // lazy import so chart.js isn't bundled into the initial page load
+
+    // lazy import so chart.js isn't bundled into the initial page load
+    import('chart.js/auto').then(({ Chart }) => {
       chartInstance = new Chart(canvasElement, {
         type: 'bar',
         data: {
@@ -48,12 +50,14 @@
         },
         options: {
           responsive: true,
-          maintainAspectRatio: false,                            // let the css-driven wrapper height control the chart height instead of forcing a square
+          // let the css-driven wrapper height control the chart height instead of forcing a square
+          maintainAspectRatio: false,
           plugins: {
             legend: { display: false },
             tooltip: {
               callbacks: {
-                label: (tooltipCtx) => {                         // tooltip shows raw count + percentage when in percentage mode for context
+                // tooltip shows raw count + percentage when in percentage mode for context
+                label: (tooltipCtx) => {
                   const rawCount = barValues[tooltipCtx.dataIndex] ?? 0;
                   if (isPercentageMode) {
                     const pct = computedPercentages[tooltipCtx.dataIndex] ?? 0;
@@ -86,29 +90,39 @@
     });
   }
 
+  // reading the props here tells svelte to re-run this effect whenever any prop changes (also fires once on initial mount)
   $effect(() => {
-    barLabels;                                                   // reading the props here tells svelte to re-run this effect whenever any prop changes (also fires once on initial mount)
+    barLabels;
     barValues;
     displayMode;
     barColor;
     xAxisLabel;
     yAxisLabel;
     fnBuildBarChart();
-    return () => chartInstance?.destroy();                       // cleanup runs before the next effect re-run AND on component unmount, so the previous chart is always destroyed before a new one is built on the same canvas
+    // cleanup runs before the next effect re-run AND on component unmount, so the previous chart is always destroyed before a new one is built on the same canvas
+    return () => chartInstance?.destroy();
   });
 </script>
 
 <div class="bar-wrap">
+
   {#if chartTitle}
+
     <p class="chart-title">{chartTitle}</p>
+
   {/if}
+
   {#if hasData}
+
     <div class="chart-container">
       <canvas bind:this={canvasElement}></canvas>
     </div>
+
   {:else}
+
     <div class="no-data">No data</div>
   {/if}
+  
 </div>
 
 <style>

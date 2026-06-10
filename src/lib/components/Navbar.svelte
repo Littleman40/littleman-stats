@@ -1,7 +1,9 @@
 <script>
-  import { page } from '$app/stores';             // used to compare the current URL pathname against each nav link to highlight the active one
+  // used to compare the current URL pathname against each nav link to highlight the active one
+  import { page } from '$app/stores';
 
-  const navLinks = [                              // navigation links
+  // navigation links
+  const navLinks = [
     { href: '/', label: 'Home' },
     { href: '/user-search', label: 'User Search' },
     { href: '/leaderboard', label: 'Leaderboard' },
@@ -11,22 +13,23 @@
 
   let isMobileMenuOpen = $state(false);
 
-  function fnToggleMobileMenu() {                 // called from the hamburger button onclick in the template below
+  function fnToggleMobileMenu() {
     isMobileMenuOpen = !isMobileMenuOpen;
   }
 
-  function fnCloseMobileMenu() {                  // called from the brand link + each nav link onclick in the template below
+  function fnCloseMobileMenu() {
     isMobileMenuOpen = false;
   }
 
-  $effect(() => {                                 // auto-close the dropdown when the viewport widens past the hamburger breakpoint
-    if (typeof window === 'undefined') return;    // stops the code being run on the server
+  // auto-close the dropdown when the viewport widens past the hamburger breakpoint
+  $effect(() => {
+    if (typeof window === 'undefined') return;
     const mediaQuery = window.matchMedia('(min-width: 900px)');
     function fnHandleViewportChange(event) {
       if (event.matches) isMobileMenuOpen = false;
     }
     mediaQuery.addEventListener('change', fnHandleViewportChange);
-    return () => mediaQuery.removeEventListener('change', fnHandleViewportChange);  //remove the listener when the navbar is destroyed
+    return () => mediaQuery.removeEventListener('change', fnHandleViewportChange);
   });
 </script>
 
@@ -35,7 +38,10 @@
     <a href="/" class="brand" onclick={fnCloseMobileMenu}>LittleMan Stats</a>
 
     <ul class="nav-links">
-      {#each navLinks as navLinkObj}                          <!-- desktop nav links -->
+
+      <!-- desktop nav links -->
+      {#each navLinks as navLinkObj}
+
         <li>
           <a
             href={navLinkObj.href}
@@ -43,6 +49,7 @@
             onclick={fnCloseMobileMenu}
           >{navLinkObj.label}</a>
         </li>
+
       {/each}
     </ul>
 
@@ -62,7 +69,9 @@
   {#if isMobileMenuOpen}
     <div class="mobile-menu">
       <ul>
-        {#each navLinks as navLinkObj}                        <!-- mobile dropdown links -->
+        <!-- mobile dropdown links -->
+        {#each navLinks as navLinkObj}      
+
           <li>
             <a
               href={navLinkObj.href}
@@ -70,6 +79,7 @@
               onclick={fnCloseMobileMenu}
             >{navLinkObj.label}</a>
           </li>
+
         {/each}
       </ul>
     </div>
@@ -86,7 +96,9 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    pointer-events: none;                          /* let clicks pass through the empty space around the pill */
+
+    /* let clicks pass through the empty space around the pill */
+    pointer-events: none;
     padding: 0.85rem var(--page-padding) 0;
   }
   .nav-pill {

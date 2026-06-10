@@ -23,7 +23,7 @@
     if (chartInstance) chartInstance.destroy();
 
     const isPercentageMode = displayMode === 'percentage';
-    const isHorizontal = orientation === 'horizontal';           // swaps which axis carries values vs categories
+    const isHorizontal = orientation === 'horizontal';
 
     // value axis
     const valueAxisOptions = {
@@ -62,7 +62,8 @@
       maxBarThickness: 40
     }));
 
-    import('chart.js/auto').then(({ Chart }) => {                // lazy import so chart.js isn't bundled into the initial page load
+    // lazy import so chart.js isn't bundled into the initial page load
+    import('chart.js/auto').then(({ Chart }) => {
       chartInstance = new Chart(canvasElement, {
         type: 'bar',
         data: {
@@ -70,11 +71,11 @@
           datasets: datasetsCopy
         },
         options: {
-          indexAxis: isHorizontal ? 'y' : 'x',                   // horizontal mode = categories down the y-axis, bars grow left→right
+          indexAxis: isHorizontal ? 'y' : 'x',
           responsive: true,
-          maintainAspectRatio: false,                            // let the css-driven wrapper height control the chart height instead of forcing a square
+          maintainAspectRatio: false,
           plugins: {
-            legend: {                                            // visible top legend so users can read off which colour is which series
+            legend: {
               display: true,
               position: 'top',
               labels: {
@@ -89,10 +90,12 @@
             },
             tooltip: {
               callbacks: {
-                label: (tooltipCtx) => {                         // tooltip shows series label, percentage, and raw count when available
+
+                // tooltip shows series label, percentage, and raw count when available
+                label: (tooltipCtx) => {
                   const seriesIndex = tooltipCtx.datasetIndex;
                   const dataIndex = tooltipCtx.dataIndex;
-                  const value = isHorizontal ? tooltipCtx.parsed.x : tooltipCtx.parsed.y;   // value axis flips with orientation
+                  const value = isHorizontal ? tooltipCtx.parsed.x : tooltipCtx.parsed.y;
                   const series = chartSeries[seriesIndex];
                   const rawCount = series?.rawCounts?.[dataIndex];
 
@@ -113,27 +116,36 @@
     });
   }
 
+  // reading the props here tells svelte to re-run this effect whenever any prop changes (also fires once on initial mount)
   $effect(() => {
-    groupLabels;                                                 // reading the props here tells svelte to re-run this effect whenever any prop changes (also fires once on initial mount)
+    groupLabels;
     chartSeries;
     displayMode;
     orientation;
     stacked;
     fnBuildGroupedChart();
-    return () => chartInstance?.destroy();                       // cleanup runs before the next effect re-run AND on component unmount, so the previous chart is always destroyed before a new one is built on the same canvas
+
+    // cleanup runs before the next effect re-run AND on component unmount, so the previous chart is always destroyed before a new one is built on the same canvas
+    return () => chartInstance?.destroy();
   });
 </script>
 
 <div class="grouped-wrap">
+
   {#if chartTitle}
     <p class="chart-title">{chartTitle}</p>
   {/if}
+
   {#if hasData}
+  
     <div class="chart-container">
       <canvas bind:this={canvasElement}></canvas>
     </div>
+
   {:else}
+
     <div class="no-data">No data</div>
+
   {/if}
 </div>
 

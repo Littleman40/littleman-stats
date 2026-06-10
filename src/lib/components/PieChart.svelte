@@ -10,8 +10,9 @@
     legendColumns = 1
   } = $props();
 
-  let canvasElement = $state();                  // bound to the <canvas> in the template, and must exist before chart.js can draw
-  let chartInstance;                             // holds the current Chart.js instance so we can destroy it before rebuilding
+  // bound to the <canvas> in the template, and must exist before chart.js can draw
+  let canvasElement = $state();
+  let chartInstance;
 
   const hasData = $derived(Object.keys(distributionMap).length > 0);
 
@@ -48,14 +49,12 @@
     if (!canvasElement || !hasData) return;
     if (chartInstance) chartInstance.destroy();
 
-    // build the doughnut from the SAME breakdownRows the legend uses so slice colours line up exactly with the
-    // legend dots. previously the doughnut coloured slices by insertion order while the legend sorted by count,
-    // so the two never matched. this also folds the tail into one grey "Other" slice, mirroring the legend.
     const sliceLabels = breakdownRows.map((row) => row.label);
     const sliceValues = breakdownRows.map((row) => row.count);
     const sliceColors = breakdownRows.map((row, rowIndex) => row.isOther ? '#555555' : (palette[rowIndex] ?? '#555555'));
 
-    import('chart.js/auto').then(({ Chart }) => {  // lazy import so Chart.js isn't bundled into the initial page load
+    // lazy import so Chart.js isn't bundled into the initial page load
+    import('chart.js/auto').then(({ Chart }) => {
       chartInstance = new Chart(canvasElement, {
         type: 'doughnut',
         data: {
@@ -84,41 +83,53 @@
   }
 
   $effect(() => {
-    distributionMap;                               // reading the prop here tells Svelte to re-run this effect whenever distributionMap changes (also fires once on initial mount)
-    palette;                                       // re-render if the palette prop ever changes
+    distributionMap;
+    palette;
     fnBuildPieChart();
-    return () => chartInstance?.destroy();         // cleanup runs before the next effect re-run AND on component unmount, so the previous chart is always destroyed before a new one is built on the same canvas
+    return () => chartInstance?.destroy();
   });
 </script>
 
 <div class="pie-wrap">
   {#if hasData}
+
     <div class="chart-container">
       <canvas bind:this={canvasElement}></canvas>
     </div>
+
   {:else}
+
     <div class="no-data">Unknown</div>
+
   {/if}
 
   {#if chartTitle}
+
     <p class="chart-title">{chartTitle}</p>
+
   {/if}
 
   {#if breakdownRows.length}
+
     <div
       class="breakdown"
       class:two-col={legendColumns === 2}
       style:--per-col-rows={Math.ceil(maxLegendRows / 2)}
     >
+
       {#each breakdownRows as row, rowIndex}
+
         <div class="bd-row">
           <span class="dot" style="background: {row.isOther ? '#555555' : (palette[rowIndex] ?? '#555555')}"></span>
           <span class="bd-label">{row.label}</span>
           <span class="bd-count">{row.count.toLocaleString()}</span>
           <span class="bd-pct">{row.pct}</span>
         </div>
+
       {/each}
+
     </div>
+    
   {/if}
 </div>
 
