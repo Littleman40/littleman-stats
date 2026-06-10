@@ -1,16 +1,22 @@
 <script>
-  let {                                             // local variables
+
+  // local variables
+  let {                                             
     label, 
     value, 
     backgroundImage = null 
     } = $props();
+
 </script>
 
 <div class="stat-card" class:has-bg={!!backgroundImage}>
+
   {#if backgroundImage}
+
     <!-- car/photo background lives on its own layer so the dark gradient overlay above it can keep the label + value readable -->
     <div class="bg-image" style="background-image: url('{backgroundImage}')"></div>
     <div class="bg-overlay"></div>
+    
   {/if}
   <span class="label">{label}</span>
   <span class="value">{value}</span>

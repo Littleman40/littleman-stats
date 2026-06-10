@@ -1,5 +1,6 @@
 <script>
-  let {                                             // local variables
+// local variables
+  let {
     activeFilter = 'all',
     activeView = 'leaderboard',
     onfilterchange,
@@ -7,14 +8,16 @@
     onreset
   } = $props();
 
-  const filters = [                                  // filter types
+  // filter types
+  const filters = [
     { value: 'all', label: 'Everything' },
     { value: 'crew', label: 'Crew' },
     { value: 'solo', label: 'Solo' },
     { value: 'realistic', label: 'Realistic Physics (Solo)' }
   ];
 
-  const views = [                                    // different view modes
+  // different view modes
+  const views = [
     { value: 'leaderboard', label: 'Leaderboard' },
     { value: 'statistics', label: 'Statistics' }
   ];
@@ -24,33 +27,44 @@
   <div class="group">
     <span class="group-label">Filter By:</span>
     <div class="pills">
-      {#each filters as filterobj}                <!-- list all filters - when button is clicked, we change filter to that value -->
+
+      <!-- list all filters - when button is clicked, we change filter to that value -->
+      {#each filters as filterobj}
+
         <button
           class="pill"
           class:active={activeFilter === filterobj.value}
           onclick={() => onfilterchange?.(filterobj.value)}
         >{filterobj.label}</button>
+      
       {/each}
+
     </div>
   </div>
 
   <div class="group">
     <span class="group-label">View:</span>
     <div class="pills">
-      {#each views as viewobj}                      <!-- list all view buttons -->
+    
+      <!-- list all view buttons -->
+      {#each views as viewobj}
+
         <button
         class="pill"
         class:active={activeView === viewobj.value}
         onclick={() => onviewchange?.(viewobj.value)}>
           {viewobj.label}
         </button>
+
       {/each}
+
     </div>
   </div>
 
   <button class="reset-btn" onclick={() => onreset?.()} aria-label="Reset filters">   
     <img src="/img/cross.svg" width="14" height="14" alt="" style="filter: invert(1)" />
   </button>
+  
 </div>
 
 <style>

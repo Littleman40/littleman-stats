@@ -1,5 +1,7 @@
 <script>
-  let {                                   // local variables
+
+  // local variables
+  let {                                   
     placeholder = 'Search...',
     oninput,
     onsubmit,
@@ -8,11 +10,11 @@
 
   let inputSearchBarValue = $state('');
 
-  function fnHandleInput() {              // called from the <input> oninput in the template below - fires oninput callback for live filtering on the faq page
+  function fnHandleInput() {
     oninput?.(inputSearchBarValue);
   }
 
-  function fnHandleSubmit(submitEvent) {  // called from the <form> onsubmit in the template below - fires onsubmit callback with the trimmed query
+  function fnHandleSubmit(submitEvent) {
     submitEvent.preventDefault();
     const trimmedValue = inputSearchBarValue.trim();
     if (trimmedValue) {
@@ -22,6 +24,7 @@
 </script>
 
 {#if onsubmit}
+
   <form class="search-bar with-button" onsubmit={fnHandleSubmit}>
     <input
       type="text"
@@ -33,7 +36,9 @@
     />
     <button type="submit">{buttonLabel}</button>
   </form>
+
 {:else}
+
   <div class="search-bar">
     <input
       type="text"
@@ -44,6 +49,7 @@
       oninput={fnHandleInput}
     />
   </div>
+  
 {/if}
 
 <style>

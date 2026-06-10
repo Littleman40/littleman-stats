@@ -11,13 +11,14 @@
 
   let jumpInputValue = $state('');
 
-  function fnHandleJumpSubmit(submitEvent) {                                      // called from the form submit in the template below
-    submitEvent.preventDefault();                                                 // stops the default page refresh
-    const requestedPageNumber = parseInt(jumpInputValue, 10);                     // converts input to an integer
-    if (!Number.isFinite(requestedPageNumber) || requestedPageNumber < 1) return; // if the number is not finite/ applicable, then return nothing
-    if (totalPageCount != null && requestedPageNumber > totalPageCount) return;   // stops from going to an unknown page number
-    onjump?.(requestedPageNumber);                                                // goes to page
-    jumpInputValue = '';                                                          // clears the input field once complete
+  // handles the page controls
+  function fnHandleJumpSubmit(submitEvent) {
+    submitEvent.preventDefault();
+    const requestedPageNumber = parseInt(jumpInputValue, 10);
+    if (!Number.isFinite(requestedPageNumber) || requestedPageNumber < 1) return;
+    if (totalPageCount != null && requestedPageNumber > totalPageCount) return;r
+    onjump?.(requestedPageNumber);
+    jumpInputValue = '';
   }
 </script>
 
@@ -31,7 +32,8 @@
 
     <span class="page-indicator">
 
-      {#if totalPageCount != null}                                              <!-- displayes page numbers -->
+      <!-- displayes page numbers -->
+      {#if totalPageCount != null}
         Page {currentPageNumber} of {totalPageCount}
       {:else}
         Page {currentPageNumber}
@@ -45,7 +47,8 @@
       onclick={() => onnext?.()}
     >Next →</button>
 
-    {#if onjump && totalPageCount != null && totalPageCount > 1}                <!-- shows go to holder if applicable -->
+    <!-- shows go to holder if applicable -->
+    {#if onjump && totalPageCount != null && totalPageCount > 1}
       <form class="jump" onsubmit={fnHandleJumpSubmit}>
         <label class="jump-label" for="page-jump">Go to</label>
         <input

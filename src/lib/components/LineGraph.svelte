@@ -1,7 +1,9 @@
 <script>
-  import { onMount } from 'svelte';               // used to ensures the canvas exists before Chart.js tries to draw on it.
+  // used to ensures the canvas exists before Chart.js tries to draw on it.
+  import { onMount } from 'svelte';
   
-  let {                                           // local variables
+  // local variables
+  let {
     data: singleData = null, 
     multiData = null 
   } = $props();
@@ -9,10 +11,11 @@
   let canvasElement;
   let chartInstance;
 
-  function fnBuildScatterOptions(isMulti) {       // called from fnBuildLineChart to build the chart.js object
+  // called from fnBuildLineChart to build the chart.js object
+  function fnBuildScatterOptions(isMulti) {
     return {
       responsive: true,
-      maintainAspectRatio: false,                 // let the css-driven wrapper height control the chart height instead of forcing a square
+      maintainAspectRatio: false,
       plugins: {
         legend: {
           display: isMulti,
@@ -47,7 +50,8 @@
             const day = date.getDate();
             const month = date.toLocaleString('en-AU', { month: 'short' });
 
-            const fnOrdinal = (n) => {            // changes dates to include the 1"st" may of the month instead of saying 1 may etc
+            // changes dates to include the 1"st" may of the month instead of saying 1 may etc
+            const fnOrdinal = (n) => {
               if (n > 3 && n < 21) return `${n}th`;
 
               switch (n % 10) {
@@ -70,7 +74,8 @@
           callback: (value) => {
           const abs = Math.abs(value);
 
-          if (abs >= 1_000_000_000) {             // makes it so instead of listing 1000000 it says 1mil
+          // makes it so instead of listing 1000000 it says 1mil
+          if (abs >= 1_000_000_000) {
             return (value / 1_000_000_000).toFixed(1).replace(/\.0$/, '') + 'bil';
           }
 
@@ -91,22 +96,25 @@
     };
   }
 
-  function fnToScatterPoints(runArray) {          // converts the api-shaped [{submitted_at, score}] into chart.js scatter points
+  // converts the api-shaped [{submitted_at, score}] into chart.js scatter points
+  function fnToScatterPoints(runArray) {
     return [...runArray]
       .sort((a, b) => new Date(a.submitted_at) - new Date(b.submitted_at))
       .map((run) => ({ x: new Date(run.submitted_at).getTime(), y: run.score }));
   }
 
-  function fnBuildLineChart() {                   // called from onMount below + the data-change $effect below
+  // called from onMount below + the data-change $effect below
+  function fnBuildLineChart() {
     if (!canvasElement) return;
-    if (chartInstance) chartInstance.destroy();                    // destroy the previous chart before rebuilding
+    if (chartInstance) chartInstance.destroy();
 
     const isMulti = multiData && (multiData.solo?.length || multiData.crew?.length);
     const singleArray = singleData ?? [];
 
     if (!isMulti && !singleArray.length) return;
 
-    import('chart.js/auto').then(({ Chart }) => {                  // lazy import so Chart.js isn't bundled into the initial page load
+    // lazy import so Chart.js isn't bundled into the initial page load
+    import('chart.js/auto').then(({ Chart }) => {
       if (isMulti) {
         const datasets = [];
 
@@ -161,12 +169,12 @@
 
   onMount(() => {
     fnBuildLineChart();
-    return () => chartInstance?.destroy();         // cleanup: destroy the chart when the component unmounts to free memory
+    return () => chartInstance?.destroy();
   });
 
   $effect(() => {
     singleData;
-    multiData;                                     // reading both props here tells Svelte to re-run this effect whenever either one changes
+    multiData;
     fnBuildLineChart();
   });
 </script>
