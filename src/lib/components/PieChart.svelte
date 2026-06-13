@@ -146,6 +146,7 @@
     border-radius: 0.4rem;
     width: 100%;
     height: 400px;
+    min-width: 0;
   }
 
   .chart-container {
@@ -191,12 +192,24 @@
     column-gap: 1.5rem;
     margin: 0.25rem auto 0;
     font-size: 0.8rem;
+    width: 100%;
   }
 
   .breakdown.two-col {
     grid-template-columns: 1fr 1fr;
     grid-auto-flow: column;
     grid-template-rows: repeat(var(--per-col-rows, 5), auto);
+  }
+  @media (max-width: 600px) {
+    .pie-wrap {
+      height: auto;
+    }
+
+    .breakdown.two-col {
+      grid-template-columns: 1fr;
+      grid-auto-flow: row;
+      grid-template-rows: none;
+    }
   }
 
   .bd-row {
