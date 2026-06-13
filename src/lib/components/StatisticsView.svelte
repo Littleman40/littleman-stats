@@ -445,7 +445,6 @@
     border: 1px solid var(--color-border);
     border-radius: 0.7rem;
     padding: 0.3rem;
-    min-width: fit-content;
   }
 
   .stats-wrap :global(.pie-wrap),
@@ -519,6 +518,7 @@
     background: var(--color-card-elevated);
     border: 1px solid var(--color-border);
     border-radius: 0.4rem;
+    min-width: 0;
   }
 
   .column-title {
@@ -540,11 +540,18 @@
     display: flex;
     flex-direction: column;
     gap: 0.3rem;
+    min-width: 0;
   }
 
   .extras-column :global(.pie-wrap) {
     height: 460px;
     gap: 0.3rem;
+  }
+
+  @media (max-width: 600px) {
+    .extras-column :global(.pie-wrap) {
+      height: auto;
+    }
   }
 
   .stats-loading {
