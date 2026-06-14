@@ -43,7 +43,7 @@ function fnApplyFilter(rawRecord, filterName) {
 function fnMapRecord(rawRecord) {
   return {
     nohesi_name: rawRecord.nohesi_name,
-    nohesi_pfp: rawRecord.nohesi_pfp,
+    nohesi_pfp: rawRecord.nohesi_pfp || rawRecord.steam_pfp || null,
     score: rawRecord.score,
     combo: rawRecord.combo,
     map: rawRecord.map,
@@ -55,7 +55,7 @@ function fnMapRecord(rawRecord) {
     rank_position: rawRecord.ranking?.position,
     tier_name: rawRecord.ranking?.tier_name,
     team_members: rawRecord.mode === 'team'
-      ? (rawRecord.team ?? []).map((teammate) => ({ name: teammate.nohesi_name, pfp: teammate.nohesi_pfp }))
+      ? (rawRecord.team ?? []).map((teammate) => ({ name: teammate.nohesi_name, pfp: teammate.nohesi_pfp || teammate.steam_pfp || null }))
       : []
   };
 }
