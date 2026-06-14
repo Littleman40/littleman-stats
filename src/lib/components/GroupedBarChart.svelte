@@ -56,9 +56,6 @@
       label: s.label,
       data: [...s.values],
       backgroundColor: s.color,
-      borderColor: '#000000',
-      borderWidth: 1,
-      borderRadius: 2,
       maxBarThickness: 40
     }));
 

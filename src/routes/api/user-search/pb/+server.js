@@ -109,7 +109,7 @@ export async function GET({ url, request }) {
     const profile = {
       steam_id: resolvedSteamId,
       nohesi_name: pbData.nohesi_name,
-      nohesi_pfp: pbData.nohesi_pfp,
+      nohesi_pfp: pbData.nohesi_pfp || pbData.steam_pfp || null,
       score: pbData.score,
       combo: pbData.combo,
       run_time: pbData.run_time,

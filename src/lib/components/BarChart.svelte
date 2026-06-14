@@ -42,9 +42,6 @@
           datasets: [{
             data: yAxisData,
             backgroundColor: barColor,
-            borderColor: '#000000',
-            borderWidth: 1,
-            borderRadius: 2,
             maxBarThickness: 60
           }]
         },
