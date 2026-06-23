@@ -11,7 +11,7 @@
   <section>
     <h2>About LittleManStats</h2>
     <p>
-      LittleManStats is a fan-made stats viewer for No HesiIt
+      LittleManStats is a fan-made stats viewer for No Hesi. It
       reformats publicly available leaderboard data into an easier-to-browse interface
       for the community. This site is not an official No Hesi product.
     </p>

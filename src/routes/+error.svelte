@@ -1,7 +1,3 @@
-<script>
-  import { page } from '$app/stores';
-</script>
-
 <div class="error-container">
   <h1>404</h1>
   <p>The page you were looking for doesn't exist</p>
