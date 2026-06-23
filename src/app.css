@@ -12,9 +12,7 @@
   --color-text: #ffffff;
   --color-muted: #c7c7c7;
   --color-text-on-light: #111111;
-  --color-accent: #f0f0f0;
   --color-error: #ff4444;
-  --color-success: #4caf50;
 
   --radius-card: 30px;
   --radius-btn: 6px;
@@ -74,24 +72,4 @@ button {
   margin: 0 auto;
   padding: 0 var(--page-padding);
   width: 100%;
-}
-
-.label {
-  font-size: 0.7rem;
-  font-weight: 500;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--color-muted);
-}
-
-.sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
 }

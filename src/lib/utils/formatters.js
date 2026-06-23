@@ -32,23 +32,6 @@ export function fnFormatTime(totalSeconds) {
 
 
 
-// returns when runs where completed from iso to local user time
-export function fnFormatDate(isoTimestamp) {
-
-  // if null just return a dash
-  if (!isoTimestamp) return '-';
-
-  // attempts to return data to the local timezone format, but otherwise just returns the origional time
-  try {
-    return new Date(isoTimestamp).toLocaleString();
-  } catch {
-    return isoTimestamp;
-  }
-}
-
-
-
-
 // formats a percentage value, and returns '<1%' for anything less than 1 percent
 export function fnFormatPercent(percentValue, { decimals = 0 } = {}) {
 

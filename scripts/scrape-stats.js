@@ -79,12 +79,12 @@ function fnCreateEmptyAggregations(filterName) {
       crew: 0
     },
 
-    map_distribution:           {},
-    input_distribution:         {},
-    traffic_distribution:       {},
-    cars_tally:                 {},
+    map_distribution: {},
+    input_distribution: {},
+    traffic_distribution: {},
+    cars_tally: {},
     tyre_compound_distribution: {},
-    camera_distribution:        {},
+    camera_distribution: {},
 
     run_time_histogram: new Array(RUN_TIME_BUCKET_COUNT).fill(0)
   };
@@ -383,7 +383,7 @@ async function fnFetchPageWithRetry(pageOffset) {
     }
   }
 
-  // if this occurs shit hit the fan and well it just didnt work
+  // if this occurs everything hit the fan and well it just didnt work
   throw lastError;
 }
 
@@ -566,7 +566,7 @@ async function fnRunScrape() {
     filters: aggregationsByFilter
   };
 
-  // make sure the output folder exists lol
+  // make sure the output folder exists before writing
   mkdirSync(dirname(OUTPUT_PATH), { recursive: true });
 
   // write the json

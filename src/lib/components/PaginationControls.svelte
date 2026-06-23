@@ -16,7 +16,7 @@
     submitEvent.preventDefault();
     const requestedPageNumber = parseInt(jumpInputValue, 10);
     if (!Number.isFinite(requestedPageNumber) || requestedPageNumber < 1) return;
-    if (totalPageCount != null && requestedPageNumber > totalPageCount) return;r
+    if (totalPageCount != null && requestedPageNumber > totalPageCount) return;
     onjump?.(requestedPageNumber);
     jumpInputValue = '';
   }

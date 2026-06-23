@@ -258,9 +258,11 @@
   }
 
   .att-video {
+    width: 100%;
     max-width: 100%;
     border-radius: 6px;
     display: block;
+    background: #000;
   }
 
   .fullscreen-btn {
@@ -317,11 +319,6 @@
     width: 32px;
     height: 32px;
     padding: 6px;
-  }
-
-  .att-video {
-    width: 100%;
-    background: #000;
   }
 
   .att-link {
