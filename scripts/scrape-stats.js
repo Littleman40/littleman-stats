@@ -67,8 +67,14 @@ const KNOWN_BASE_RANKS = new Set([
   'Certified'
 ]);
 
-// the amount of buckets in the histogram. 1 bucket is for up to 1 minute etc
-const RUN_TIME_BUCKET_COUNT = 15;
+// the amount of buckets in the histogram. runs max out at 3 minutes (180s) this series, so 6 buckets of 30 seconds each
+const RUN_TIME_BUCKET_COUNT = 6;
+
+// seconds covered by each run time bucket
+const RUN_TIME_BUCKET_SECONDS = 30;
+
+// caps how many crew scatter points get saved - the api is ordered by score, so this keeps the top crew runs and stops stats.json ballooning
+const PROX_SCATTER_MAX_POINTS = 5000;
 
 // creates empty buckets at the start of each scrape for each fo the 4 filter buckets
 function fnCreateEmptyAggregations(filterName) {
@@ -97,12 +103,9 @@ function fnCreateEmptyAggregations(filterName) {
     }
   }
 
-  // team size by rank is only meaningful for crew runs
+  // the crew view plots each crew run as a prox_time vs prox_combo scatter point
   if (filterName === 'crew') {
-    aggregations.team_size_by_rank = {};
-    for (const rankName of KNOWN_BASE_RANKS) {
-      aggregations.team_size_by_rank[rankName] = { '2': 0, '3': 0, '4': 0, '5': 0 };
-    }
+    aggregations.prox_scatter = [];
   }
 
   return aggregations;
@@ -113,20 +116,20 @@ function fnGetMatchingFilters(rawRecord) {
   // every record will go into the all bucket
   const matches = ['all'];
 
-  // any record with the mode equal to team is a crew run
-  if (rawRecord.mode === 'team') {
+  // every entry is a single player now, so crew vs solo comes from the proximity combo - above 1 means they ran with other players
+  if (Number(rawRecord.prox_combo) > 1) {
     matches.push('crew');
 
   // otherwise it will be a solo run
-  } else if (rawRecord.mode === 'solo') {
+  } else {
     matches.push('solo');
+  }
 
-    // as long as car_model is a string then we check to see if it has the word realistic inside it, and if so, add it to the realistic bucket. This is only for solo runs, as crew runs can have multiple different cars
-    if (typeof rawRecord.car_model === 'string') {
-      const carModelLowercase = rawRecord.car_model.toLowerCase();
-      if (carModelLowercase.includes('realistic')) {
-        matches.push('realistic');
-      }
+  // as long as car_model is a string then we check to see if it has the word realistic inside it, and if so, add it to the realistic bucket. this now covers both crew and solo runs since every entry is just one person and one car
+  if (typeof rawRecord.car_model === 'string') {
+    const carModelLowercase = rawRecord.car_model.toLowerCase();
+    if (carModelLowercase.includes('realistic')) {
+      matches.push('realistic');
     }
   }
 
@@ -233,25 +236,20 @@ function fnBumpAggregations(agg, rawRecord) {
   // add a count to the total runs on the lb
   agg.total_runs += 1;
 
-  // split our record into crew or solo
+  // split our record into crew or solo - a proximity combo above 1 means they ran with other players
   let modeKey;
-  if (rawRecord.mode === 'team') {
+  if (Number(rawRecord.prox_combo) > 1) {
     modeKey = 'crew';
-  } else if (rawRecord.mode === 'solo') {
-    modeKey = 'solo';
   } else {
-    // safety check, even though it should never happen
-    modeKey = null;
+    modeKey = 'solo';
   }
 
   // tally the mode
-  if (modeKey !== null) {
-    agg.mode_split[modeKey] += 1;
-  }
+  agg.mode_split[modeKey] += 1;
 
   // add record to the rank histogram - only present on filters that use it (all, solo, realistic)
   const baseRank = fnExtractBaseRank(rawRecord);
-  if (agg.rank_histogram !== undefined && baseRank !== null && modeKey !== null) {
+  if (agg.rank_histogram !== undefined && baseRank !== null) {
     agg.rank_histogram[baseRank][modeKey] += 1;
   }
 
@@ -284,16 +282,16 @@ function fnBumpAggregations(agg, rawRecord) {
     agg.traffic_distribution[trafficType] += 1;
   }
 
-  // run time is seconds so we convert to minutes
+  // run time is seconds, split into 30 second buckets since runs max out at 3 minutes this series
   const runTimeSeconds = Number(rawRecord.run_time);
 
   // ensures the time is valid
   if (Number.isFinite(runTimeSeconds) && runTimeSeconds > 0) {
-    // rounds to the correct bucket
-    const minutesBucket = Math.floor(runTimeSeconds / 60);
+    // rounds to the correct 30 second bucket
+    const thirtySecondBucket = Math.floor(runTimeSeconds / RUN_TIME_BUCKET_SECONDS);
 
-    // just put everything above 14 minutes in the very last bucket
-    const bucketIndex = Math.min(RUN_TIME_BUCKET_COUNT - 1, minutesBucket);
+    // anything at or above the 3 minute cap lands in the very last bucket
+    const bucketIndex = Math.min(RUN_TIME_BUCKET_COUNT - 1, thirtySecondBucket);
     agg.run_time_histogram[bucketIndex] += 1;
   }
 
@@ -324,15 +322,13 @@ function fnBumpAggregations(agg, rawRecord) {
     agg.camera_distribution[cameraType] += 1;
   }
 
-  // team size by rank - only present on the crew filter bucket
-  if (agg.team_size_by_rank !== undefined && modeKey === 'crew' && Array.isArray(rawRecord.team) && baseRank !== null) {
-    const teamSize = rawRecord.team.length;
-    const rankBucket = agg.team_size_by_rank[baseRank];
+  // prox scatter points
+  if (agg.prox_scatter !== undefined) {
+    const proxTimeSeconds = Number(rawRecord.prox_time);
+    const proxCombo = Number(rawRecord.prox_combo);
 
-    // bucket is pre-seeded for known ranks; sizes outside 2-5 fall outside the chart's x-axis and are dropped
-    if (rankBucket !== undefined && teamSize >= 2 && teamSize <= 5) {
-      const teamSizeKey = String(teamSize);
-      rankBucket[teamSizeKey] += 1;
+    if (Number.isFinite(proxTimeSeconds) && Number.isFinite(proxCombo) && agg.prox_scatter.length < PROX_SCATTER_MAX_POINTS) {
+      agg.prox_scatter.push({ prox_time: proxTimeSeconds, prox_combo: proxCombo });
     }
   }
 }
@@ -476,7 +472,7 @@ async function fnRunScrape() {
       fnBumpRankTotals(rankTotals, rawRecord, seenRankPositions);
 
       // collect solo scores for the post-loop histogram - only valid positive numbers
-      if (rawRecord.mode === 'solo') {
+      if (!(Number(rawRecord.prox_combo) > 1)) {
         const score = Number(rawRecord.score);
         if (Number.isFinite(score) && score > 0) {
           soloScores.push(score);

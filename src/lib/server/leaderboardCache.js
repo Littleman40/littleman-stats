@@ -17,20 +17,20 @@ const POLL_INTERVAL_MS = 150;
 const cacheByFilter = new Map();
 
 
-// applies the filter to a raw record
+// applies the filter to a raw record - every entry is one player now, so crew vs solo comes from prox_combo
 function fnApplyFilter(rawRecord, filterName) {
   switch (filterName) {
-    // 'crew' = team mode
-    case 'crew': return rawRecord.mode === 'team';
+    // 'crew' = ran alongside other players, shown by a proximity combo above 1
+    case 'crew': return Number(rawRecord.prox_combo) > 1;
 
-    // 'solo' = solo mode
-    case 'solo': return rawRecord.mode === 'solo';
+    // 'solo' = no proximity combo, meaning they ran alone
+    case 'solo': return Number(rawRecord.prox_combo) <= 1;
 
-    // 'realistic' = solo runs in a car whose model name contains 'realistic'
+    // 'realistic' = any run (crew or solo) in a car whose model name contains 'realistic'
     case 'realistic':
       const model = rawRecord.car_model;
       if (!model) return false;
-      return rawRecord.mode === 'solo' && model.toLowerCase().includes('realistic');
+      return model.toLowerCase().includes('realistic');
 
     // 'all' / unknown - keep everything
     default: return true;
@@ -48,15 +48,12 @@ function fnMapRecord(rawRecord) {
     combo: rawRecord.combo,
     map: rawRecord.map,
     traffic_type: rawRecord.traffic_type,
-    mode: rawRecord.mode,
+    prox_combo: rawRecord.prox_combo,
     car_model: rawRecord.car_model,
     input: rawRecord.input,
     camera_type: rawRecord.camera_type,
     rank_position: rawRecord.ranking?.position,
-    tier_name: rawRecord.ranking?.tier_name,
-    team_members: rawRecord.mode === 'team'
-      ? (rawRecord.team ?? []).map((teammate) => ({ name: teammate.nohesi_name, pfp: teammate.nohesi_pfp || teammate.steam_pfp || null }))
-      : []
+    tier_name: rawRecord.ranking?.tier_name
   };
 }
 

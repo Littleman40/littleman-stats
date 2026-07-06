@@ -270,7 +270,7 @@
   }
 
   .skeleton-row {
-    height: 63px;
+    height: 50px;
     background: var(--color-card-elevated);
     border-top: 1px solid var(--color-border);
     border-left: 1px solid var(--color-border);
