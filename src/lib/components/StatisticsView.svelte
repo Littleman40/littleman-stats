@@ -2,6 +2,7 @@
   import BarChart from './BarChart.svelte';
   import GroupedBarChart from './GroupedBarChart.svelte';
   import PieChart from './PieChart.svelte';
+  import ScatterChart from './ScatterChart.svelte';
   import TallyList from './TallyList.svelte';
   import { fnFormatPercent as fnFormatPercentValue } from '$lib/utils/formatters';
 
@@ -26,12 +27,15 @@
     2: 'Keyboard and Mouse'
   };
 
-  // the labels for all the run times - last bucket clamps everything ≥14 min together
-  const RUN_TIME_LABELS = Array.from({ length: 15 }, (_, i) => i === 14 ? '≥14' : `>${i}`);   
+  // the labels for all the run times - runs max out at 3 minutes this series, so 6 buckets of half a minute each
+  const RUN_TIME_LABELS = Array.from({ length: 6 }, (_, i) => `${i * 0.5}-${(i + 1) * 0.5}`);
 
   // colours for crew vs solo graphs
   const SERIES_COLOR_CREW = '#FF4069';
   const SERIES_COLOR_SOLO = '#36A2EB';
+
+  // colour for the realistic physics series
+  const SERIES_COLOR_REALISTIC = '#fb923c';
 
   // colour palletes for all charts
   const PALETTE_MAP     = ['#A78BFB', '#FF6384', '#33D399', '#0F766E', '#F59E0B', '#6D28D9', '#14B8A6'];
@@ -40,25 +44,14 @@
   const PALETTE_CAMERA  = ['#0C4A6E', '#0891B2', '#14532D', '#10B981', '#F59E0B', '#FBBF24', '#F43F5E', '#FB7185', '#D946EF', '#C084FC', '#8B5CF6', '#6366F1'];
   const PALETTE_TYRE    = ['#0C4A6E', '#0891B2', '#14532D', '#10B981', '#F59E0B', '#FBBF24', '#F43F5E', '#FB7185', '#D946EF', '#C084FC', '#8B5CF6', '#6366F1'];
 
-  // team chart colours
-  const TEAM_SIZE_SERIES_DEFS = [
-    { size: 2, label: '2 Players', color: '#fb923c' },
-    { size: 3, label: '3 Players', color: '#36A2EB' },
-    { size: 4, label: '4 Players', color: '#FF4069' },
-    { size: 5, label: '5 Players', color: '#22C55E' }
-  ];
-
-
   const activeData = $derived(filtersByName?.[activeFilter] ?? null);              // the aggregations bucket for whichever filter is active
   const allData    = $derived(filtersByName?.all ?? null);                         // the 'all' bucket is reused for total-runs context in every other filter's header
-  const soloData   = $derived(filtersByName?.solo ?? null);                        // realistic uses this as its rank-histogram denominator
 
-  // shared totals 
+  // shared totals
   const filterTotalRuns = $derived(activeData?.total_runs ?? 0);
   const overallTotalRuns = $derived(allData?.total_runs ?? 0);
   const crewRuns = $derived(allData?.mode_split?.crew ?? 0);
   const soloRuns = $derived(allData?.mode_split?.solo ?? 0);
-  const soloTotalRuns = $derived(soloData?.total_runs ?? 0);
 
   // rank chart series (all filter: crew% vs solo% per rank)
   const rankChartSeriesAll = $derived.by(() => {
@@ -83,76 +76,46 @@
     ];
   });
 
-  // rank chart - splits the data into each rank, and each rank has realistic, normal solo and crew
+  // rank chart - splits the data into each rank, and each rank is either realistic physics or not. realistic now covers crew and solo runs since every entry is a single player
   const realisticRankSeries = $derived.by(() => {
     const realisticHist = filtersByName?.realistic?.rank_histogram ?? {};
-    const soloHist = filtersByName?.solo?.rank_histogram ?? {};
-    const allHist = filtersByName?.all?.rank_histogram ?? {};                      // all-filter's rank histogram carries the crew counts per rank
+    const allHist = filtersByName?.all?.rank_histogram ?? {};                      // all-filter's rank histogram carries the total run counts per rank
 
     const realisticPcts = [];
-    const normalSoloPcts = [];
-    const crewPcts = [];
+    const normalPcts = [];
     const realisticCounts = [];
-    const normalSoloCounts = [];
-    const crewCounts = [];
+    const normalCounts = [];
 
     for (const rankName of RANK_DISPLAY_ORDER) {
-      const realisticAt = realisticHist[rankName]?.solo ?? 0;                      // realistic is inside solo so the realistic bucket's .solo side is the count we want
-      const soloAt = soloHist[rankName]?.solo ?? 0;
-      const crewAt = allHist[rankName]?.crew ?? 0;
-      const normalSoloAt = Math.max(0, soloAt - realisticAt);                      // non-realistic solo runs at this rank
+      const realisticBucket = realisticHist[rankName] ?? { crew: 0, solo: 0 };
+      const allBucket = allHist[rankName] ?? { crew: 0, solo: 0 };
 
-      const totalAt = realisticAt + normalSoloAt + crewAt;                         // every run at this rank, partitioned into exactly one of the three buckets
+      const realisticAt = realisticBucket.crew + realisticBucket.solo;             // realistic runs at this rank, crew and solo combined
+      const totalAt = allBucket.crew + allBucket.solo;                             // every run at this rank
+      const normalAt = Math.max(0, totalAt - realisticAt);                         // non-realistic runs at this rank
 
       if (totalAt > 0) {
         realisticPcts.push((realisticAt / totalAt) * 100);
-        normalSoloPcts.push((normalSoloAt / totalAt) * 100);
-        crewPcts.push((crewAt / totalAt) * 100);
+        normalPcts.push((normalAt / totalAt) * 100);
       } else {
         realisticPcts.push(0);
-        normalSoloPcts.push(0);
-        crewPcts.push(0);
+        normalPcts.push(0);
       }
 
       realisticCounts.push(realisticAt);
-      normalSoloCounts.push(normalSoloAt);
-      crewCounts.push(crewAt);
+      normalCounts.push(normalAt);
     }
 
     return [
-      { label: 'Realistic Physics', values: realisticPcts,  rawCounts: realisticCounts,  color: '#fb923c' },
-      { label: 'Solo',              values: normalSoloPcts, rawCounts: normalSoloCounts, color: SERIES_COLOR_SOLO },
-      { label: 'Crew',              values: crewPcts,       rawCounts: crewCounts,       color: SERIES_COLOR_CREW }
+      { label: 'Realistic Physics', values: realisticPcts, rawCounts: realisticCounts, color: SERIES_COLOR_REALISTIC },
+      { label: 'Non-Realistic',     values: normalPcts,    rawCounts: normalCounts,    color: SERIES_COLOR_SOLO }
     ];
   });
 
-  // team size per rank chart for crew filter
-    const teamSizeByRankSeries = $derived.by(() => {
-    const byRank = activeData?.team_size_by_rank ?? {};
-
-    // total crew runs per rank - used as the denominator so each rank's four segments sum to 100%
-    const totalsByRank = RANK_DISPLAY_ORDER.map((rankName) => {
-      const rankBucket = byRank[rankName] ?? {};
-      return TEAM_SIZE_SERIES_DEFS.reduce((sum, seriesDef) => sum + (rankBucket[String(seriesDef.size)] ?? 0), 0);
-    });
-
-    return TEAM_SIZE_SERIES_DEFS.map((seriesDef) => {
-      const values = [];
-      const rawCounts = [];
-      for (let rankIdx = 0; rankIdx < RANK_DISPLAY_ORDER.length; rankIdx += 1) {
-        const rankBucket = byRank[RANK_DISPLAY_ORDER[rankIdx]] ?? {};
-        const count = rankBucket[String(seriesDef.size)] ?? 0;
-        const total = totalsByRank[rankIdx];
-        values.push(total > 0 ? (count / total) * 100 : 0);
-        rawCounts.push(count);
-      }
-      return {
-        label: seriesDef.label,
-        values,
-        rawCounts,                                                                 // raw counts surface in tooltips alongside the percentage so users still see absolute numbers
-        color: seriesDef.color
-      };
-    });
+  // crew filter scatter points - each crew run is one point with prox time along the bottom and prox combo up the side
+  const proxScatterPoints = $derived.by(() => {
+    const rawPoints = activeData?.prox_scatter ?? [];
+    return rawPoints.map((point) => ({ x: point.prox_time, y: point.prox_combo }));
   });
 
   // input label fixes
@@ -293,13 +256,12 @@
         </section>
 
         <section>
-          <GroupedBarChart
-            labels={RANK_DISPLAY_ORDER}
-            series={teamSizeByRankSeries}
-            displayMode="percentage"
-            orientation="horizontal"
-            stacked={true}
-            title="Crew Size Distribution by Rank"
+          <ScatterChart
+            points={proxScatterPoints}
+            color={SERIES_COLOR_CREW}
+            title="Prox Combo Breakdown"
+            xLabel="Prox Time (seconds)"
+            yLabel="Prox Combo"
           />
         </section>
 
@@ -370,10 +332,10 @@
 
         <section class="header-totals header-totals-2">
           <div class="total-card">
-            <p class="total-line">Total Solo Run Count: {fnFormatNumber(soloTotalRuns)}</p>
+            <p class="total-line">Total Run Count: {fnFormatNumber(overallTotalRuns)}</p>
           </div>
           <div class="total-card">
-            <p class="total-line">Total Realistic Physics Run Count: {fnFormatNumber(filterTotalRuns)} ({fnFormatPercent(filterTotalRuns, soloTotalRuns)})</p>
+            <p class="total-line">Total Realistic Physics Run Count: {fnFormatNumber(filterTotalRuns)} ({fnFormatPercent(filterTotalRuns, overallTotalRuns)})</p>
           </div>
         </section>
 
@@ -450,6 +412,7 @@
   .stats-wrap :global(.pie-wrap),
   .stats-wrap :global(.bar-wrap),
   .stats-wrap :global(.grouped-wrap),
+  .stats-wrap :global(.scatter-wrap),
   .stats-wrap :global(.tally-row),
   .stats-wrap .cars-column {
     background: var(--color-card-raised);

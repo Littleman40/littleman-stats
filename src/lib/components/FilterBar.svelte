@@ -13,7 +13,7 @@
     { value: 'all', label: 'Everything' },
     { value: 'crew', label: 'Crew' },
     { value: 'solo', label: 'Solo' },
-    { value: 'realistic', label: 'Realistic Physics (Solo)' }
+    { value: 'realistic', label: 'Realistic Physics' }
   ];
 
   // different view modes

@@ -47,11 +47,10 @@ export async function GET({ url }) {
     combo: record.combo,
     map: record.map,
     traffic_type: record.traffic_type,
-    mode: record.mode,
+    prox_combo: record.prox_combo,
     car_model: record.car_model,
     input: record.input,
-    tier_name: record.tier_name,
-    team_members: record.team_members
+    tier_name: record.tier_name
   }));
 
   // sends the json back to the front end
