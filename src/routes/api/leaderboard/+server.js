@@ -4,25 +4,30 @@ import { json } from '@sveltejs/kit';
 // import our cache functions and the shared response page size
 import { fnGetOrCreateCacheEntry, fnWaitForPage, RESPONSE_PAGE_SIZE } from '$lib/server/leaderboardCache.js';
 
+import { fnResolveMapSlug } from '$lib/utils/maps.js';
+
 
 
 // called by SvelteKit on GET /api/leaderboard, name is required by the framework. fetched from fnLoadLeaderboardData() in src/routes/leaderboard/+page.svelte
 export async function GET({ url }) {
-  
+
+  // gets the map from the url, falling back to the default map for anything unknown
+  const mapSlug = fnResolveMapSlug(url.searchParams.get('map'));
+
   // gets the filter from the url, and defaults to all if none exist
   const filterName = url.searchParams.get('filter') ?? 'all';
 
   // reads page number and makes sure the page number is at least 1
   const pageNumber = Math.max(1, parseInt(url.searchParams.get('page') ?? '1', 10));
 
-  // gets cached leaderboard data for filter or starts the fetch
-  const cacheEntry = fnGetOrCreateCacheEntry(filterName);
+  // gets cached leaderboard data for this map + filter or starts the fetch
+  const cacheEntry = fnGetOrCreateCacheEntry(mapSlug, filterName);
 
-  // wait only for the first upstream page so we know the leaderboard-wide run count
+  // wait only for the first upstream page so we know the map-wide run count
   await cacheEntry.totalKnownPromise;
 
   // hard page cap derived from total runs (20 records per page)
-  const maxPage = Math.max(1, Math.ceil(cacheEntry.totalFilteredCount / RESPONSE_PAGE_SIZE));
+  const maxPage = Math.max(1, Math.ceil(cacheEntry.totalRunCount / RESPONSE_PAGE_SIZE));
 
   // reject out-of-range pages immediately instead of polling forever for records that cannot exist
   if (pageNumber > maxPage) {
@@ -45,7 +50,7 @@ export async function GET({ url }) {
     nohesi_pfp: record.nohesi_pfp,
     score: record.score,
     combo: record.combo,
-    map: record.map,
+    run_time: record.run_time,
     traffic_type: record.traffic_type,
     prox_combo: record.prox_combo,
     car_model: record.car_model,

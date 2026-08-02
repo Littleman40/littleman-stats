@@ -1,6 +1,6 @@
 <script>
-  // importing the format score function to be used later in the table
-  import { fnFormatScore } from '$lib/utils/formatters.js';
+  // importing the format score and run time functions to be used later in the table
+  import { fnFormatScore, fnFormatTime } from '$lib/utils/formatters.js';
 
   // local variables
   let {
@@ -29,7 +29,7 @@
         <th>Player</th>
         <th>Score</th>
         <th>Combo</th>
-        <th>Map</th>
+        <th>Time</th>
         <th>Traffic</th>
         <th>Mode</th>
         <th>Car</th>
@@ -77,7 +77,8 @@
           
           <td class="num">{runRecord.combo}</td>
           
-          <td>{runRecord.map}</td>
+          <!-- run time comes back as seconds, so it gets shown as minutes:seconds -->
+          <td class="num">{fnFormatTime(runRecord.run_time)}</td>
           
           <td>{runRecord.traffic_type}</td>
           

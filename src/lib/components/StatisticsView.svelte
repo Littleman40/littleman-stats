@@ -38,7 +38,6 @@
   const SERIES_COLOR_REALISTIC = '#fb923c';
 
   // colour palletes for all charts
-  const PALETTE_MAP     = ['#A78BFB', '#FF6384', '#33D399', '#0F766E', '#F59E0B', '#6D28D9', '#14B8A6'];
   const PALETTE_INPUT   = ['#A78BFB', '#FF6384', '#33D399'];
   const PALETTE_TRAFFIC = ['#A78BFB', '#FF6384', '#33D399', '#0F766E', '#F59E0B'];
   const PALETTE_CAMERA  = ['#0C4A6E', '#0891B2', '#14532D', '#10B981', '#F59E0B', '#FBBF24', '#F43F5E', '#FB7185', '#D946EF', '#C084FC', '#8B5CF6', '#6366F1'];
@@ -215,13 +214,8 @@
         </section>
 
         <section class="pie-row">
-          <PieChart 
-            distribution={activeData.map_distribution ?? {}} 
-            title="Map Distribution" 
-            palette={PALETTE_MAP} 
-          />
-          <PieChart 
-            distribution={inputDistributionRelabeled} 
+          <PieChart
+            distribution={inputDistributionRelabeled}
             title="Input Distribution" 
             palette={PALETTE_INPUT} 
           />
@@ -266,13 +260,8 @@
         </section>
 
         <section class="pie-row">
-          <PieChart 
-            distribution={activeData.map_distribution ?? {}} 
-            title="Map Distribution" 
-            palette={PALETTE_MAP} 
-          />
-          <PieChart 
-            distribution={inputDistributionRelabeled} 
+          <PieChart
+            distribution={inputDistributionRelabeled}
             title="Input Distribution" 
             palette={PALETTE_INPUT} 
           />
@@ -310,13 +299,8 @@
         {/if}
 
         <section class="pie-row">
-          <PieChart 
-            distribution={activeData.map_distribution ?? {}} 
-            title="Map Distribution" 
-            palette={PALETTE_MAP}
-          />
-          <PieChart 
-            distribution={inputDistributionRelabeled} 
+          <PieChart
+            distribution={inputDistributionRelabeled}
             title="Input Distribution" 
             palette={PALETTE_INPUT} 
           />
@@ -351,13 +335,8 @@
         </section>
 
         <section class="pie-row">
-          <PieChart 
-            distribution={activeData.map_distribution ?? {}} 
-            title="Map Distribution" 
-            palette={PALETTE_MAP} 
-          />
-          <PieChart 
-            distribution={inputDistributionRelabeled} 
+          <PieChart
+            distribution={inputDistributionRelabeled}
             title="Input Distribution" 
             palette={PALETTE_INPUT} 
           />
@@ -455,7 +434,7 @@
 
   .pie-row {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     gap: 0.3rem;
   }
 
