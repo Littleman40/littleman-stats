@@ -1,10 +1,17 @@
 <script>
+  // for updating the URL without a full page refresh
+  import { goto } from '$app/navigation';
+  // provides access to current url
+  import { page } from '$app/state';
+  import MapFilter from '$lib/components/MapFilter.svelte';
+  import { DEFAULT_MAP_SLUG, fnResolveMapSlug } from '$lib/utils/maps.js';
+
   // auto-refresh rank data every 30 minutes
   const REFRESH_INTERVAL_MS = 30 * 60 * 1000;
 
   // hardcoded percentile labels for each rank
   const PERCENTILES = {
-    'Certified':    '0.1% (capped at 75)',
+    'Certified':    '0.1% (capped at 50)',
     'Sanctioned 3': '0.4%',
     'Sanctioned 2': '0.7%',
     'Sanctioned 1': '1%',
@@ -25,6 +32,7 @@
     'Listed 1':     '100%',
   };
 
+  let activeMap = $state(DEFAULT_MAP_SLUG);
   let thresholds = $state([]);
   let lastUpdated = $state(null);
   let isLoading = $state(true);
@@ -48,41 +56,49 @@
   );
 
 
-  // fetches rank thresholds from the API and schedules the next auto-refresh
-  async function fnLoadRanks() {
+  // fetches that map's rank thresholds and schedules the next auto-refresh
+  async function fnLoadRanks(mapToLoad) {
     isLoading = true;
     loadError = null;
     try {
 
-      // fetches file
-      const response = await fetch('/ranks.json');
+      // each map gets scraped into its own ranks file
+      const response = await fetch('/ranks-' + mapToLoad + '.json');
 
       // error if bad response
       if (!response.ok) throw new Error('Rank file missing (HTTP ' + response.status + ')');
-      
+
       const data = await response.json();
-      
+
       if (data.error) throw new Error(data.error);
       thresholds = data.thresholds ?? [];
       lastUpdated = data.generated_at ? new Date(data.generated_at) : null;
     } catch {
       loadError = 'Failed to load rank data. Please try again.';
-    } finally { 
+    } finally {
       isLoading = false;
     }
 
-    // auto refresh logic
+    // auto refresh logic - reloads whichever map is on screen
     clearTimeout(refreshTimer);
-    refreshTimer = setTimeout(fnLoadRanks, REFRESH_INTERVAL_MS);
+    refreshTimer = setTimeout(() => fnLoadRanks(mapToLoad), REFRESH_INTERVAL_MS);
   }
 
+  // re-runs whenever the URL changes - reads the map from the URL and loads that map's ranks
   $effect(() => {
-    fnLoadRanks();
+    const mapFromUrl = fnResolveMapSlug(page.url.searchParams.get('map'));
+    activeMap = mapFromUrl;
+    fnLoadRanks(mapFromUrl);
 
     // cancel the pending auto-refresh when the page is left so we don't fetch in the background
     return () => clearTimeout(refreshTimer);
   });
-  
+
+  // called from MapFilter onmapchange in the template below - the URL change is what triggers the load via the $effect above
+  function fnHandleMapChange(selectedMap) {
+    goto('/ranks?map=' + selectedMap, { replaceState: false, keepFocus: true, noScroll: true });
+  }
+
 
   // formats number to include commas
   function fnFormatNumber(n) {
@@ -96,8 +112,13 @@
 
 <div class="page page-wrapper">
   <div class="page-header">
-    <h1>Rank Thresholds</h1>
-    <p>Rank thresholds, player counts, and percentiles.</p>
+    <div class="header-text">
+      <h1>Rank Thresholds</h1>
+      <p>Rank thresholds, player counts, and percentiles.</p>
+    </div>
+
+    <!-- every map has its own board and so its own rank thresholds -->
+    <MapFilter {activeMap} onmapchange={fnHandleMapChange} />
   </div>
 
   {#if isLoading}
@@ -133,7 +154,7 @@
   {:else if loadError}
     <div class="error-state">
       <p>{loadError}</p>
-      <button class="retry-btn" onclick={fnLoadRanks}>Retry</button>
+      <button class="retry-btn" onclick={() => fnLoadRanks(activeMap)}>Retry</button>
     </div>
   {:else}
     <div class="table-wrap">
@@ -177,8 +198,18 @@
     padding-bottom: 4rem;
   }
 
+  /* heading on the left, map picker centered against it on the right */
   .page-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
     margin-bottom: 1.5rem;
+  }
+
+  .header-text {
+    min-width: 0;
   }
 
   .page-header h1 {

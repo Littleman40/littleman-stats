@@ -1,8 +1,8 @@
-name: Update lb stats
+name: Update 110 lb stats
 
 on:
   schedule:
-    - cron: '30 6 * * *'
+    - cron: '30 22 * * *'
   workflow_dispatch:
 
 env:
@@ -21,19 +21,22 @@ jobs:
         with:
           node-version: 20
 
-      - run: node scripts/scrape-stats.js
+      - run: node scripts/scrape-110.js
 
       - name: Push updated stats
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          git add static/stats.json static/ranks.json
+          git add static/stats-110.json static/ranks-110.json
 
           if git diff --cached --quiet; then
             echo "No changes"
             exit 0
           fi
 
-          git commit -m "update stats and ranks"
+          git commit -m "update stats and ranks for 110"
+
+          # another map's scrape may have landed since checkout, so rebase onto it before pushing
+          git pull --rebase origin production
           git push

@@ -7,7 +7,9 @@
   import LeaderboardTable from '$lib/components/LeaderboardTable.svelte';
   import PaginationControls from '$lib/components/PaginationControls.svelte';
   import StatisticsView from '$lib/components/StatisticsView.svelte';
+  import { DEFAULT_MAP_SLUG, fnResolveMapSlug } from '$lib/utils/maps.js';
 
+  let activeMap = $state(DEFAULT_MAP_SLUG);
   let activeFilter = $state('all');
   let currentPageNumber = $state(1);
   let activeView = $state('leaderboard');
@@ -23,6 +25,9 @@
   let statsLoading = $state(false);
   let statsError = $state(null);
 
+  // which map the loaded stats belong to - a plain variable so reading it doesn't re-trigger the url effect
+  let statsLoadedForMap = null;
+
   // increment each time we start a fetch, to order responses
   let latestRequestId = 0;
 
@@ -31,7 +36,10 @@
     // reads current url
     const urlParams = page.url.searchParams;
 
-    // reads filter, and defaults to all 
+    // reads the map, falling back to the default map for anything unknown
+    const mapFromUrl = fnResolveMapSlug(urlParams.get('map'));
+
+    // reads filter, and defaults to all
     const filterFromUrl = urlParams.get('filter') ?? 'all';
 
     // reads page number and defaults to 1
@@ -40,25 +48,28 @@
     // reads view and defaults to leaderboard
     const viewFromUrl = urlParams.get('view') ?? 'leaderboard';
 
+    activeMap = mapFromUrl;
     activeFilter = filterFromUrl;
     currentPageNumber = pageFromUrl;
     activeView = viewFromUrl;
 
-    // statistics view reads from the static stats.json snapshot, not the live api
+    // statistics view reads from that map's static stats snapshot, not the live api
     if (viewFromUrl === 'statistics') {
-      if (stats === null && !statsLoading) fnLoadStats();
+
+      // only refetch when the stats on screen belong to a different map
+      if (statsLoadedForMap !== mapFromUrl) fnLoadStats(mapFromUrl);
     } else {
 
       // loads leaderboard when not in stats mode
-      fnLoadLeaderboardData(filterFromUrl, pageFromUrl);
+      fnLoadLeaderboardData(mapFromUrl, filterFromUrl, pageFromUrl);
     }
   });
 
 
 
   // fetches the leaderboard data - called from the URL-watch $effect above and the Retry button in the template
-  async function fnLoadLeaderboardData(filterToLoad, pageNumberToLoad) {
-    
+  async function fnLoadLeaderboardData(mapToLoad, filterToLoad, pageNumberToLoad) {
+
     // marks this request as the newest
     const thisRequestId = ++latestRequestId;
     isLoading = true;
@@ -68,7 +79,7 @@
     try {
 
       // calls api
-      const apiResponse = await fetch(`/api/leaderboard?filter=${filterToLoad}&page=${pageNumberToLoad}`);
+      const apiResponse = await fetch(`/api/leaderboard?map=${mapToLoad}&filter=${filterToLoad}&page=${pageNumberToLoad}`);
       
       // a newer fetch started while we were waiting - discard this stale response
       if (thisRequestId !== latestRequestId) return;
@@ -96,19 +107,25 @@
   }
 
 
-  // loads static stats - called from the URL-watch $effect above and the StatisticsView retry callback in the template
-  async function fnLoadStats() {
+  // loads that map's static stats - called from the URL-watch $effect above and the StatisticsView retry callback in the template
+  async function fnLoadStats(mapToLoad) {
+
+    // claim the map straight away so the url effect doesn't kick off a second identical fetch
+    statsLoadedForMap = mapToLoad;
     statsLoading = true;
     statsError = null;
     try {
 
-      // fetches file
-      const response = await fetch('/stats.json');
+      // each map gets scraped into its own stats file
+      const response = await fetch(`/stats-${mapToLoad}.json`);
 
       // fails on bad response
       if (!response.ok) throw new Error(`Stats file missing (HTTP ${response.status})`);
       stats = await response.json();
     } catch (err) {
+
+      // let the next url change retry, since nothing usable ended up on screen
+      statsLoadedForMap = null;
       statsError = err.message;
     } finally {
       statsLoading = false;
@@ -117,8 +134,9 @@
 
 
   // builds and navigates to the url - called from every handler below; the URL change is what triggers the load via the $effect above
-  function fnSyncUrl(filterToApply, pageNumberToApply, viewToApply) {
+  function fnSyncUrl(mapToApply, filterToApply, pageNumberToApply, viewToApply) {
     const urlParams = new URLSearchParams();
+    urlParams.set('map', mapToApply);
     urlParams.set('filter', filterToApply);
     urlParams.set('page', String(pageNumberToApply));
 
@@ -131,29 +149,34 @@
     goto(`/leaderboard?${urlParams}`, { replaceState: false, keepFocus: true, noScroll: true });
   }
 
+  // called from FilterBar onmapchange in the template below - a different map is a different board, so go back to page 1
+  function fnHandleMapChange(selectedMap) {
+    fnSyncUrl(selectedMap, activeFilter, 1, activeView);
+  }
+
   // called from FilterBar onfilterchange in the template below
   function fnHandleFilterChange(selectedFilter) {
-    fnSyncUrl(selectedFilter, 1, activeView);
+    fnSyncUrl(activeMap, selectedFilter, 1, activeView);
   }
 
   // called from FilterBar onviewchange in the template below
   function fnHandleViewChange(selectedView) {
-    fnSyncUrl(activeFilter, 1, selectedView);
+    fnSyncUrl(activeMap, activeFilter, 1, selectedView);
   }
 
   // called from FilterBar onreset in the template below
   function fnHandleReset() {
-    fnSyncUrl('all', 1, activeView);
+    fnSyncUrl(DEFAULT_MAP_SLUG, 'all', 1, activeView);
   }
 
   // called from PaginationControls onprev in the template below
   function fnHandlePrev() {
-    fnSyncUrl(activeFilter, Math.max(1, currentPageNumber - 1), activeView);
+    fnSyncUrl(activeMap, activeFilter, Math.max(1, currentPageNumber - 1), activeView);
   }
 
   // called from PaginationControls onnext in the template below
   function fnHandleNext() {
-    fnSyncUrl(activeFilter, currentPageNumber + 1, activeView);
+    fnSyncUrl(activeMap, activeFilter, currentPageNumber + 1, activeView);
   }
 </script>
 
@@ -169,8 +192,10 @@
 
   <div>
     <FilterBar
+      {activeMap}
       {activeFilter}
       {activeView}
+      onmapchange={fnHandleMapChange}
       onfilterchange={fnHandleFilterChange}
       onviewchange={fnHandleViewChange}
       onreset={fnHandleReset}
@@ -182,7 +207,7 @@
         {activeFilter}
         loading={statsLoading}
         error={statsError}
-        onretry={fnLoadStats}
+        onretry={() => fnLoadStats(activeMap)}
       />
     {:else if isLoading}
       <div class="scroll-wrap">
@@ -203,7 +228,7 @@
       </div>
       <div class="error-state">
         <p>{loadError}</p>
-        <button class="retry-btn" onclick={() => fnLoadLeaderboardData(activeFilter, currentPageNumber)}>Retry</button>
+        <button class="retry-btn" onclick={() => fnLoadLeaderboardData(activeMap, activeFilter, currentPageNumber)}>Retry</button>
       </div>
     {:else if leaderboardRecords.length === 0}
       <div class="empty-state">

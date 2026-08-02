@@ -31,6 +31,32 @@ export function fnFormatTime(totalSeconds) {
 
 
 
+export function fnNormaliseTrafficType(rawTrafficType) {
+
+  // anything that isn't text has no traffic type to read
+  if (typeof rawTrafficType !== 'string') return null;
+
+  let cleaned = rawTrafficType.trim().toLowerCase();
+
+  // a literal 'none' is impossible in game, so it's treated as missing data rather than a real type
+  if (cleaned.length === 0 || cleaned === 'none') return null;
+
+  // drop the redundant 'traffic' word so 'Heavy Traffic' and 'heavy' end up identical, then tidy up the leftover spacing
+  cleaned = cleaned.replace(/\btraffic\b/g, ' ').replace(/[\s_]+/g, ' ').trim();
+  if (cleaned.length === 0) return null;
+
+  // rush hour turns up as one word and as two
+  if (cleaned === 'rushhour') cleaned = 'rush hour';
+
+  // capitalise each word so it reads nicely on the table and in the charts
+  return cleaned
+    .split(' ')
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
+}
+
+
+
 
 // formats a percentage value, and returns '<1%' for anything less than 1 percent
 export function fnFormatPercent(percentValue, { decimals = 0 } = {}) {

@@ -1,8 +1,12 @@
 <script>
+  import MapFilter from './MapFilter.svelte';
+
 // local variables
   let {
+    activeMap = 'srp',
     activeFilter = 'all',
     activeView = 'leaderboard',
+    onmapchange,
     onfilterchange,
     onviewchange,
     onreset
@@ -24,6 +28,10 @@
 </script>
 
 <div class="filter-bar">
+
+  <!-- each map has its own leaderboard this season, so the map is picked before anything else -->
+  <MapFilter {activeMap} {onmapchange} />
+
   <div class="group">
     <span class="group-label">Filter By:</span>
     <div class="pills">

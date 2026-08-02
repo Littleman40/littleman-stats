@@ -6,8 +6,14 @@ import { dirname, resolve } from 'node:path';
 
 import process from 'node:process';
 
-// no hesi url we are scraping
-const LEADERBOARD_API_URL = 'https://leaderboard-06nkmjf5r0.nohesi.gg/scores';
+// the map list is shared with the site so both agree on slugs and api names
+import { fnResolveMap } from '../src/lib/utils/maps.js';
+
+// shared with the site so the charts and the leaderboard table label traffic the same way
+import { fnNormaliseTrafficType } from '../src/lib/utils/formatters.js';
+
+// no hesi api host - season 7 gives every map its own leaderboard, so the map name goes on the end of this
+const LEADERBOARD_API_BASE = 'https://leaderboard-06nkmjf5r0.nohesi.gg';
 
 // how many records per page
 const API_PAGE_SIZE = 100;
@@ -24,11 +30,15 @@ const RETRY_BACKOFF_MS = [1000, 2000, 4000];
 // set to something when testing so not everything gets scraped
 const TEST_MAX_PAGES = null;
 
-// saves the json file to where the process was run, which is what process.cwd does
-const OUTPUT_PATH = resolve(process.cwd(), 'static', 'stats.json');
+// saves the json file to where the process was run, which is what process.cwd does. each map gets its own file so the three scrapes never overwrite each other
+function fnBuildStatsPath(mapSlug) {
+  return resolve(process.cwd(), 'static', 'stats-' + mapSlug + '.json');
+}
 
-// the rank breakdown is written to the same static dir so the frontend can fetch it directly, just like stats.json
-const RANKS_OUTPUT_PATH = resolve(process.cwd(), 'static', 'ranks.json');
+// the rank breakdown is written to the same static dir so the frontend can fetch it directly, just like the stats file
+function fnBuildRanksPath(mapSlug) {
+  return resolve(process.cwd(), 'static', 'ranks-' + mapSlug + '.json');
+}
 
 // every rank tier from best to worst - used to seed and order the rank breakdown so even an empty tier still shows up in the right spot
 const RANK_TIER_ORDER = [
@@ -73,7 +83,7 @@ const RUN_TIME_BUCKET_COUNT = 6;
 // seconds covered by each run time bucket
 const RUN_TIME_BUCKET_SECONDS = 30;
 
-// caps how many crew scatter points get saved - the api is ordered by score, so this keeps the top crew runs and stops stats.json ballooning
+// caps how many crew scatter points get saved - the api is ordered by score, so this keeps the top crew runs and stops the stats file ballooning
 const PROX_SCATTER_MAX_POINTS = 5000;
 
 // creates empty buckets at the start of each scrape for each fo the 4 filter buckets
@@ -85,7 +95,6 @@ function fnCreateEmptyAggregations(filterName) {
       crew: 0
     },
 
-    map_distribution: {},
     input_distribution: {},
     traffic_distribution: {},
     cars_tally: {},
@@ -253,17 +262,6 @@ function fnBumpAggregations(agg, rawRecord) {
     agg.rank_histogram[baseRank][modeKey] += 1;
   }
 
-  // map distribution, so get map and then add 1 for it
-  if (typeof rawRecord.map === 'string' && rawRecord.map.length > 0) {
-    const mapName = rawRecord.map;
-
-    // gotta initialise the map if its not been seen before
-    if (agg.map_distribution[mapName] === undefined) {
-      agg.map_distribution[mapName] = 0;
-    }
-    agg.map_distribution[mapName] += 1;
-  }
-
   // input distribution, these are strings in the no hesi api, of 0 for wheel, 1 for controller and 2 for kb
   if (rawRecord.input !== null && rawRecord.input !== undefined) {
     const inputKey = String(rawRecord.input);
@@ -273,9 +271,9 @@ function fnBumpAggregations(agg, rawRecord) {
     agg.input_distribution[inputKey] += 1;
   }
 
-  // traffic type distribution, a literal "none" value is impossible in-game, so it's treated as bad/missing data and dropped rather than counted
-  if (typeof rawRecord.traffic_type === 'string' && rawRecord.traffic_type.length > 0 && rawRecord.traffic_type.toLowerCase() !== 'none') {
-    const trafficType = rawRecord.traffic_type;
+  // traffic type distribution. the normaliser folds the api's several spellings of each type onto one label, and returns null for missing data and for the literal "none" that can't happen in game
+  const trafficType = fnNormaliseTrafficType(rawRecord.traffic_type);
+  if (trafficType !== null) {
     if (agg.traffic_distribution[trafficType] === undefined) {
       agg.traffic_distribution[trafficType] = 0;
     }
@@ -333,15 +331,15 @@ function fnBumpAggregations(agg, rawRecord) {
   }
 }
 
-// fetches one page of the lb - and attempts again if it fails
-async function fnFetchPageWithRetry(pageOffset) {
+// fetches one page of the lb for one map - and attempts again if it fails
+async function fnFetchPageWithRetry(mapApiName, pageOffset) {
   let lastError;
 
   // you get 3 attempts from var at beginning
   for (let attempt = 0; attempt < RETRY_ATTEMPTS; attempt += 1) {
     try {
-      // url builder from var at beginning
-      const url = LEADERBOARD_API_URL + '?offset=' + pageOffset + '&limit=' + API_PAGE_SIZE;
+      // url builder from var at beginning - each map has its own scores endpoint
+      const url = LEADERBOARD_API_BASE + '/scores/maps/' + mapApiName + '?offset=' + pageOffset + '&limit=' + API_PAGE_SIZE;
 
       // fetches the api
       const response = await fetch(url);
@@ -383,9 +381,14 @@ async function fnFetchPageWithRetry(pageOffset) {
   throw lastError;
 }
 
-// entry point, what starts everything
-async function fnRunScrape() {
-  let startupMessage = '[scrape] starting - output=' + OUTPUT_PATH;
+// scrapes one map's leaderboard and writes that map's stats and ranks files. exported so each map's own scraper file can call it
+export async function fnScrapeMap(mapSlug) {
+  const mapEntry = fnResolveMap(mapSlug);
+  const mapApiName = mapEntry.apiName;
+  const outputPath = fnBuildStatsPath(mapEntry.slug);
+  const ranksOutputPath = fnBuildRanksPath(mapEntry.slug);
+
+  let startupMessage = '[scrape] starting map=' + mapEntry.slug + ' (' + mapApiName + ') - output=' + outputPath;
   if (TEST_MAX_PAGES !== null) {
     startupMessage = startupMessage + ' (capped at ' + TEST_MAX_PAGES + ' pages)';
   }
@@ -431,7 +434,7 @@ async function fnRunScrape() {
     }
 
     // fetch the next page of records from the api
-    const responseBody = await fnFetchPageWithRetry(pageOffset);
+    const responseBody = await fnFetchPageWithRetry(mapApiName, pageOffset);
 
     let records;
 
@@ -446,7 +449,7 @@ async function fnRunScrape() {
     if (upstreamTotal === null) {
       let metadataTotal;
       if (responseBody.metadata !== undefined && responseBody.metadata !== null) {
-        metadataTotal = responseBody.metadata.total_filtered_count;
+        metadataTotal = responseBody.metadata.total;
       } else {
         metadataTotal = undefined;
       }
@@ -557,16 +560,18 @@ async function fnRunScrape() {
   const output = {
     // generated at iso timestamp
     generated_at: new Date().toISOString(),
+    map: mapEntry.slug,
+    map_api_name: mapApiName,
     total_records_scraped: totalRecordsScraped,
     upstream_total: upstreamTotal,
     filters: aggregationsByFilter
   };
 
   // make sure the output folder exists before writing
-  mkdirSync(dirname(OUTPUT_PATH), { recursive: true });
+  mkdirSync(dirname(outputPath), { recursive: true });
 
   // write the json
-  writeFileSync(OUTPUT_PATH, JSON.stringify(output, null, 2));
+  writeFileSync(outputPath, JSON.stringify(output, null, 2));
 
   // build the rank breakdown output in canonical best-to-worst order
   const rankThresholds = [];
@@ -585,22 +590,27 @@ async function fnRunScrape() {
 
   const ranksOutput = {
     generated_at: new Date().toISOString(),
+    map: mapEntry.slug,
+    map_api_name: mapApiName,
     total_players: upstreamTotal,
     thresholds: rankThresholds
   };
 
-  // write the rank breakdown alongside stats.json
-  writeFileSync(RANKS_OUTPUT_PATH, JSON.stringify(ranksOutput, null, 2));
-  console.log('[scrape] wrote ' + RANKS_OUTPUT_PATH);
+  // write the rank breakdown alongside the stats file
+  writeFileSync(ranksOutputPath, JSON.stringify(ranksOutput, null, 2));
+  console.log('[scrape] wrote ' + ranksOutputPath);
 
   // total time taken
   const elapsedMs = Date.now() - scrapeStartMs;
   const elapsedSec = (elapsedMs / 1000).toFixed(1);
-  console.log('[scrape] done - ' + totalRecordsScraped + ' records, ' + pagesFetched + ' pages, ' + elapsedSec + 's');
-  console.log('[scrape] wrote ' + OUTPUT_PATH);
+  console.log('[scrape] done map=' + mapEntry.slug + ' - ' + totalRecordsScraped + ' records, ' + pagesFetched + ' pages, ' + elapsedSec + 's');
+  console.log('[scrape] wrote ' + outputPath);
 }
 
-fnRunScrape().catch(function(err) {
-  console.error('[scrape] fatal:', err);
-  process.exit(1);
-});
+// each map's scraper file calls this so they all report failures the same way, and exit non-zero so the workflow marks the run as failed
+export function fnRunScraperFor(mapSlug) {
+  fnScrapeMap(mapSlug).catch(function(err) {
+    console.error('[scrape] fatal:', err);
+    process.exit(1);
+  });
+}

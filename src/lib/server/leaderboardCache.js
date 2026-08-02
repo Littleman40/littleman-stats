@@ -1,8 +1,16 @@
-// upstream api endpoint
-const LEADERBOARD_API_URL = 'https://leaderboard-06nkmjf5r0.nohesi.gg/scores';
+import { fnResolveMap } from '$lib/utils/maps.js';
+import { fnNormaliseTrafficType } from '$lib/utils/formatters.js';
+
+// upstream api host - season 7 gives every map its own leaderboard, so the map name goes on the end of this
+const LEADERBOARD_API_BASE = 'https://leaderboard-06nkmjf5r0.nohesi.gg';
 
 // records per upstream api call, as per its pagination
 const API_PAGE_SIZE = 100;
+
+// builds the per-map scores url for one page of results
+function fnBuildMapUrl(mapApiName, pageOffset) {
+  return `${LEADERBOARD_API_BASE}/scores/maps/${mapApiName}?offset=${pageOffset}&limit=${API_PAGE_SIZE}`;
+}
 
 // 5 minutes - how long a cached filter is reused before refetching
 const CACHE_TTL_MS = 5 * 60 * 1000;
@@ -13,8 +21,13 @@ export const RESPONSE_PAGE_SIZE = 20;
 // how long fnWaitForPage sleeps between record-count checks
 const POLL_INTERVAL_MS = 150;
 
-// stores cahced leaderboard data for each filter
+// stores cached leaderboard data for each map + filter combination
 const cacheByFilter = new Map();
+
+// each map has its own board now, so the cache key has to include the map
+function fnBuildCacheKey(mapSlug, filterName) {
+  return `${mapSlug}:${filterName}`;
+}
 
 
 // applies the filter to a raw record - every entry is one player now, so crew vs solo comes from prox_combo
@@ -46,8 +59,10 @@ function fnMapRecord(rawRecord) {
     nohesi_pfp: rawRecord.nohesi_pfp || rawRecord.steam_pfp || null,
     score: rawRecord.score,
     combo: rawRecord.combo,
-    map: rawRecord.map,
-    traffic_type: rawRecord.traffic_type,
+    run_time: rawRecord.run_time,
+
+    // folded onto one label so 'heavy' and 'Heavy Traffic' don't show up as two different things
+    traffic_type: fnNormaliseTrafficType(rawRecord.traffic_type),
     prox_combo: rawRecord.prox_combo,
     car_model: rawRecord.car_model,
     input: rawRecord.input,
@@ -66,12 +81,15 @@ function fnIsCacheEntryStale(cacheEntry) {
 
 
 
-// downloads all leaderboard pages in background and fills the cache
-async function fnFetchAllInBackground(filterName) {
+// downloads all leaderboard pages for one map in background and fills the cache
+async function fnFetchAllInBackground(mapSlug, filterName) {
 
   // if there was no cache entry, just exit
-  const cacheEntry = cacheByFilter.get(filterName);
+  const cacheEntry = cacheByFilter.get(fnBuildCacheKey(mapSlug, filterName));
   if (!cacheEntry) return;
+
+  // the map name the api expects on the end of the scores url
+  const mapApiName = fnResolveMap(mapSlug).apiName;
 
   // start with first page
   let pageOffset = 0;
@@ -81,7 +99,7 @@ async function fnFetchAllInBackground(filterName) {
     while (true) {
 
       // fetch 100 records starting from the offset
-      const upstreamResponse = await fetch(`${LEADERBOARD_API_URL}?offset=${pageOffset}&limit=${API_PAGE_SIZE}`);
+      const upstreamResponse = await fetch(fnBuildMapUrl(mapApiName, pageOffset));
 
       // if api fails throw error
       if (!upstreamResponse.ok) throw new Error(`Leaderboard API ${upstreamResponse.status}`);
@@ -89,9 +107,9 @@ async function fnFetchAllInBackground(filterName) {
       // convert the response to json
       const responseBody = await upstreamResponse.json();
 
-      // capture the leaderboard-wide run count from the first upstream page (same for every filter)
-      if (cacheEntry.totalFilteredCount === null) {
-        cacheEntry.totalFilteredCount = responseBody.metadata?.total_filtered_count ?? 0;
+      // capture the map-wide run count from the first upstream page (same for every filter on this map)
+      if (cacheEntry.totalRunCount === null) {
+        cacheEntry.totalRunCount = responseBody.metadata?.total ?? 0;
 
         // let the request handler proceed to its page-range check as soon as we know the total
         if (cacheEntry._resolveTotalKnown) {
@@ -113,17 +131,20 @@ async function fnFetchAllInBackground(filterName) {
         cacheEntry._resolveFirstPageReady();
         cacheEntry._resolveFirstPageReady = null;
       }
-      
-      // checks if there are any more pages to fetch based of total count and offset
-      const totalFilteredCount = responseBody.metadata?.total_filtered_count ?? 0;
-      const moreUpstreamPagesExist = pageOffset + upstreamRecords.length < totalFilteredCount;
+
+      // an empty page means there is nothing left to walk, so stop rather than loop forever
+      if (upstreamRecords.length === 0) break;
+
+      // the per-map api tells us directly whether another page exists
+      const totalRunCount = responseBody.metadata?.total ?? 0;
+      const moreUpstreamPagesExist = responseBody.metadata?.has_more ?? (pageOffset + upstreamRecords.length < totalRunCount);
       if (!moreUpstreamPagesExist) break;
       pageOffset += API_PAGE_SIZE;
     }
 
   } catch (fetchErr) {
-    console.error(`Leaderboard cache fetch error (filter=${filterName}):`, fetchErr);
-  
+    console.error(`Leaderboard cache fetch error (map=${mapSlug} filter=${filterName}):`, fetchErr);
+
   } finally {
     cacheEntry.complete = true;
     cacheEntry.fetching = false;
@@ -145,10 +166,11 @@ async function fnFetchAllInBackground(filterName) {
 
 
 // gets cache if its valid, otherwise creates it - called from GET() in src/routes/api/leaderboard/+server.js
-export function fnGetOrCreateCacheEntry(filterName) {
+export function fnGetOrCreateCacheEntry(mapSlug, filterName) {
 
-  // gets cached entry for the filter
-  const existingEntry = cacheByFilter.get(filterName);
+  // gets cached entry for this map + filter pair
+  const cacheKey = fnBuildCacheKey(mapSlug, filterName);
+  const existingEntry = cacheByFilter.get(cacheKey);
 
   // if one exists then return it
   if (existingEntry && !fnIsCacheEntryStale(existingEntry)) {
@@ -159,7 +181,7 @@ export function fnGetOrCreateCacheEntry(filterName) {
   let resolveFirstPageReady;
   const firstPageReadyPromise = new Promise((resolve) => { resolveFirstPageReady = resolve; });
 
-  // resolves once the first upstream page reveals total_filtered_count
+  // resolves once the first upstream page reveals the map's total run count
   let resolveTotalKnown;
   const totalKnownPromise = new Promise((resolve) => { resolveTotalKnown = resolve; });
 
@@ -169,8 +191,8 @@ export function fnGetOrCreateCacheEntry(filterName) {
     fetching: true,
     timestamp: Date.now(),
 
-    // leaderboard-wide run count, populated by the first upstream fetch
-    totalFilteredCount: null,
+    // map-wide run count, populated by the first upstream fetch
+    totalRunCount: null,
     readyPromise: firstPageReadyPromise,
     totalKnownPromise,
     _resolveFirstPageReady: resolveFirstPageReady,
@@ -178,10 +200,10 @@ export function fnGetOrCreateCacheEntry(filterName) {
   };
 
   // stores in cache
-  cacheByFilter.set(filterName, freshCacheEntry);
+  cacheByFilter.set(cacheKey, freshCacheEntry);
 
   // kick off the background scrape; caller can await readyPromise
-  fnFetchAllInBackground(filterName);
+  fnFetchAllInBackground(mapSlug, filterName);
 
   // returns cache
   return freshCacheEntry;

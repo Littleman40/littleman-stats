@@ -29,7 +29,9 @@ This is a data-driven website built as my Year 12 NSW Enterprise Computing Major
    ```
 3. **scrape the data for statistics**
    ```bash
-   node scripts/scrape-stats.js
+   node scripts/scrape-srp.js
+   node scripts/scrape-415.js
+   node scripts/scrape-110.js
    ```
 4. **start the dev server**
    ```bash
