@@ -1,188 +1,189 @@
 {
-  "generated_at": "2026-10-09T19:43:11.834Z",
+  "generated_at": "2026-10-10T18:52:05.612Z",
   "map": "415",
   "map_api_name": "nohesi_415",
-  "total_records_scraped": 97969,
-  "upstream_total": 97958,
+  "total_records_scraped": 99463,
+  "upstream_total": 99449,
   "filters": {
     "all": {
-      "total_runs": 97969,
+      "total_runs": 99463,
       "mode_split": {
-        "solo": 86561,
-        "crew": 11408
+        "solo": 87860,
+        "crew": 11603
       },
       "input_distribution": {
-        "0": 69554,
-        "1": 20751,
-        "2": 7664
+        "0": 70639,
+        "1": 21050,
+        "2": 7774
       },
       "traffic_distribution": {
-        "Realistic": 35379,
-        "Heavy": 59213,
-        "Rush": 1349,
-        "Light": 1057
+        "Realistic": 36594,
+        "Heavy": 59502,
+        "Rush": 1350,
+        "Light": 1050
       },
       "cars_tally": {
-        "nohesi_toyota_supra_mk5": 5033,
-        "nohesi_lotus_evora_gt430": 176,
-        "nohesituned_dodge_viper": 1947,
+        "nohesi_toyota_supra_mk5": 5263,
+        "nohesi_lotus_evora_gt430": 172,
+        "nohesituned_dodge_viper": 2029,
         "nohesi_chevrolet_c8_zr1": 20,
-        "nohesi_porsche_gt3rs_vlct": 1718,
-        "nohesi_toyota_yaris_gr": 261,
-        "nohesi_bmw_m4_g82_adro_chris": 10711,
-        "nohesi_bmw_1m_e82": 2637,
-        "nohesi_lamborghini_huracan_lp610": 4718,
-        "nohesi_mercedes_a45_brabus": 2748,
-        "nohesi_infiniti_g37": 2662,
-        "nohesi_m3_e92": 3844,
-        "nohesi_bmw_x3m_f97_adro": 2709,
-        "nohesi_bmw_m340i_g20_chris": 6345,
-        "nohesi_toyota_supra_mk5_adro": 195,
-        "nohesi_bmw_x5m_f95": 3203,
-        "nohesi_volkswagen_golf_r_mk8": 403,
-        "nohesi_mclaren_w1": 207,
-        "nohesi_nissan_maxima_2jz": 917,
-        "nohesi_nissan_sentra_nismo": 1415,
-        "nohesi_bmw_m3_g80": 1185,
+        "nohesi_porsche_gt3rs_vlct": 1745,
+        "nohesi_toyota_yaris_gr": 264,
+        "nohesi_bmw_m4_g82_adro_chris": 10906,
+        "nohesi_bmw_1m_e82": 2629,
+        "nohesi_lamborghini_huracan_lp610": 4803,
+        "nohesi_mercedes_a45_brabus": 2895,
+        "nohesi_infiniti_g37": 2652,
+        "nohesi_m3_e92": 3842,
+        "nohesi_bmw_x3m_f97_adro": 2829,
+        "nohesi_bmw_m340i_g20_chris": 6428,
+        "nohesi_toyota_supra_mk5_adro": 193,
+        "nohesi_bmw_x5m_f95": 3205,
+        "nohesi_volkswagen_golf_r_mk8": 404,
+        "nohesi_mclaren_w1": 203,
+        "nohesi_nissan_maxima_2jz": 916,
+        "nohesi_nissan_sentra_nismo": 1407,
+        "nohesi_bmw_m3_g80": 1191,
         "nohesi_bmw_g87_adro_v2": 53,
-        "nohesi_lamborghini_svj_63": 5293,
-        "nohesi_vw_golf_r": 258,
-        "nohesi_range_rover_sv": 257,
+        "nohesi_lamborghini_svj_63": 5371,
+        "nohesi_vw_golf_r": 257,
+        "nohesi_range_rover_sv": 259,
         "nohesi_bmw_m140": 69,
-        "nohesi_lamborghini_urus_chris": 4657,
+        "nohesi_lamborghini_urus_chris": 4711,
         "nohesi_subaru_wrx_sti_gd_kz": 129,
         "nohesi_police_ford_f150": 1,
-        "nohesi_toyota_gr_yaris": 119,
-        "nohesi_bmw_g82_adro": 3643,
+        "nohesi_toyota_gr_yaris": 123,
+        "nohesi_bmw_g82_adro": 3642,
         "nohesi_porsche_singer_abflug": 23,
         "nohesi_bmw_e39_m5_vlct": 48,
-        "nohesi_brabus_rocket_900": 5807,
-        "nohesi_bmw_e90": 125,
-        "nohesi_honda_s2000": 145,
-        "nohesi_c63_23": 2949,
-        "nohesi_mazda_rx7_fc_vlct": 58,
+        "nohesi_brabus_rocket_900": 5909,
+        "nohesi_bmw_e90": 133,
+        "nohesi_honda_s2000": 146,
+        "nohesi_mazda_rx7_fc_vlct": 55,
+        "nohesi_c63_23": 2945,
         "nohesi_velocity_one_s": 9,
         "nohesi_ford_mustang_mk1_vlct": 3,
-        "nohesi_lexus_lc500": 5515,
-        "nohesi_m5_e60_hjckd": 164,
-        "nohesi_hellcat_charger": 4267,
+        "nohesi_lexus_lc500": 5603,
+        "nohesi_m5_e60_hjckd": 180,
+        "nohesi_hellcat_charger": 4317,
         "nohesi_mercedes_w201_vlct": 29,
-        "nohesi_infiniti_q50s_vlct": 64,
-        "nohesi_ford_mustang_terminator_vlct": 19,
-        "nohesi_ford_f150_super_shelby": 201,
-        "nohesi_bmw_m3_f80": 223,
-        "nohesi_toyota_gr86_adrowide": 20,
-        "nohesi_chrysler_300_hellcat": 212,
-        "nohesi_skyline_r34": 1069,
-        "nohesi_toyota_supra_mk5_adro_widebody": 38,
-        "nohesituned_nsx-r": 91,
-        "nohesi_audi_rs3_saloon_vlct": 55,
+        "nohesi_infiniti_q50s_vlct": 65,
+        "nohesi_ford_mustang_terminator_vlct": 17,
+        "nohesi_ford_f150_super_shelby": 200,
+        "nohesi_bmw_m3_f80": 227,
+        "nohesi_toyota_gr86_adrowide": 21,
+        "nohesi_chrysler_300_hellcat": 207,
+        "nohesi_skyline_r34": 1074,
+        "nohesi_toyota_supra_mk5_adro_widebody": 40,
+        "nohesituned_nsx-r": 93,
+        "nohesi_audi_rs3_saloon_vlct": 52,
         "nohesi_ferrari_812_nlargo": 1510,
-        "nohesituned_as_porsche_cayman_718_gt4_rs": 32,
-        "nohesi_bmw_m2_f87_comp": 210,
-        "nohesi_bmw_f90_m5cs_vlct": 34,
-        "nohesi_audi_rs5_f5": 291,
-        "nohesi_bmw_m3_e92_adro": 30,
+        "nohesituned_as_porsche_cayman_718_gt4_rs": 40,
+        "nohesi_bmw_m2_f87_comp": 218,
+        "nohesi_bmw_f90_m5cs_vlct": 35,
+        "nohesi_audi_rs5_f5": 308,
+        "nohesi_bmw_m3_e92_adro": 32,
         "nohesi_mercedes_c63_amg_w204_blackseries": 23,
-        "nohesi_bimmerplug_m4": 216,
-        "nohesi_bmw_m3_g80_adro": 234,
+        "nohesi_bimmerplug_m4": 235,
+        "nohesi_bmw_m3_g80_adro": 233,
         "nohesi_mercedes_gt63se": 19,
-        "nohesi_bmw_m5_g99": 176,
-        "nohesi_bmw_m3_e46": 243,
-        "nohesi_bmw_m8_f92": 212,
-        "nohesi_bmw_f81_m3": 114,
+        "nohesi_bmw_m5_g99": 174,
+        "nohesi_bmw_m3_e46": 249,
+        "nohesi_bmw_m8_f92": 222,
+        "nohesi_bmw_f81_m3": 118,
         "nohesi_bmw_f82_m4lci_vlct": 35,
-        "nohesi_370z_widebody": 108,
-        "nohesi_toyota_supra_mk4": 362,
+        "nohesi_370z_widebody": 107,
+        "nohesi_toyota_supra_mk4": 369,
         "nohesi_kimera_evo37_kz": 7,
         "nohesi_mclaren_720s": 7,
-        "nohesi_mercedes_c63_coupe": 221,
-        "nohesi_mercedes_brabus_gt600": 117,
-        "nohesi_mclaren_600lt_novitec": 185,
-        "nohesi_bmw_m2_f87": 24,
-        "nohesi_bmw_340i_f30": 166,
+        "nohesi_mercedes_c63_coupe": 233,
+        "nohesi_mercedes_brabus_gt600": 123,
+        "nohesi_mclaren_600lt_novitec": 184,
+        "nohesi_bmw_m2_f87": 30,
+        "nohesi_bmw_340i_f30": 171,
         "nohesi_porsche_992_gt3_adro": 18,
         "nohesi_police_ford_explorer": 4,
-        "nohesi_hellcat_redeye_charger": 190,
-        "nohesi_realistic_bmw_m4_g82_adro_chris": 441,
-        "nohesi_ford_mustang_gtd": 40,
-        "nohesi_nissan_gtr_r35_vlct": 43,
-        "nohesi_realistic_porsche_gt3rs_vlct": 9,
+        "nohesi_hellcat_redeye_charger": 189,
+        "nohesi_realistic_bmw_m4_g82_adro_chris": 439,
+        "nohesi_bmw_m340i_g20": 84,
+        "nohesi_ford_mustang_gtd": 41,
+        "nohesi_nissan_gtr_r35_vlct": 46,
+        "nohesi_realistic_porsche_gt3rs_vlct": 8,
         "nohesi_realistic_toyota_supra_mk5_adro": 8,
-        "nohesi_realistic_porsche_992_gt3_adro": 129,
+        "nohesi_realistic_porsche_992_gt3_adro": 132,
         "nohesi_mercedes_e63_w213": 24,
-        "nohesi_bentley_continental_gt": 82,
-        "nohesi_ford_mustang_gt350": 125,
+        "nohesi_bentley_continental_gt": 84,
+        "nohesi_ford_mustang_gt350": 128,
         "nohesi_realistic_bmw_m3_e46": 118,
-        "nohesi_mitsubishi_3000_gt": 82,
+        "nohesi_mitsubishi_3000_gt": 83,
         "nohesi_realistic_mercedes_e63_w213": 38,
         "nohesi_realistic_honda_civic_fl5_typer_adro": 54,
         "nohesi_realistic_chevrolet_c8_zr1": 122,
         "nohesi_realistic_toyota_gr86_adro": 112,
-        "nohesi_bmw_m3_g81": 81,
-        "nohesi_audi_rsq8": 98,
-        "nohesi_astonmartin_vantage_vlct": 14,
+        "nohesi_bmw_m3_g81": 83,
+        "nohesi_audi_rsq8": 103,
+        "nohesi_astonmartin_vantage_vlct": 15,
         "nohesi_realistic_mercedes_c63_amg_w204_blackseries": 42,
-        "nohesi_g82_comp_coupe": 235,
+        "nohesi_g82_comp_coupe": 242,
         "nohesi_lexus_is500": 7,
         "nohesi_realistic_nissan_gtr_r35_vlct": 71,
-        "nohesituned_quadrifoglio": 74,
-        "nohesi_rs6_c7": 55,
-        "nohesi_chevrolet_corvette_c6": 205,
+        "nohesituned_quadrifoglio": 75,
+        "nohesi_rs6_c7": 61,
+        "nohesi_chevrolet_corvette_c6": 203,
         "nohesi_mercedes_cls_c218": 19,
-        "nohesi_ct5v": 148,
-        "nohesi_bmw_g87_adro": 6,
-        "nohesi_realistic_bmw_g87_adro_v2": 335,
-        "nohesi_cadillac_ctsv_vlct": 6,
-        "nohesi_jeep_trackhawk": 135,
+        "nohesi_ct5v": 149,
+        "nohesi_bmw_g87_adro": 7,
+        "nohesi_realistic_bmw_g87_adro_v2": 333,
+        "nohesi_cadillac_ctsv_vlct": 7,
+        "nohesi_jeep_trackhawk": 136,
         "nohesi_realistic_ford_mustang_gtd": 11,
-        "nohesi_toyota_chaser_jzx100": 9,
-        "nohesi_hellcat_redeye_challenger": 197,
+        "nohesi_toyota_chaser_jzx100": 10,
+        "nohesi_hellcat_redeye_challenger": 195,
         "nohesi_chevrolet_corvette_c7_zr1_vlct": 10,
         "nohesi_mercedes_gt63": 10,
         "nohesi_police_m5_comp": 8,
-        "nohesi_bmw_m2_f87_comp_kyrex": 49,
+        "nohesi_bmw_m2_f87_comp_kyrex": 53,
         "nohesi_zl1_1le": 90,
         "nohesi_lamborghini_urus_performante_vlct": 9,
-        "bmw_x5m_f85_nohesi": 13,
+        "bmw_x5m_f85_nohesi": 14,
         "nohesi_audi_rs6_c8": 7,
-        "nohesi_bmw_m340i_g20": 78,
-        "nohesi_lexus_lfa_nurburgring": 68,
-        "nohesi_realistic_audi_rs6_c8": 303,
+        "nohesi_lexus_lfa_nurburgring": 67,
+        "nohesi_realistic_audi_rs6_c8": 302,
         "nohesi_realistic_bmw_f82_m4lci_vlct": 111,
         "nohesi_realistic_lamborghini_urus_chris": 103,
         "nohesi_realistic_bmw_m3_g80_adro": 9,
-        "nohesi_realistic_ford_mustang_terminator_vlct": 100,
+        "nohesi_realistic_ford_mustang_terminator_vlct": 99,
         "nohesi_lamborghini_temerario_vlct": 9,
-        "nohesi_honda_civic_fl5_typer_adro": 3,
+        "nohesi_honda_civic_fl5_typer_adro": 4,
         "nohesi_pagani_zonda_ay": 10,
-        "nohesi_m5_comp": 97,
+        "nohesi_m5_comp": 109,
         "nohesi_realistic_bmw_f90_m5cs_vlct": 57,
-        "nohesi_realistic_bmw_x3m_f97_adro": 25,
-        "nohesi_realistic_mercedes_gt63se": 85,
+        "nohesi_realistic_bmw_x3m_f97_adro": 23,
+        "nohesi_realistic_mercedes_gt63se": 84,
         "nohesi_realistic_range_rover_sv": 3,
         "nohesi_police_hellcat_charger": 7,
         "nohesi_realistic_bmw_m5_g99": 7,
         "nohesi_realistic_bmw_m140": 4,
         "nohesi_mercedes_gls_amg": 18,
-        "nohesi_realistic_lexus_is500": 31,
+        "nohesi_realistic_lexus_is500": 30,
         "nohesi_slap_g35": 8,
         "nohesi_realistic_toyota_yaris_gr": 2,
         "nohesi_realistic_toyota_chaser_jzx100": 4,
-        "nohesi_dodge_viper_acr": 1
+        "nohesi_dodge_viper_acr": 1,
+        "nohesi_realistic_audi_rs3_saloon_vlct": 1
       },
       "tyre_compound_distribution": {
-        "GRIP": 88610,
-        "REALISTIC": 1790,
-        "RAIN": 2615,
-        "DRIFT": 2469,
+        "GRIP": 89990,
+        "REALISTIC": 1809,
+        "RAIN": 2660,
+        "DRIFT": 2506,
         "MICHELIN PILOT SPORT CUP 2": 141,
-        "TOYO R888R": 99,
-        "MICHELIN PILOT SPORT 4S": 1717,
-        "MICHELIN PILOT SPORT CUP 2 R": 327,
-        "HYPERCAR ROAD": 25,
+        "TOYO R888R": 111,
+        "MICHELIN PILOT SPORT 4S": 1710,
+        "MICHELIN PILOT SPORT CUP 2 R": 328,
+        "HYPERCAR ROAD": 32,
         "PIRELLI P ZERO CORSA": 65,
-        "YOKOHAMA ADVAN NEOVA": 89,
+        "YOKOHAMA ADVAN NEOVA": 88,
         "DRAG": 1,
         "STREET SLICK": 1,
         "SLICKS HARD DTM90S": 3,
@@ -190,49 +191,50 @@
         "BRIDGESTONE POTENZA": 4,
         "STREET": 1,
         "STREET PERFORMANCE V2": 3,
+        "POTENZA": 1,
         "ECO": 1
       },
       "camera_distribution": {
-        "First Person Camera": 63624,
-        "Dashboard Camera": 5183,
-        "Chase Camera": 21678,
-        "Custom Camera": 317,
-        "Meta Camera": 855,
-        "Hood Camera": 5295,
-        "Bumper Camera": 1017
+        "First Person Camera": 64593,
+        "Dashboard Camera": 5265,
+        "Chase Camera": 21996,
+        "Custom Camera": 324,
+        "Meta Camera": 865,
+        "Hood Camera": 5383,
+        "Bumper Camera": 1037
       },
       "run_time_histogram": [
-        16111,
-        17275,
-        12371,
-        9942,
-        8867,
-        33403
+        16361,
+        17561,
+        12550,
+        10126,
+        9020,
+        33845
       ],
       "rank_histogram": {
         "Listed": {
-          "crew": 4806,
-          "solo": 44164
+          "crew": 4888,
+          "solo": 44834
         },
         "Noticed": {
-          "crew": 3460,
-          "solo": 21047
+          "crew": 3531,
+          "solo": 21346
         },
         "Marked": {
-          "crew": 1921,
-          "solo": 12775
+          "crew": 1945,
+          "solo": 12974
         },
         "Licensed": {
-          "crew": 600,
-          "solo": 4298
+          "crew": 603,
+          "solo": 4369
         },
         "Ghost": {
-          "crew": 433,
-          "solo": 3485
+          "crew": 445,
+          "solo": 3533
         },
         "Sanctioned": {
-          "crew": 150,
-          "solo": 780
+          "crew": 153,
+          "solo": 792
         },
         "Certified": {
           "crew": 38,
@@ -241,127 +243,127 @@
       }
     },
     "crew": {
-      "total_runs": 11408,
+      "total_runs": 11603,
       "mode_split": {
         "solo": 0,
-        "crew": 11408
+        "crew": 11603
       },
       "input_distribution": {
-        "0": 8055,
-        "1": 2584,
-        "2": 769
+        "0": 8196,
+        "1": 2628,
+        "2": 779
       },
       "traffic_distribution": {
-        "Realistic": 4004,
-        "Heavy": 7151,
+        "Realistic": 4171,
+        "Heavy": 7181,
         "Rush": 85,
-        "Light": 112
+        "Light": 110
       },
       "cars_tally": {
-        "nohesi_toyota_supra_mk5": 680,
+        "nohesi_toyota_supra_mk5": 705,
         "nohesi_lotus_evora_gt430": 22,
         "nohesi_porsche_gt3rs_vlct": 303,
         "nohesi_toyota_yaris_gr": 41,
-        "nohesi_bmw_m4_g82_adro_chris": 1286,
-        "nohesi_lamborghini_huracan_lp610": 526,
-        "nohesi_mercedes_a45_brabus": 316,
-        "nohesi_bmw_x3m_f97_adro": 412,
-        "nohesi_bmw_x5m_f95": 398,
-        "nohesi_nissan_maxima_2jz": 110,
-        "nohesi_bmw_m3_g80": 144,
-        "nohesi_lamborghini_svj_63": 617,
-        "nohesi_m3_e92": 430,
-        "nohesi_bmw_m340i_g20_chris": 698,
-        "nohesi_volkswagen_golf_r_mk8": 37,
-        "nohesi_bmw_1m_e82": 264,
-        "nohesi_bmw_g82_adro": 384,
-        "nohesi_c63_23": 341,
-        "nohesi_lamborghini_urus_chris": 581,
-        "nohesituned_dodge_viper": 268,
-        "nohesi_lexus_lc500": 580,
+        "nohesi_bmw_m4_g82_adro_chris": 1320,
+        "nohesi_lamborghini_huracan_lp610": 531,
+        "nohesi_mercedes_a45_brabus": 335,
+        "nohesi_bmw_x3m_f97_adro": 432,
+        "nohesi_bmw_x5m_f95": 403,
+        "nohesi_nissan_maxima_2jz": 109,
+        "nohesi_bmw_m3_g80": 143,
+        "nohesi_lamborghini_svj_63": 621,
+        "nohesi_m3_e92": 433,
+        "nohesi_bmw_m340i_g20_chris": 707,
+        "nohesi_volkswagen_golf_r_mk8": 38,
+        "nohesi_bmw_1m_e82": 263,
+        "nohesi_bmw_g82_adro": 387,
+        "nohesi_c63_23": 338,
+        "nohesi_lamborghini_urus_chris": 589,
+        "nohesituned_dodge_viper": 280,
+        "nohesi_lexus_lc500": 598,
         "nohesi_nissan_sentra_nismo": 151,
-        "nohesi_hellcat_charger": 494,
+        "nohesi_hellcat_charger": 495,
         "nohesituned_nsx-r": 10,
         "nohesi_toyota_supra_mk5_adro": 11,
         "nohesi_bmw_m3_e92_adro": 3,
-        "nohesi_brabus_rocket_900": 608,
+        "nohesi_brabus_rocket_900": 620,
         "nohesi_bmw_m3_g80_adro": 27,
-        "nohesi_range_rover_sv": 52,
+        "nohesi_range_rover_sv": 51,
         "nohesi_bmw_m140": 12,
-        "nohesi_infiniti_g37": 277,
+        "nohesi_infiniti_g37": 276,
         "nohesi_porsche_singer_abflug": 5,
-        "nohesi_toyota_gr_yaris": 12,
+        "nohesi_toyota_gr_yaris": 14,
         "nohesi_mclaren_720s": 1,
-        "nohesi_skyline_r34": 130,
+        "nohesi_skyline_r34": 129,
         "nohesi_toyota_supra_mk5_adro_widebody": 3,
         "nohesi_vw_golf_r": 30,
         "nohesi_ford_f150_super_shelby": 25,
         "nohesi_honda_s2000": 16,
-        "nohesi_bmw_f81_m3": 11,
+        "nohesi_bmw_f81_m3": 10,
         "nohesi_m5_e60_hjckd": 24,
         "nohesi_bentley_continental_gt": 8,
-        "nohesi_ferrari_812_nlargo": 161,
+        "nohesi_ferrari_812_nlargo": 163,
         "nohesi_audi_rs5_f5": 39,
         "nohesi_subaru_wrx_sti_gd_kz": 8,
-        "nohesi_bmw_340i_f30": 22,
-        "nohesi_bmw_f90_m5cs_vlct": 6,
+        "nohesi_bmw_340i_f30": 24,
+        "nohesi_bmw_f90_m5cs_vlct": 7,
         "nohesi_bmw_m3_g81": 11,
         "nohesi_astonmartin_vantage_vlct": 2,
         "nohesi_bmw_g87_adro_v2": 5,
-        "nohesi_mercedes_brabus_gt600": 29,
+        "nohesi_mercedes_brabus_gt600": 33,
         "nohesi_mazda_rx7_fc_vlct": 2,
-        "nohesi_chevrolet_corvette_c6": 25,
+        "nohesi_chevrolet_corvette_c6": 24,
         "nohesi_mercedes_cls_c218": 4,
         "nohesi_bmw_m5_g99": 15,
-        "nohesi_ct5v": 17,
-        "nohesi_mclaren_w1": 24,
-        "nohesi_bmw_m2_f87_comp": 28,
+        "nohesi_ct5v": 16,
+        "nohesi_mclaren_w1": 22,
+        "nohesi_bmw_m2_f87_comp": 29,
         "nohesi_bmw_g87_adro": 1,
         "nohesi_ford_mustang_terminator_vlct": 2,
         "nohesi_mercedes_w201_vlct": 2,
         "nohesi_hellcat_redeye_charger": 21,
         "nohesi_mercedes_c63_coupe": 30,
-        "nohesi_bmw_m3_f80": 34,
+        "nohesi_bmw_m3_f80": 33,
         "nohesi_realistic_bmw_m3_e46": 10,
-        "nohesi_bimmerplug_m4": 35,
+        "nohesi_bimmerplug_m4": 39,
         "nohesi_chrysler_300_hellcat": 24,
         "nohesi_bmw_e39_m5_vlct": 2,
-        "nohesi_infiniti_q50s_vlct": 8,
+        "nohesi_infiniti_q50s_vlct": 9,
         "nohesi_mitsubishi_3000_gt": 11,
         "nohesituned_quadrifoglio": 14,
-        "nohesi_bmw_e90": 20,
+        "nohesi_bmw_e90": 22,
         "nohesi_toyota_chaser_jzx100": 2,
         "nohesi_nissan_gtr_r35_vlct": 4,
         "nohesi_realistic_toyota_gr86_adro": 12,
         "nohesi_toyota_supra_mk4": 38,
         "bmw_x5m_f85_nohesi": 4,
         "nohesi_lexus_lfa_nurburgring": 12,
-        "nohesi_ford_mustang_gtd": 5,
-        "nohesi_g82_comp_coupe": 32,
+        "nohesi_ford_mustang_gtd": 6,
+        "nohesi_g82_comp_coupe": 34,
         "nohesi_bmw_m3_e46": 27,
         "nohesi_realistic_bmw_m4_g82_adro_chris": 21,
-        "nohesi_bmw_m8_f92": 17,
+        "nohesi_bmw_m8_f92": 20,
         "nohesi_bmw_m340i_g20": 12,
         "nohesi_bmw_f82_m4lci_vlct": 5,
-        "nohesi_ford_mustang_gt350": 23,
         "nohesi_realistic_bmw_g87_adro_v2": 19,
         "nohesi_370z_widebody": 7,
+        "nohesi_ford_mustang_gt350": 23,
         "nohesi_mercedes_e63_w213": 4,
         "nohesi_jeep_trackhawk": 15,
-        "nohesi_bmw_m2_f87": 6,
+        "nohesi_bmw_m2_f87": 9,
         "nohesi_pagani_zonda_ay": 4,
-        "nohesi_mclaren_600lt_novitec": 26,
-        "nohesi_rs6_c7": 5,
+        "nohesi_rs6_c7": 6,
+        "nohesi_mclaren_600lt_novitec": 25,
         "nohesi_realistic_mercedes_c63_amg_w204_blackseries": 3,
         "nohesi_audi_rsq8": 7,
         "nohesi_porsche_992_gt3_adro": 1,
         "nohesi_zl1_1le": 13,
-        "nohesi_hellcat_redeye_challenger": 22,
+        "nohesi_hellcat_redeye_challenger": 21,
         "nohesi_chevrolet_c8_zr1": 1,
         "nohesi_ford_mustang_mk1_vlct": 1,
         "nohesi_police_m5_comp": 1,
-        "nohesi_bmw_m2_f87_comp_kyrex": 4,
-        "nohesi_m5_comp": 12,
+        "nohesi_bmw_m2_f87_comp_kyrex": 5,
+        "nohesi_m5_comp": 14,
         "nohesi_realistic_audi_rs6_c8": 19,
         "nohesi_police_hellcat_charger": 4,
         "nohesi_realistic_mercedes_gt63se": 3,
@@ -379,47 +381,46 @@
         "nohesi_realistic_lamborghini_urus_chris": 4,
         "nohesi_realistic_bmw_f82_m4lci_vlct": 8,
         "nohesi_slap_g35": 1,
-        "nohesi_audi_rs3_saloon_vlct": 1,
+        "nohesituned_as_porsche_cayman_718_gt4_rs": 3,
         "nohesi_realistic_honda_civic_fl5_typer_adro": 4,
         "nohesi_realistic_chevrolet_c8_zr1": 4,
         "nohesi_cadillac_ctsv_vlct": 1,
-        "nohesituned_as_porsche_cayman_718_gt4_rs": 1,
         "nohesi_realistic_bmw_m3_g80_adro": 1,
         "nohesi_realistic_lexus_is500": 1,
         "nohesi_realistic_nissan_gtr_r35_vlct": 1
       },
       "tyre_compound_distribution": {
-        "GRIP": 10372,
-        "RAIN": 326,
-        "DRIFT": 292,
-        "REALISTIC": 271,
+        "GRIP": 10553,
+        "RAIN": 325,
+        "DRIFT": 296,
+        "REALISTIC": 278,
         "MICHELIN PILOT SPORT 4S": 99,
         "MICHELIN PILOT SPORT CUP 2 R": 17,
-        "TOYO R888R": 10,
+        "TOYO R888R": 12,
         "MICHELIN PILOT SPORT CUP 2": 7,
         "PIRELLI P ZERO CORSA": 5,
         "YOKOHAMA ADVAN NEOVA": 5,
         "DRAG": 1,
         "STREET SLICK": 1,
-        "HYPERCAR ROAD": 1,
+        "HYPERCAR ROAD": 3,
         "SEMISLICK": 1
       },
       "camera_distribution": {
-        "First Person Camera": 6992,
-        "Chase Camera": 2943,
-        "Meta Camera": 118,
-        "Bumper Camera": 109,
-        "Hood Camera": 642,
-        "Dashboard Camera": 552,
+        "First Person Camera": 7105,
+        "Chase Camera": 2986,
+        "Meta Camera": 121,
+        "Bumper Camera": 113,
+        "Hood Camera": 660,
+        "Dashboard Camera": 566,
         "Custom Camera": 52
       },
       "run_time_histogram": [
-        1167,
-        2019,
-        1801,
-        1468,
-        1260,
-        3693
+        1177,
+        2064,
+        1834,
+        1506,
+        1277,
+        3745
       ],
       "prox_scatter": [
         {
@@ -507,6 +508,10 @@
           "prox_combo": 1.88
         },
         {
+          "prox_time": 130,
+          "prox_combo": 1.91
+        },
+        {
           "prox_time": 162,
           "prox_combo": 1.82
         },
@@ -563,6 +568,10 @@
           "prox_combo": 1.8
         },
         {
+          "prox_time": 112,
+          "prox_combo": 1.7
+        },
+        {
           "prox_time": 151,
           "prox_combo": 1.76
         },
@@ -577,10 +586,6 @@
         {
           "prox_time": 177,
           "prox_combo": 3.26
-        },
-        {
-          "prox_time": 178,
-          "prox_combo": 1.53
         },
         {
           "prox_time": 130,
@@ -613,10 +618,6 @@
         {
           "prox_time": 123,
           "prox_combo": 1.6
-        },
-        {
-          "prox_time": 118,
-          "prox_combo": 2.14
         },
         {
           "prox_time": 105,
@@ -839,6 +840,10 @@
           "prox_combo": 2.01
         },
         {
+          "prox_time": 12,
+          "prox_combo": 1.05
+        },
+        {
           "prox_time": 2,
           "prox_combo": 1.02
         },
@@ -871,6 +876,10 @@
           "prox_combo": 1.13
         },
         {
+          "prox_time": 14,
+          "prox_combo": 1.07
+        },
+        {
           "prox_time": 76,
           "prox_combo": 1.39
         },
@@ -895,6 +904,10 @@
           "prox_combo": 1.06
         },
         {
+          "prox_time": 63,
+          "prox_combo": 1.34
+        },
+        {
           "prox_time": 173,
           "prox_combo": 2.13
         },
@@ -905,10 +918,6 @@
         {
           "prox_time": 27,
           "prox_combo": 1.12
-        },
-        {
-          "prox_time": 1,
-          "prox_combo": 1.01
         },
         {
           "prox_time": 178,
@@ -945,6 +954,10 @@
         {
           "prox_time": 173,
           "prox_combo": 1.87
+        },
+        {
+          "prox_time": 1,
+          "prox_combo": 1.01
         },
         {
           "prox_time": 19,
@@ -985,6 +998,10 @@
         {
           "prox_time": 175,
           "prox_combo": 1.1
+        },
+        {
+          "prox_time": 3,
+          "prox_combo": 1.01
         },
         {
           "prox_time": 50,
@@ -1047,6 +1064,10 @@
           "prox_combo": 1.01
         },
         {
+          "prox_time": 6,
+          "prox_combo": 1.03
+        },
+        {
           "prox_time": 2,
           "prox_combo": 1.01
         },
@@ -1075,16 +1096,16 @@
           "prox_combo": 1.92
         },
         {
+          "prox_time": 5,
+          "prox_combo": 1.02
+        },
+        {
           "prox_time": 97,
           "prox_combo": 2.51
         },
         {
           "prox_time": 12,
           "prox_combo": 1.05
-        },
-        {
-          "prox_time": 4,
-          "prox_combo": 1.02
         },
         {
           "prox_time": 4,
@@ -1185,10 +1206,6 @@
         {
           "prox_time": 12,
           "prox_combo": 1.07
-        },
-        {
-          "prox_time": 1,
-          "prox_combo": 1.01
         },
         {
           "prox_time": 3,
@@ -1419,6 +1436,10 @@
           "prox_combo": 1.05
         },
         {
+          "prox_time": 4,
+          "prox_combo": 1.03
+        },
+        {
           "prox_time": 168,
           "prox_combo": 1.07
         },
@@ -1555,10 +1576,6 @@
           "prox_combo": 1.74
         },
         {
-          "prox_time": 85,
-          "prox_combo": 1.48
-        },
-        {
           "prox_time": 152,
           "prox_combo": 1.18
         },
@@ -1573,6 +1590,10 @@
         {
           "prox_time": 45,
           "prox_combo": 1.32
+        },
+        {
+          "prox_time": 7,
+          "prox_combo": 1.03
         },
         {
           "prox_time": 35,
@@ -1601,6 +1622,10 @@
         {
           "prox_time": 93,
           "prox_combo": 1.46
+        },
+        {
+          "prox_time": 4,
+          "prox_combo": 1.02
         },
         {
           "prox_time": 4,
@@ -2075,10 +2100,6 @@
           "prox_combo": 1.14
         },
         {
-          "prox_time": 1,
-          "prox_combo": 1.01
-        },
-        {
           "prox_time": 108,
           "prox_combo": 1.61
         },
@@ -2099,6 +2120,10 @@
           "prox_combo": 1.02
         },
         {
+          "prox_time": 50,
+          "prox_combo": 1.17
+        },
+        {
           "prox_time": 113,
           "prox_combo": 1.54
         },
@@ -2109,6 +2134,10 @@
         {
           "prox_time": 8,
           "prox_combo": 1.03
+        },
+        {
+          "prox_time": 88,
+          "prox_combo": 1.4
         },
         {
           "prox_time": 111,
@@ -2189,6 +2218,10 @@
         {
           "prox_time": 78,
           "prox_combo": 1.36
+        },
+        {
+          "prox_time": 3,
+          "prox_combo": 1.01
         },
         {
           "prox_time": 105,
@@ -2301,6 +2334,10 @@
         {
           "prox_time": 7,
           "prox_combo": 1.02
+        },
+        {
+          "prox_time": 1,
+          "prox_combo": 1.01
         },
         {
           "prox_time": 9,
@@ -2503,6 +2540,10 @@
           "prox_combo": 1.05
         },
         {
+          "prox_time": 45,
+          "prox_combo": 1.26
+        },
+        {
           "prox_time": 138,
           "prox_combo": 1.67
         },
@@ -2527,6 +2568,10 @@
           "prox_combo": 1.02
         },
         {
+          "prox_time": 0,
+          "prox_combo": 1.01
+        },
+        {
           "prox_time": 163,
           "prox_combo": 1.21
         },
@@ -2549,6 +2594,10 @@
         {
           "prox_time": 56,
           "prox_combo": 1.23
+        },
+        {
+          "prox_time": 79,
+          "prox_combo": 1.36
         },
         {
           "prox_time": 0,
@@ -2637,10 +2686,6 @@
         {
           "prox_time": 121,
           "prox_combo": 1.6
-        },
-        {
-          "prox_time": 31,
-          "prox_combo": 1.19
         },
         {
           "prox_time": 45,
@@ -2955,6 +3000,10 @@
           "prox_combo": 1.01
         },
         {
+          "prox_time": 1,
+          "prox_combo": 1.02
+        },
+        {
           "prox_time": 14,
           "prox_combo": 1.05
         },
@@ -3104,10 +3153,6 @@
         },
         {
           "prox_time": 42,
-          "prox_combo": 1.23
-        },
-        {
-          "prox_time": 39,
           "prox_combo": 1.23
         },
         {
@@ -3355,6 +3400,10 @@
           "prox_combo": 1.05
         },
         {
+          "prox_time": 50,
+          "prox_combo": 1.28
+        },
+        {
           "prox_time": 178,
           "prox_combo": 1.25
         },
@@ -3397,10 +3446,6 @@
         {
           "prox_time": 178,
           "prox_combo": 1.84
-        },
-        {
-          "prox_time": 0,
-          "prox_combo": 1.01
         },
         {
           "prox_time": 9,
@@ -3575,10 +3620,6 @@
           "prox_combo": 1.01
         },
         {
-          "prox_time": 28,
-          "prox_combo": 1.12
-        },
-        {
           "prox_time": 114,
           "prox_combo": 1.5
         },
@@ -3729,6 +3770,10 @@
         {
           "prox_time": 162,
           "prox_combo": 1.01
+        },
+        {
+          "prox_time": 48,
+          "prox_combo": 1.24
         },
         {
           "prox_time": 10,
@@ -3915,6 +3960,10 @@
           "prox_combo": 1.03
         },
         {
+          "prox_time": 82,
+          "prox_combo": 1.45
+        },
+        {
           "prox_time": 45,
           "prox_combo": 1.19
         },
@@ -3933,6 +3982,10 @@
         {
           "prox_time": 179,
           "prox_combo": 1.01
+        },
+        {
+          "prox_time": 90,
+          "prox_combo": 1.48
         },
         {
           "prox_time": 179,
@@ -3975,16 +4028,16 @@
           "prox_combo": 1.02
         },
         {
+          "prox_time": 12,
+          "prox_combo": 1.03
+        },
+        {
           "prox_time": 19,
           "prox_combo": 1.21
         },
         {
           "prox_time": 179,
           "prox_combo": 1.68
-        },
-        {
-          "prox_time": 79,
-          "prox_combo": 1.53
         },
         {
           "prox_time": 133,
@@ -4069,6 +4122,10 @@
         {
           "prox_time": 10,
           "prox_combo": 1.05
+        },
+        {
+          "prox_time": 9,
+          "prox_combo": 1.06
         },
         {
           "prox_time": 147,
@@ -4235,8 +4292,16 @@
           "prox_combo": 1.21
         },
         {
+          "prox_time": 89,
+          "prox_combo": 1.47
+        },
+        {
           "prox_time": 177,
           "prox_combo": 1.07
+        },
+        {
+          "prox_time": 4,
+          "prox_combo": 1.01
         },
         {
           "prox_time": 1,
@@ -4495,6 +4560,10 @@
           "prox_combo": 1.31
         },
         {
+          "prox_time": 40,
+          "prox_combo": 1.3
+        },
+        {
           "prox_time": 26,
           "prox_combo": 1.12
         },
@@ -4529,10 +4598,6 @@
         {
           "prox_time": 85,
           "prox_combo": 1.51
-        },
-        {
-          "prox_time": 2,
-          "prox_combo": 1.01
         },
         {
           "prox_time": 4,
@@ -4635,10 +4700,6 @@
           "prox_combo": 1.02
         },
         {
-          "prox_time": 17,
-          "prox_combo": 1.09
-        },
-        {
           "prox_time": 2,
           "prox_combo": 1.02
         },
@@ -4667,6 +4728,10 @@
           "prox_combo": 1.54
         },
         {
+          "prox_time": 19,
+          "prox_combo": 1.11
+        },
+        {
           "prox_time": 17,
           "prox_combo": 1.08
         },
@@ -4681,6 +4746,10 @@
         {
           "prox_time": 3,
           "prox_combo": 1.01
+        },
+        {
+          "prox_time": 9,
+          "prox_combo": 1.05
         },
         {
           "prox_time": 60,
@@ -4709,6 +4778,10 @@
         {
           "prox_time": 66,
           "prox_combo": 1.43
+        },
+        {
+          "prox_time": 10,
+          "prox_combo": 1.04
         },
         {
           "prox_time": 3,
@@ -4761,10 +4834,6 @@
         {
           "prox_time": 171,
           "prox_combo": 1.04
-        },
-        {
-          "prox_time": 21,
-          "prox_combo": 1.09
         },
         {
           "prox_time": 11,
@@ -4841,10 +4910,6 @@
         {
           "prox_time": 20,
           "prox_combo": 1.1
-        },
-        {
-          "prox_time": 21,
-          "prox_combo": 1.12
         },
         {
           "prox_time": 148,
@@ -4931,16 +4996,16 @@
           "prox_combo": 1.61
         },
         {
-          "prox_time": 12,
-          "prox_combo": 1.04
-        },
-        {
           "prox_time": 166,
           "prox_combo": 1.02
         },
         {
           "prox_time": 5,
           "prox_combo": 1.01
+        },
+        {
+          "prox_time": 40,
+          "prox_combo": 1.32
         },
         {
           "prox_time": 169,
@@ -5003,6 +5068,10 @@
           "prox_combo": 1.05
         },
         {
+          "prox_time": 18,
+          "prox_combo": 1.08
+        },
+        {
           "prox_time": 2,
           "prox_combo": 1.03
         },
@@ -5045,10 +5114,6 @@
         {
           "prox_time": 91,
           "prox_combo": 2
-        },
-        {
-          "prox_time": 26,
-          "prox_combo": 1.13
         },
         {
           "prox_time": 2,
@@ -5117,10 +5182,6 @@
         {
           "prox_time": 178,
           "prox_combo": 1.24
-        },
-        {
-          "prox_time": 11,
-          "prox_combo": 1.04
         },
         {
           "prox_time": 5,
@@ -5339,10 +5400,6 @@
           "prox_combo": 1.02
         },
         {
-          "prox_time": 61,
-          "prox_combo": 1.35
-        },
-        {
           "prox_time": 4,
           "prox_combo": 1.02
         },
@@ -5399,8 +5456,16 @@
           "prox_combo": 1.79
         },
         {
+          "prox_time": 76,
+          "prox_combo": 1.45
+        },
+        {
           "prox_time": 11,
           "prox_combo": 1.02
+        },
+        {
+          "prox_time": 11,
+          "prox_combo": 1.03
         },
         {
           "prox_time": 126,
@@ -5715,6 +5780,10 @@
           "prox_combo": 1.08
         },
         {
+          "prox_time": 2,
+          "prox_combo": 1.02
+        },
+        {
           "prox_time": 67,
           "prox_combo": 1.53
         },
@@ -5725,6 +5794,10 @@
         {
           "prox_time": 178,
           "prox_combo": 1.28
+        },
+        {
+          "prox_time": 5,
+          "prox_combo": 1.01
         },
         {
           "prox_time": 178,
@@ -5773,10 +5846,6 @@
         {
           "prox_time": 1,
           "prox_combo": 1.01
-        },
-        {
-          "prox_time": 111,
-          "prox_combo": 1.95
         },
         {
           "prox_time": 40,
@@ -5943,6 +6012,10 @@
           "prox_combo": 1.61
         },
         {
+          "prox_time": 16,
+          "prox_combo": 1.12
+        },
+        {
           "prox_time": 177,
           "prox_combo": 1.01
         },
@@ -6037,6 +6110,10 @@
         {
           "prox_time": 25,
           "prox_combo": 1.07
+        },
+        {
+          "prox_time": 3,
+          "prox_combo": 1.02
         },
         {
           "prox_time": 15,
@@ -6175,10 +6252,6 @@
           "prox_combo": 1.01
         },
         {
-          "prox_time": 119,
-          "prox_combo": 1.21
-        },
-        {
           "prox_time": 96,
           "prox_combo": 1.54
         },
@@ -6209,6 +6282,10 @@
         {
           "prox_time": 44,
           "prox_combo": 1.28
+        },
+        {
+          "prox_time": 3,
+          "prox_combo": 1.01
         },
         {
           "prox_time": 177,
@@ -6487,6 +6564,10 @@
           "prox_combo": 1.65
         },
         {
+          "prox_time": 105,
+          "prox_combo": 1.55
+        },
+        {
           "prox_time": 69,
           "prox_combo": 1.45
         },
@@ -6521,6 +6602,10 @@
         {
           "prox_time": 5,
           "prox_combo": 1.03
+        },
+        {
+          "prox_time": 25,
+          "prox_combo": 1.11
         },
         {
           "prox_time": 178,
@@ -6573,6 +6658,10 @@
         {
           "prox_time": 9,
           "prox_combo": 1.09
+        },
+        {
+          "prox_time": 30,
+          "prox_combo": 1.11
         },
         {
           "prox_time": 2,
@@ -7036,10 +7125,6 @@
         },
         {
           "prox_time": 18,
-          "prox_combo": 1.1
-        },
-        {
-          "prox_time": 18,
           "prox_combo": 1.08
         },
         {
@@ -7093,6 +7178,10 @@
         {
           "prox_time": 2,
           "prox_combo": 1.02
+        },
+        {
+          "prox_time": 18,
+          "prox_combo": 1.09
         },
         {
           "prox_time": 1,
@@ -7419,6 +7508,10 @@
           "prox_combo": 1.04
         },
         {
+          "prox_time": 28,
+          "prox_combo": 1.12
+        },
+        {
           "prox_time": 5,
           "prox_combo": 1.02
         },
@@ -7441,6 +7534,10 @@
         {
           "prox_time": 4,
           "prox_combo": 1.01
+        },
+        {
+          "prox_time": 68,
+          "prox_combo": 1.31
         },
         {
           "prox_time": 67,
@@ -7615,10 +7712,6 @@
           "prox_combo": 1.01
         },
         {
-          "prox_time": 41,
-          "prox_combo": 1.22
-        },
-        {
           "prox_time": 18,
           "prox_combo": 1.1
         },
@@ -7723,6 +7816,10 @@
           "prox_combo": 1.01
         },
         {
+          "prox_time": 87,
+          "prox_combo": 1.58
+        },
+        {
           "prox_time": 3,
           "prox_combo": 1.04
         },
@@ -7783,12 +7880,12 @@
           "prox_combo": 1.02
         },
         {
-          "prox_time": 38,
-          "prox_combo": 1.22
+          "prox_time": 35,
+          "prox_combo": 1.21
         },
         {
-          "prox_time": 34,
-          "prox_combo": 1.12
+          "prox_time": 38,
+          "prox_combo": 1.22
         },
         {
           "prox_time": 51,
@@ -7825,6 +7922,10 @@
         {
           "prox_time": 77,
           "prox_combo": 1.35
+        },
+        {
+          "prox_time": 4,
+          "prox_combo": 1.01
         },
         {
           "prox_time": 11,
@@ -7893,10 +7994,6 @@
         {
           "prox_time": 1,
           "prox_combo": 1.01
-        },
-        {
-          "prox_time": 6,
-          "prox_combo": 1.02
         },
         {
           "prox_time": 179,
@@ -8029,6 +8126,10 @@
         {
           "prox_time": 11,
           "prox_combo": 1.07
+        },
+        {
+          "prox_time": 9,
+          "prox_combo": 1.05
         },
         {
           "prox_time": 9,
@@ -8197,6 +8298,10 @@
         {
           "prox_time": 110,
           "prox_combo": 1.5
+        },
+        {
+          "prox_time": 22,
+          "prox_combo": 1.09
         },
         {
           "prox_time": 31,
@@ -8463,6 +8568,10 @@
           "prox_combo": 1.6
         },
         {
+          "prox_time": 73,
+          "prox_combo": 1.62
+        },
+        {
           "prox_time": 95,
           "prox_combo": 1.5
         },
@@ -8497,6 +8606,10 @@
         {
           "prox_time": 2,
           "prox_combo": 1.01
+        },
+        {
+          "prox_time": 57,
+          "prox_combo": 1.42
         },
         {
           "prox_time": 24,
@@ -8665,10 +8778,6 @@
         {
           "prox_time": 9,
           "prox_combo": 1.03
-        },
-        {
-          "prox_time": 4,
-          "prox_combo": 1.02
         },
         {
           "prox_time": 47,
@@ -8841,6 +8950,10 @@
         {
           "prox_time": 19,
           "prox_combo": 1.12
+        },
+        {
+          "prox_time": 50,
+          "prox_combo": 1.63
         },
         {
           "prox_time": 17,
@@ -9203,6 +9316,10 @@
           "prox_combo": 1.08
         },
         {
+          "prox_time": 2,
+          "prox_combo": 1.02
+        },
+        {
           "prox_time": 19,
           "prox_combo": 1.08
         },
@@ -9367,10 +9484,6 @@
           "prox_combo": 1.02
         },
         {
-          "prox_time": 9,
-          "prox_combo": 1.04
-        },
-        {
           "prox_time": 147,
           "prox_combo": 1.13
         },
@@ -9524,10 +9637,6 @@
         },
         {
           "prox_time": 17,
-          "prox_combo": 1.05
-        },
-        {
-          "prox_time": 11,
           "prox_combo": 1.05
         },
         {
@@ -9765,6 +9874,10 @@
         {
           "prox_time": 67,
           "prox_combo": 1.27
+        },
+        {
+          "prox_time": 80,
+          "prox_combo": 1.77
         },
         {
           "prox_time": 105,
@@ -10115,10 +10228,6 @@
           "prox_combo": 1.4
         },
         {
-          "prox_time": 3,
-          "prox_combo": 1.01
-        },
-        {
           "prox_time": 179,
           "prox_combo": 1.01
         },
@@ -10219,6 +10328,10 @@
           "prox_combo": 1.04
         },
         {
+          "prox_time": 56,
+          "prox_combo": 1.42
+        },
+        {
           "prox_time": 128,
           "prox_combo": 1.01
         },
@@ -10269,6 +10382,10 @@
         {
           "prox_time": 8,
           "prox_combo": 1.02
+        },
+        {
+          "prox_time": 0,
+          "prox_combo": 1.01
         },
         {
           "prox_time": 1,
@@ -10443,6 +10560,10 @@
           "prox_combo": 1.02
         },
         {
+          "prox_time": 0,
+          "prox_combo": 1.01
+        },
+        {
           "prox_time": 144,
           "prox_combo": 1.76
         },
@@ -10469,6 +10590,10 @@
         {
           "prox_time": 5,
           "prox_combo": 1.01
+        },
+        {
+          "prox_time": 7,
+          "prox_combo": 1.05
         },
         {
           "prox_time": 97,
@@ -10511,6 +10636,10 @@
           "prox_combo": 1.01
         },
         {
+          "prox_time": 4,
+          "prox_combo": 1.01
+        },
+        {
           "prox_time": 165,
           "prox_combo": 1.57
         },
@@ -10531,12 +10660,12 @@
           "prox_combo": 1.1
         },
         {
-          "prox_time": 2,
-          "prox_combo": 1.01
-        },
-        {
           "prox_time": 26,
           "prox_combo": 1.18
+        },
+        {
+          "prox_time": 8,
+          "prox_combo": 1.05
         },
         {
           "prox_time": 86,
@@ -10589,10 +10718,6 @@
         {
           "prox_time": 20,
           "prox_combo": 1.24
-        },
-        {
-          "prox_time": 8,
-          "prox_combo": 1.03
         },
         {
           "prox_time": 11,
@@ -10755,10 +10880,6 @@
           "prox_combo": 1.45
         },
         {
-          "prox_time": 9,
-          "prox_combo": 1.03
-        },
-        {
           "prox_time": 1,
           "prox_combo": 1.01
         },
@@ -10893,6 +11014,10 @@
         {
           "prox_time": 21,
           "prox_combo": 1.14
+        },
+        {
+          "prox_time": 80,
+          "prox_combo": 1.43
         },
         {
           "prox_time": 161,
@@ -11115,6 +11240,10 @@
           "prox_combo": 1.58
         },
         {
+          "prox_time": 26,
+          "prox_combo": 1.1
+        },
+        {
           "prox_time": 179,
           "prox_combo": 1.08
         },
@@ -11295,10 +11424,6 @@
           "prox_combo": 1.11
         },
         {
-          "prox_time": 23,
-          "prox_combo": 1.26
-        },
-        {
           "prox_time": 0,
           "prox_combo": 1.01
         },
@@ -11381,6 +11506,10 @@
         {
           "prox_time": 108,
           "prox_combo": 1.55
+        },
+        {
+          "prox_time": 4,
+          "prox_combo": 1.03
         },
         {
           "prox_time": 4,
@@ -11475,6 +11604,10 @@
           "prox_combo": 1.03
         },
         {
+          "prox_time": 7,
+          "prox_combo": 1.04
+        },
+        {
           "prox_time": 18,
           "prox_combo": 1.05
         },
@@ -11527,10 +11660,6 @@
           "prox_combo": 1.07
         },
         {
-          "prox_time": 8,
-          "prox_combo": 1.01
-        },
-        {
           "prox_time": 176,
           "prox_combo": 1.06
         },
@@ -11565,6 +11694,10 @@
         {
           "prox_time": 14,
           "prox_combo": 1.06
+        },
+        {
+          "prox_time": 13,
+          "prox_combo": 1.11
         },
         {
           "prox_time": 7,
@@ -11783,6 +11916,10 @@
           "prox_combo": 1.01
         },
         {
+          "prox_time": 22,
+          "prox_combo": 1.07
+        },
+        {
           "prox_time": 41,
           "prox_combo": 1.56
         },
@@ -11829,6 +11966,10 @@
         {
           "prox_time": 7,
           "prox_combo": 1.01
+        },
+        {
+          "prox_time": 36,
+          "prox_combo": 1.62
         },
         {
           "prox_time": 68,
@@ -11973,6 +12114,10 @@
         {
           "prox_time": 7,
           "prox_combo": 1.08
+        },
+        {
+          "prox_time": 2,
+          "prox_combo": 1.01
         },
         {
           "prox_time": 0,
@@ -12279,10 +12424,6 @@
           "prox_combo": 1.62
         },
         {
-          "prox_time": 1,
-          "prox_combo": 1.01
-        },
-        {
           "prox_time": 11,
           "prox_combo": 1.03
         },
@@ -12443,6 +12584,10 @@
           "prox_combo": 1.02
         },
         {
+          "prox_time": 23,
+          "prox_combo": 1.21
+        },
+        {
           "prox_time": 24,
           "prox_combo": 1.06
         },
@@ -12533,10 +12678,6 @@
         {
           "prox_time": 51,
           "prox_combo": 1.44
-        },
-        {
-          "prox_time": 7,
-          "prox_combo": 1.03
         },
         {
           "prox_time": 37,
@@ -12847,10 +12988,6 @@
           "prox_combo": 1.08
         },
         {
-          "prox_time": 5,
-          "prox_combo": 1.04
-        },
-        {
           "prox_time": 103,
           "prox_combo": 1.54
         },
@@ -12985,10 +13122,6 @@
         {
           "prox_time": 1,
           "prox_combo": 1.01
-        },
-        {
-          "prox_time": 2,
-          "prox_combo": 1.02
         },
         {
           "prox_time": 8,
@@ -13187,6 +13320,10 @@
           "prox_combo": 1.08
         },
         {
+          "prox_time": 29,
+          "prox_combo": 1.24
+        },
+        {
           "prox_time": 39,
           "prox_combo": 1.23
         },
@@ -13251,10 +13388,6 @@
           "prox_combo": 1.06
         },
         {
-          "prox_time": 63,
-          "prox_combo": 1.37
-        },
-        {
           "prox_time": 160,
           "prox_combo": 1.11
         },
@@ -13265,6 +13398,10 @@
         {
           "prox_time": 47,
           "prox_combo": 1.48
+        },
+        {
+          "prox_time": 1,
+          "prox_combo": 1.01
         },
         {
           "prox_time": 76,
@@ -13399,6 +13536,10 @@
           "prox_combo": 1.08
         },
         {
+          "prox_time": 16,
+          "prox_combo": 1.09
+        },
+        {
           "prox_time": 25,
           "prox_combo": 1.11
         },
@@ -13483,6 +13624,10 @@
           "prox_combo": 1.12
         },
         {
+          "prox_time": 1,
+          "prox_combo": 1.02
+        },
+        {
           "prox_time": 4,
           "prox_combo": 1.05
         },
@@ -13531,6 +13676,10 @@
           "prox_combo": 1.01
         },
         {
+          "prox_time": 6,
+          "prox_combo": 1.07
+        },
+        {
           "prox_time": 3,
           "prox_combo": 1.02
         },
@@ -13545,6 +13694,10 @@
         {
           "prox_time": 105,
           "prox_combo": 1.04
+        },
+        {
+          "prox_time": 28,
+          "prox_combo": 1.27
         },
         {
           "prox_time": 133,
@@ -13685,10 +13838,6 @@
         {
           "prox_time": 23,
           "prox_combo": 1.12
-        },
-        {
-          "prox_time": 13,
-          "prox_combo": 1.05
         },
         {
           "prox_time": 58,
@@ -13935,6 +14084,10 @@
           "prox_combo": 1.27
         },
         {
+          "prox_time": 3,
+          "prox_combo": 1.02
+        },
+        {
           "prox_time": 8,
           "prox_combo": 1.05
         },
@@ -14107,12 +14260,20 @@
           "prox_combo": 1.26
         },
         {
+          "prox_time": 23,
+          "prox_combo": 1.07
+        },
+        {
           "prox_time": 178,
           "prox_combo": 1.02
         },
         {
           "prox_time": 8,
           "prox_combo": 1.1
+        },
+        {
+          "prox_time": 1,
+          "prox_combo": 1.01
         },
         {
           "prox_time": 175,
@@ -14149,6 +14310,10 @@
         {
           "prox_time": 25,
           "prox_combo": 1.15
+        },
+        {
+          "prox_time": 4,
+          "prox_combo": 1.01
         },
         {
           "prox_time": 46,
@@ -14204,6 +14369,10 @@
         },
         {
           "prox_time": 2,
+          "prox_combo": 1.02
+        },
+        {
+          "prox_time": 5,
           "prox_combo": 1.02
         },
         {
@@ -14281,6 +14450,10 @@
         {
           "prox_time": 5,
           "prox_combo": 1.06
+        },
+        {
+          "prox_time": 2,
+          "prox_combo": 1.01
         },
         {
           "prox_time": 62,
@@ -14393,6 +14566,10 @@
         {
           "prox_time": 1,
           "prox_combo": 1.01
+        },
+        {
+          "prox_time": 5,
+          "prox_combo": 1.07
         },
         {
           "prox_time": 134,
@@ -14511,6 +14688,10 @@
           "prox_combo": 1.01
         },
         {
+          "prox_time": 66,
+          "prox_combo": 1.43
+        },
+        {
           "prox_time": 23,
           "prox_combo": 1.1
         },
@@ -14599,6 +14780,10 @@
           "prox_combo": 1.03
         },
         {
+          "prox_time": 40,
+          "prox_combo": 1.21
+        },
+        {
           "prox_time": 163,
           "prox_combo": 1.1
         },
@@ -14681,6 +14866,10 @@
         {
           "prox_time": 50,
           "prox_combo": 1.23
+        },
+        {
+          "prox_time": 5,
+          "prox_combo": 1.01
         },
         {
           "prox_time": 144,
@@ -14785,6 +14974,10 @@
         {
           "prox_time": 102,
           "prox_combo": 1.09
+        },
+        {
+          "prox_time": 34,
+          "prox_combo": 1.36
         },
         {
           "prox_time": 134,
@@ -14955,6 +15148,10 @@
           "prox_combo": 1.01
         },
         {
+          "prox_time": 20,
+          "prox_combo": 1.08
+        },
+        {
           "prox_time": 53,
           "prox_combo": 1.41
         },
@@ -15089,6 +15286,10 @@
         {
           "prox_time": 5,
           "prox_combo": 1.02
+        },
+        {
+          "prox_time": 5,
+          "prox_combo": 1.01
         },
         {
           "prox_time": 71,
@@ -15363,6 +15564,10 @@
           "prox_combo": 1.08
         },
         {
+          "prox_time": 3,
+          "prox_combo": 1.01
+        },
+        {
           "prox_time": 11,
           "prox_combo": 1.03
         },
@@ -15399,12 +15604,20 @@
           "prox_combo": 1.02
         },
         {
+          "prox_time": 17,
+          "prox_combo": 1.03
+        },
+        {
           "prox_time": 14,
           "prox_combo": 1.13
         },
         {
           "prox_time": 87,
           "prox_combo": 1.73
+        },
+        {
+          "prox_time": 28,
+          "prox_combo": 1.07
         },
         {
           "prox_time": 10,
@@ -15743,6 +15956,10 @@
           "prox_combo": 1.05
         },
         {
+          "prox_time": 4,
+          "prox_combo": 1.01
+        },
+        {
           "prox_time": 48,
           "prox_combo": 1.24
         },
@@ -15807,6 +16024,10 @@
           "prox_combo": 1.07
         },
         {
+          "prox_time": 27,
+          "prox_combo": 1.23
+        },
+        {
           "prox_time": 12,
           "prox_combo": 1.08
         },
@@ -15829,6 +16050,10 @@
         {
           "prox_time": 170,
           "prox_combo": 1.25
+        },
+        {
+          "prox_time": 11,
+          "prox_combo": 1.07
         },
         {
           "prox_time": 170,
@@ -16307,6 +16532,10 @@
           "prox_combo": 1.37
         },
         {
+          "prox_time": 25,
+          "prox_combo": 1.22
+        },
+        {
           "prox_time": 4,
           "prox_combo": 1.07
         },
@@ -16403,10 +16632,6 @@
           "prox_combo": 1.1
         },
         {
-          "prox_time": 102,
-          "prox_combo": 1.38
-        },
-        {
           "prox_time": 11,
           "prox_combo": 1.15
         },
@@ -16449,6 +16674,10 @@
         {
           "prox_time": 178,
           "prox_combo": 1.08
+        },
+        {
+          "prox_time": 9,
+          "prox_combo": 1.18
         },
         {
           "prox_time": 1,
@@ -16543,6 +16772,10 @@
           "prox_combo": 1.29
         },
         {
+          "prox_time": 1,
+          "prox_combo": 1.01
+        },
+        {
           "prox_time": 9,
           "prox_combo": 1.03
         },
@@ -16597,6 +16830,10 @@
         {
           "prox_time": 47,
           "prox_combo": 1.14
+        },
+        {
+          "prox_time": 105,
+          "prox_combo": 1.47
         },
         {
           "prox_time": 25,
@@ -16747,12 +16984,20 @@
           "prox_combo": 1.3
         },
         {
+          "prox_time": 41,
+          "prox_combo": 1.59
+        },
+        {
           "prox_time": 11,
           "prox_combo": 1.05
         },
         {
           "prox_time": 2,
           "prox_combo": 1.01
+        },
+        {
+          "prox_time": 3,
+          "prox_combo": 1.03
         },
         {
           "prox_time": 7,
@@ -16773,10 +17018,6 @@
         {
           "prox_time": 18,
           "prox_combo": 1.15
-        },
-        {
-          "prox_time": 40,
-          "prox_combo": 1.99
         },
         {
           "prox_time": 26,
@@ -16801,6 +17042,10 @@
         {
           "prox_time": 11,
           "prox_combo": 1.06
+        },
+        {
+          "prox_time": 30,
+          "prox_combo": 1.14
         },
         {
           "prox_time": 29,
@@ -16841,6 +17086,10 @@
         {
           "prox_time": 15,
           "prox_combo": 1.08
+        },
+        {
+          "prox_time": 7,
+          "prox_combo": 1.04
         },
         {
           "prox_time": 2,
@@ -17001,6 +17250,10 @@
         {
           "prox_time": 129,
           "prox_combo": 1.42
+        },
+        {
+          "prox_time": 2,
+          "prox_combo": 1.02
         },
         {
           "prox_time": 66,
@@ -17171,6 +17424,10 @@
           "prox_combo": 1.04
         },
         {
+          "prox_time": 76,
+          "prox_combo": 1.48
+        },
+        {
           "prox_time": 19,
           "prox_combo": 1.2
         },
@@ -17201,6 +17458,10 @@
         {
           "prox_time": 64,
           "prox_combo": 1.52
+        },
+        {
+          "prox_time": 70,
+          "prox_combo": 1.25
         },
         {
           "prox_time": 16,
@@ -17387,6 +17648,10 @@
           "prox_combo": 1.52
         },
         {
+          "prox_time": 11,
+          "prox_combo": 1.03
+        },
+        {
           "prox_time": 22,
           "prox_combo": 1.23
         },
@@ -17527,6 +17792,10 @@
           "prox_combo": 1.29
         },
         {
+          "prox_time": 2,
+          "prox_combo": 1.02
+        },
+        {
           "prox_time": 5,
           "prox_combo": 1.04
         },
@@ -17635,6 +17904,10 @@
           "prox_combo": 1.29
         },
         {
+          "prox_time": 17,
+          "prox_combo": 1.16
+        },
+        {
           "prox_time": 1,
           "prox_combo": 1.02
         },
@@ -17647,7 +17920,7 @@
           "prox_combo": 1.51
         },
         {
-          "prox_time": 2,
+          "prox_time": 4,
           "prox_combo": 1.03
         },
         {
@@ -18159,6 +18432,10 @@
           "prox_combo": 1.04
         },
         {
+          "prox_time": 15,
+          "prox_combo": 1.05
+        },
+        {
           "prox_time": 22,
           "prox_combo": 1.06
         },
@@ -18263,16 +18540,16 @@
           "prox_combo": 1.01
         },
         {
+          "prox_time": 19,
+          "prox_combo": 1.21
+        },
+        {
           "prox_time": 12,
           "prox_combo": 1.06
         },
         {
           "prox_time": 3,
           "prox_combo": 1.04
-        },
-        {
-          "prox_time": 1,
-          "prox_combo": 1.02
         },
         {
           "prox_time": 30,
@@ -18337,6 +18614,10 @@
         {
           "prox_time": 16,
           "prox_combo": 1.15
+        },
+        {
+          "prox_time": 35,
+          "prox_combo": 1.13
         },
         {
           "prox_time": 21,
@@ -18421,6 +18702,10 @@
         {
           "prox_time": 27,
           "prox_combo": 1.13
+        },
+        {
+          "prox_time": 27,
+          "prox_combo": 1.1
         },
         {
           "prox_time": 21,
@@ -18763,6 +19048,10 @@
           "prox_combo": 1.04
         },
         {
+          "prox_time": 4,
+          "prox_combo": 1.04
+        },
+        {
           "prox_time": 15,
           "prox_combo": 1.06
         },
@@ -18879,6 +19168,10 @@
           "prox_combo": 1.02
         },
         {
+          "prox_time": 12,
+          "prox_combo": 1.04
+        },
+        {
           "prox_time": 3,
           "prox_combo": 1.02
         },
@@ -18893,10 +19186,6 @@
         {
           "prox_time": 4,
           "prox_combo": 1.05
-        },
-        {
-          "prox_time": 56,
-          "prox_combo": 1.46
         },
         {
           "prox_time": 9,
@@ -18921,10 +19210,6 @@
         {
           "prox_time": 12,
           "prox_combo": 1.03
-        },
-        {
-          "prox_time": 1,
-          "prox_combo": 1.01
         },
         {
           "prox_time": 13,
@@ -19087,6 +19372,10 @@
           "prox_combo": 1.05
         },
         {
+          "prox_time": 107,
+          "prox_combo": 1.59
+        },
+        {
           "prox_time": 84,
           "prox_combo": 1.04
         },
@@ -19175,10 +19464,6 @@
           "prox_combo": 1.05
         },
         {
-          "prox_time": 6,
-          "prox_combo": 1.05
-        },
-        {
           "prox_time": 10,
           "prox_combo": 1.04
         },
@@ -19201,10 +19486,6 @@
         {
           "prox_time": 7,
           "prox_combo": 1.1
-        },
-        {
-          "prox_time": 6,
-          "prox_combo": 1.04
         },
         {
           "prox_time": 2,
@@ -19277,6 +19558,10 @@
         {
           "prox_time": 4,
           "prox_combo": 1.02
+        },
+        {
+          "prox_time": 4,
+          "prox_combo": 1.03
         },
         {
           "prox_time": 62,
@@ -19527,6 +19812,10 @@
           "prox_combo": 1.04
         },
         {
+          "prox_time": 1,
+          "prox_combo": 1.04
+        },
+        {
           "prox_time": 9,
           "prox_combo": 1.14
         },
@@ -19671,6 +19960,10 @@
           "prox_combo": 1.07
         },
         {
+          "prox_time": 68,
+          "prox_combo": 1.63
+        },
+        {
           "prox_time": 113,
           "prox_combo": 1.02
         },
@@ -19785,6 +20078,10 @@
         {
           "prox_time": 43,
           "prox_combo": 1.2
+        },
+        {
+          "prox_time": 4,
+          "prox_combo": 1.02
         },
         {
           "prox_time": 13,
@@ -19959,6 +20256,10 @@
           "prox_combo": 1.22
         },
         {
+          "prox_time": 17,
+          "prox_combo": 1.21
+        },
+        {
           "prox_time": 10,
           "prox_combo": 1.05
         },
@@ -20121,535 +20422,237 @@
         {
           "prox_time": 92,
           "prox_combo": 1.79
-        },
-        {
-          "prox_time": 59,
-          "prox_combo": 1.36
-        },
-        {
-          "prox_time": 0,
-          "prox_combo": 1.01
-        },
-        {
-          "prox_time": 83,
-          "prox_combo": 1.61
-        },
-        {
-          "prox_time": 118,
-          "prox_combo": 1.11
-        },
-        {
-          "prox_time": 78,
-          "prox_combo": 1.34
-        },
-        {
-          "prox_time": 4,
-          "prox_combo": 1.04
-        },
-        {
-          "prox_time": 11,
-          "prox_combo": 1.11
-        },
-        {
-          "prox_time": 4,
-          "prox_combo": 1.03
-        },
-        {
-          "prox_time": 46,
-          "prox_combo": 1.06
-        },
-        {
-          "prox_time": 1,
-          "prox_combo": 1.01
-        },
-        {
-          "prox_time": 22,
-          "prox_combo": 1.07
-        },
-        {
-          "prox_time": 84,
-          "prox_combo": 1.44
-        },
-        {
-          "prox_time": 17,
-          "prox_combo": 1.54
-        },
-        {
-          "prox_time": 4,
-          "prox_combo": 1.02
-        },
-        {
-          "prox_time": 6,
-          "prox_combo": 1.08
-        },
-        {
-          "prox_time": 60,
-          "prox_combo": 1.22
-        },
-        {
-          "prox_time": 18,
-          "prox_combo": 1.18
-        },
-        {
-          "prox_time": 161,
-          "prox_combo": 1.07
-        },
-        {
-          "prox_time": 176,
-          "prox_combo": 1.01
-        },
-        {
-          "prox_time": 148,
-          "prox_combo": 1.01
-        },
-        {
-          "prox_time": 5,
-          "prox_combo": 1.04
-        },
-        {
-          "prox_time": 18,
-          "prox_combo": 1.2
-        },
-        {
-          "prox_time": 4,
-          "prox_combo": 1.03
-        },
-        {
-          "prox_time": 10,
-          "prox_combo": 1.17
-        },
-        {
-          "prox_time": 8,
-          "prox_combo": 1.03
-        },
-        {
-          "prox_time": 57,
-          "prox_combo": 1.15
-        },
-        {
-          "prox_time": 5,
-          "prox_combo": 1.03
-        },
-        {
-          "prox_time": 4,
-          "prox_combo": 1.01
-        },
-        {
-          "prox_time": 8,
-          "prox_combo": 1.07
-        },
-        {
-          "prox_time": 31,
-          "prox_combo": 1.3
-        },
-        {
-          "prox_time": 10,
-          "prox_combo": 1.06
-        },
-        {
-          "prox_time": 68,
-          "prox_combo": 1.45
-        },
-        {
-          "prox_time": 65,
-          "prox_combo": 1.58
-        },
-        {
-          "prox_time": 101,
-          "prox_combo": 1.49
-        },
-        {
-          "prox_time": 1,
-          "prox_combo": 1.01
-        },
-        {
-          "prox_time": 6,
-          "prox_combo": 1.1
-        },
-        {
-          "prox_time": 39,
-          "prox_combo": 1.21
-        },
-        {
-          "prox_time": 2,
-          "prox_combo": 1.01
-        },
-        {
-          "prox_time": 153,
-          "prox_combo": 1.46
-        },
-        {
-          "prox_time": 3,
-          "prox_combo": 1.03
-        },
-        {
-          "prox_time": 17,
-          "prox_combo": 1.08
-        },
-        {
-          "prox_time": 42,
-          "prox_combo": 1.78
-        },
-        {
-          "prox_time": 35,
-          "prox_combo": 1.23
-        },
-        {
-          "prox_time": 127,
-          "prox_combo": 1.01
-        },
-        {
-          "prox_time": 11,
-          "prox_combo": 1.03
-        },
-        {
-          "prox_time": 39,
-          "prox_combo": 1.07
-        },
-        {
-          "prox_time": 8,
-          "prox_combo": 1.07
-        },
-        {
-          "prox_time": 1,
-          "prox_combo": 1.02
-        },
-        {
-          "prox_time": 4,
-          "prox_combo": 1.01
-        },
-        {
-          "prox_time": 2,
-          "prox_combo": 1.02
-        },
-        {
-          "prox_time": 176,
-          "prox_combo": 1.03
-        },
-        {
-          "prox_time": 23,
-          "prox_combo": 1.16
-        },
-        {
-          "prox_time": 123,
-          "prox_combo": 1.12
-        },
-        {
-          "prox_time": 68,
-          "prox_combo": 1.42
-        },
-        {
-          "prox_time": 172,
-          "prox_combo": 1.35
-        },
-        {
-          "prox_time": 6,
-          "prox_combo": 1.01
-        },
-        {
-          "prox_time": 28,
-          "prox_combo": 1.27
-        },
-        {
-          "prox_time": 37,
-          "prox_combo": 1.18
-        },
-        {
-          "prox_time": 31,
-          "prox_combo": 1.35
-        },
-        {
-          "prox_time": 13,
-          "prox_combo": 1.07
-        },
-        {
-          "prox_time": 11,
-          "prox_combo": 1.14
-        },
-        {
-          "prox_time": 10,
-          "prox_combo": 1.09
-        },
-        {
-          "prox_time": 13,
-          "prox_combo": 1.18
-        },
-        {
-          "prox_time": 2,
-          "prox_combo": 1.02
-        },
-        {
-          "prox_time": 7,
-          "prox_combo": 1.05
-        },
-        {
-          "prox_time": 100,
-          "prox_combo": 1.22
-        },
-        {
-          "prox_time": 60,
-          "prox_combo": 1.47
-        },
-        {
-          "prox_time": 177,
-          "prox_combo": 1.09
-        },
-        {
-          "prox_time": 8,
-          "prox_combo": 1.17
-        },
-        {
-          "prox_time": 5,
-          "prox_combo": 1.05
-        },
-        {
-          "prox_time": 37,
-          "prox_combo": 1.24
-        },
-        {
-          "prox_time": 136,
-          "prox_combo": 1.05
-        },
-        {
-          "prox_time": 85,
-          "prox_combo": 1.22
-        },
-        {
-          "prox_time": 2,
-          "prox_combo": 1.02
-        },
-        {
-          "prox_time": 5,
-          "prox_combo": 1.01
         }
       ]
     },
     "solo": {
-      "total_runs": 86561,
+      "total_runs": 87860,
       "mode_split": {
-        "solo": 86561,
+        "solo": 87860,
         "crew": 0
       },
       "input_distribution": {
-        "0": 61499,
-        "1": 18167,
-        "2": 6895
+        "0": 62443,
+        "1": 18422,
+        "2": 6995
       },
       "traffic_distribution": {
-        "Realistic": 31375,
-        "Heavy": 52062,
-        "Rush": 1264,
-        "Light": 945
+        "Realistic": 32423,
+        "Heavy": 52321,
+        "Rush": 1265,
+        "Light": 940
       },
       "cars_tally": {
-        "nohesi_toyota_supra_mk5": 4353,
-        "nohesituned_dodge_viper": 1679,
+        "nohesi_toyota_supra_mk5": 4558,
+        "nohesituned_dodge_viper": 1749,
         "nohesi_chevrolet_c8_zr1": 19,
-        "nohesi_lotus_evora_gt430": 154,
-        "nohesi_porsche_gt3rs_vlct": 1415,
-        "nohesi_bmw_m4_g82_adro_chris": 9425,
-        "nohesi_bmw_1m_e82": 2373,
-        "nohesi_infiniti_g37": 2385,
-        "nohesi_m3_e92": 3414,
-        "nohesi_bmw_m340i_g20_chris": 5647,
-        "nohesi_toyota_supra_mk5_adro": 184,
-        "nohesi_bmw_x5m_f95": 2805,
+        "nohesi_lotus_evora_gt430": 150,
+        "nohesi_porsche_gt3rs_vlct": 1442,
+        "nohesi_bmw_m4_g82_adro_chris": 9586,
+        "nohesi_bmw_1m_e82": 2366,
+        "nohesi_infiniti_g37": 2376,
+        "nohesi_m3_e92": 3409,
+        "nohesi_bmw_m340i_g20_chris": 5721,
+        "nohesi_toyota_supra_mk5_adro": 182,
+        "nohesi_bmw_x5m_f95": 2802,
         "nohesi_volkswagen_golf_r_mk8": 366,
-        "nohesi_lamborghini_huracan_lp610": 4192,
-        "nohesi_mclaren_w1": 183,
-        "nohesi_nissan_sentra_nismo": 1264,
-        "nohesi_bmw_x3m_f97_adro": 2297,
-        "nohesi_mercedes_a45_brabus": 2432,
+        "nohesi_lamborghini_huracan_lp610": 4272,
+        "nohesi_mclaren_w1": 181,
+        "nohesi_mercedes_a45_brabus": 2560,
+        "nohesi_nissan_sentra_nismo": 1256,
+        "nohesi_bmw_x3m_f97_adro": 2397,
         "nohesi_bmw_g87_adro_v2": 48,
         "nohesi_nissan_maxima_2jz": 807,
-        "nohesi_vw_golf_r": 228,
-        "nohesi_range_rover_sv": 205,
+        "nohesi_vw_golf_r": 227,
+        "nohesi_range_rover_sv": 208,
         "nohesi_bmw_m140": 57,
-        "nohesi_lamborghini_urus_chris": 4076,
+        "nohesi_lamborghini_urus_chris": 4122,
         "nohesi_subaru_wrx_sti_gd_kz": 121,
         "nohesi_police_ford_f150": 1,
-        "nohesi_toyota_gr_yaris": 107,
+        "nohesi_toyota_gr_yaris": 109,
         "nohesi_porsche_singer_abflug": 18,
         "nohesi_bmw_e39_m5_vlct": 46,
-        "nohesi_brabus_rocket_900": 5199,
-        "nohesi_bmw_e90": 105,
-        "nohesi_honda_s2000": 129,
-        "nohesi_mazda_rx7_fc_vlct": 56,
-        "nohesi_c63_23": 2608,
-        "nohesi_toyota_yaris_gr": 220,
+        "nohesi_brabus_rocket_900": 5289,
+        "nohesi_bmw_e90": 111,
+        "nohesi_honda_s2000": 130,
+        "nohesi_mazda_rx7_fc_vlct": 53,
+        "nohesi_c63_23": 2607,
+        "nohesi_toyota_yaris_gr": 223,
         "nohesi_velocity_one_s": 8,
         "nohesi_ford_mustang_mk1_vlct": 2,
-        "nohesi_lexus_lc500": 4935,
-        "nohesi_m5_e60_hjckd": 140,
-        "nohesi_hellcat_charger": 3773,
+        "nohesi_lexus_lc500": 5005,
+        "nohesi_m5_e60_hjckd": 156,
+        "nohesi_hellcat_charger": 3822,
         "nohesi_mercedes_w201_vlct": 27,
-        "nohesi_lamborghini_svj_63": 4676,
-        "nohesi_bmw_g82_adro": 3259,
+        "nohesi_lamborghini_svj_63": 4750,
+        "nohesi_bmw_g82_adro": 3255,
         "nohesi_infiniti_q50s_vlct": 56,
-        "nohesi_ford_mustang_terminator_vlct": 17,
-        "nohesi_ford_f150_super_shelby": 176,
-        "nohesi_bmw_m3_f80": 189,
-        "nohesi_toyota_gr86_adrowide": 20,
-        "nohesi_chrysler_300_hellcat": 188,
-        "nohesi_skyline_r34": 939,
-        "nohesi_toyota_supra_mk5_adro_widebody": 35,
-        "nohesi_audi_rs3_saloon_vlct": 54,
-        "nohesi_ferrari_812_nlargo": 1349,
-        "nohesi_bmw_m3_g80": 1041,
-        "nohesituned_as_porsche_cayman_718_gt4_rs": 31,
-        "nohesi_bmw_m2_f87_comp": 182,
+        "nohesi_ford_mustang_terminator_vlct": 15,
+        "nohesi_ford_f150_super_shelby": 175,
+        "nohesi_bmw_m3_f80": 194,
+        "nohesi_toyota_gr86_adrowide": 21,
+        "nohesi_chrysler_300_hellcat": 183,
+        "nohesi_skyline_r34": 945,
+        "nohesi_toyota_supra_mk5_adro_widebody": 37,
+        "nohesi_audi_rs3_saloon_vlct": 52,
+        "nohesi_ferrari_812_nlargo": 1347,
+        "nohesi_bmw_m3_g80": 1048,
+        "nohesituned_as_porsche_cayman_718_gt4_rs": 37,
+        "nohesi_bmw_m2_f87_comp": 189,
         "nohesi_bmw_f90_m5cs_vlct": 28,
-        "nohesi_audi_rs5_f5": 252,
+        "nohesi_audi_rs5_f5": 269,
         "nohesi_mercedes_c63_amg_w204_blackseries": 23,
-        "nohesi_bimmerplug_m4": 181,
-        "nohesi_bmw_m3_g80_adro": 207,
+        "nohesi_bimmerplug_m4": 196,
+        "nohesi_bmw_m3_g80_adro": 206,
         "nohesi_mercedes_gt63se": 18,
-        "nohesi_bmw_m5_g99": 161,
-        "nohesi_bmw_m3_e46": 216,
-        "nohesi_bmw_m8_f92": 195,
-        "nohesi_bmw_f81_m3": 103,
+        "nohesi_bmw_m5_g99": 159,
+        "nohesi_bmw_m3_e46": 222,
+        "nohesi_bmw_m8_f92": 202,
+        "nohesi_bmw_f81_m3": 108,
         "nohesi_bmw_f82_m4lci_vlct": 30,
-        "nohesi_370z_widebody": 101,
-        "nohesi_bmw_m3_e92_adro": 27,
-        "nohesi_toyota_supra_mk4": 324,
+        "nohesi_370z_widebody": 100,
+        "nohesi_bmw_m3_e92_adro": 29,
+        "nohesi_toyota_supra_mk4": 331,
         "nohesi_kimera_evo37_kz": 7,
-        "nohesi_mercedes_c63_coupe": 191,
-        "nohesi_mercedes_brabus_gt600": 88,
+        "nohesi_mercedes_c63_coupe": 203,
+        "nohesi_mercedes_brabus_gt600": 90,
         "nohesi_mclaren_600lt_novitec": 159,
-        "nohesi_bmw_m2_f87": 18,
-        "nohesi_bmw_340i_f30": 144,
+        "nohesi_bmw_m2_f87": 21,
+        "nohesi_bmw_340i_f30": 147,
         "nohesi_porsche_992_gt3_adro": 17,
-        "nohesituned_nsx-r": 81,
+        "nohesituned_nsx-r": 83,
         "nohesi_police_ford_explorer": 4,
-        "nohesi_hellcat_redeye_charger": 169,
-        "nohesi_realistic_bmw_m4_g82_adro_chris": 420,
+        "nohesi_hellcat_redeye_charger": 168,
+        "nohesi_realistic_bmw_m4_g82_adro_chris": 418,
+        "nohesi_bmw_m340i_g20": 72,
         "nohesi_ford_mustang_gtd": 35,
-        "nohesi_nissan_gtr_r35_vlct": 39,
-        "nohesi_realistic_porsche_gt3rs_vlct": 9,
+        "nohesi_nissan_gtr_r35_vlct": 42,
+        "nohesi_realistic_porsche_gt3rs_vlct": 8,
         "nohesi_realistic_toyota_supra_mk5_adro": 6,
-        "nohesi_realistic_porsche_992_gt3_adro": 120,
+        "nohesi_realistic_porsche_992_gt3_adro": 123,
         "nohesi_mercedes_e63_w213": 20,
-        "nohesi_ford_mustang_gt350": 102,
+        "nohesi_ford_mustang_gt350": 105,
         "nohesi_realistic_bmw_m3_e46": 108,
-        "nohesi_mitsubishi_3000_gt": 71,
+        "nohesi_mitsubishi_3000_gt": 72,
         "nohesi_realistic_mercedes_e63_w213": 37,
         "nohesi_realistic_honda_civic_fl5_typer_adro": 50,
         "nohesi_realistic_chevrolet_c8_zr1": 118,
-        "nohesi_bentley_continental_gt": 74,
+        "nohesi_bentley_continental_gt": 76,
         "nohesi_realistic_toyota_gr86_adro": 100,
-        "nohesi_audi_rsq8": 91,
+        "nohesi_audi_rsq8": 96,
         "nohesi_realistic_mercedes_c63_amg_w204_blackseries": 39,
-        "nohesi_g82_comp_coupe": 203,
+        "nohesi_g82_comp_coupe": 208,
         "nohesi_lexus_is500": 7,
         "nohesi_realistic_nissan_gtr_r35_vlct": 70,
         "nohesi_mclaren_720s": 6,
-        "nohesi_bmw_m3_g81": 70,
-        "nohesituned_quadrifoglio": 60,
-        "nohesi_rs6_c7": 50,
-        "nohesi_ct5v": 131,
-        "nohesi_chevrolet_corvette_c6": 180,
-        "nohesi_realistic_bmw_g87_adro_v2": 316,
-        "nohesi_cadillac_ctsv_vlct": 5,
-        "nohesi_jeep_trackhawk": 120,
+        "nohesi_bmw_m3_g81": 72,
+        "nohesituned_quadrifoglio": 61,
+        "nohesi_rs6_c7": 55,
+        "nohesi_ct5v": 133,
+        "nohesi_chevrolet_corvette_c6": 179,
+        "nohesi_realistic_bmw_g87_adro_v2": 314,
+        "nohesi_cadillac_ctsv_vlct": 6,
+        "nohesi_jeep_trackhawk": 121,
         "nohesi_realistic_ford_mustang_gtd": 10,
-        "nohesi_toyota_chaser_jzx100": 7,
-        "nohesi_hellcat_redeye_challenger": 175,
+        "nohesi_toyota_chaser_jzx100": 8,
+        "nohesi_hellcat_redeye_challenger": 174,
         "nohesi_chevrolet_corvette_c7_zr1_vlct": 8,
         "nohesi_mercedes_gt63": 10,
         "nohesi_police_m5_comp": 7,
-        "nohesi_bmw_m2_f87_comp_kyrex": 45,
+        "nohesi_bmw_m2_f87_comp_kyrex": 48,
         "nohesi_zl1_1le": 77,
-        "nohesi_astonmartin_vantage_vlct": 12,
+        "nohesi_astonmartin_vantage_vlct": 13,
         "nohesi_lamborghini_urus_performante_vlct": 9,
-        "nohesi_bmw_g87_adro": 5,
+        "nohesi_bmw_g87_adro": 6,
         "nohesi_audi_rs6_c8": 5,
-        "nohesi_bmw_m340i_g20": 66,
         "nohesi_mercedes_cls_c218": 15,
-        "nohesi_realistic_audi_rs6_c8": 284,
+        "nohesi_realistic_audi_rs6_c8": 283,
         "nohesi_realistic_bmw_f82_m4lci_vlct": 103,
         "nohesi_realistic_lamborghini_urus_chris": 99,
         "nohesi_realistic_bmw_m3_g80_adro": 8,
-        "nohesi_lexus_lfa_nurburgring": 56,
-        "nohesi_realistic_ford_mustang_terminator_vlct": 95,
+        "nohesi_lexus_lfa_nurburgring": 55,
+        "nohesi_realistic_ford_mustang_terminator_vlct": 94,
         "nohesi_lamborghini_temerario_vlct": 8,
-        "nohesi_honda_civic_fl5_typer_adro": 3,
-        "nohesi_m5_comp": 85,
+        "nohesi_honda_civic_fl5_typer_adro": 4,
+        "nohesi_m5_comp": 95,
         "nohesi_realistic_bmw_f90_m5cs_vlct": 52,
         "nohesi_pagani_zonda_ay": 6,
-        "nohesi_realistic_bmw_x3m_f97_adro": 25,
-        "nohesi_realistic_mercedes_gt63se": 82,
+        "nohesi_realistic_bmw_x3m_f97_adro": 23,
+        "nohesi_realistic_mercedes_gt63se": 81,
         "nohesi_realistic_range_rover_sv": 3,
         "nohesi_realistic_bmw_m5_g99": 7,
         "nohesi_realistic_bmw_m140": 4,
         "nohesi_mercedes_gls_amg": 18,
         "nohesi_police_hellcat_charger": 3,
-        "nohesi_realistic_lexus_is500": 30,
-        "bmw_x5m_f85_nohesi": 9,
+        "nohesi_realistic_lexus_is500": 29,
+        "bmw_x5m_f85_nohesi": 10,
         "nohesi_realistic_toyota_yaris_gr": 2,
         "nohesi_realistic_toyota_chaser_jzx100": 4,
         "nohesi_dodge_viper_acr": 1,
-        "nohesi_slap_g35": 7
+        "nohesi_slap_g35": 7,
+        "nohesi_realistic_audi_rs3_saloon_vlct": 1
       },
       "tyre_compound_distribution": {
-        "GRIP": 78238,
-        "REALISTIC": 1519,
-        "RAIN": 2289,
-        "DRIFT": 2177,
+        "GRIP": 79437,
+        "REALISTIC": 1531,
+        "RAIN": 2335,
+        "DRIFT": 2210,
         "MICHELIN PILOT SPORT CUP 2": 134,
-        "TOYO R888R": 89,
-        "MICHELIN PILOT SPORT 4S": 1618,
-        "MICHELIN PILOT SPORT CUP 2 R": 310,
-        "HYPERCAR ROAD": 24,
+        "TOYO R888R": 99,
+        "MICHELIN PILOT SPORT 4S": 1611,
+        "MICHELIN PILOT SPORT CUP 2 R": 311,
+        "HYPERCAR ROAD": 29,
         "PIRELLI P ZERO CORSA": 60,
-        "YOKOHAMA ADVAN NEOVA": 84,
+        "YOKOHAMA ADVAN NEOVA": 83,
         "SLICKS HARD DTM90S": 3,
         "SEMISLICK": 7,
         "BRIDGESTONE POTENZA": 4,
         "STREET": 1,
         "STREET PERFORMANCE V2": 3,
+        "POTENZA": 1,
         "ECO": 1
       },
       "camera_distribution": {
-        "First Person Camera": 56632,
-        "Dashboard Camera": 4631,
-        "Custom Camera": 265,
-        "Meta Camera": 737,
-        "Hood Camera": 4653,
-        "Bumper Camera": 908,
-        "Chase Camera": 18735
+        "First Person Camera": 57488,
+        "Dashboard Camera": 4699,
+        "Custom Camera": 272,
+        "Meta Camera": 744,
+        "Hood Camera": 4723,
+        "Bumper Camera": 924,
+        "Chase Camera": 19010
       },
       "run_time_histogram": [
-        14944,
-        15256,
-        10570,
-        8474,
-        7607,
-        29710
+        15184,
+        15497,
+        10716,
+        8620,
+        7743,
+        30100
       ],
       "rank_histogram": {
         "Listed": {
           "crew": 0,
-          "solo": 44164
+          "solo": 44834
         },
         "Noticed": {
           "crew": 0,
-          "solo": 21047
+          "solo": 21346
         },
         "Marked": {
           "crew": 0,
-          "solo": 12775
+          "solo": 12974
         },
         "Licensed": {
           "crew": 0,
-          "solo": 4298
+          "solo": 4369
         },
         "Ghost": {
           "crew": 0,
-          "solo": 3485
+          "solo": 3533
         },
         "Sanctioned": {
           "crew": 0,
-          "solo": 780
+          "solo": 792
         },
         "Certified": {
           "crew": 0,
@@ -20657,55 +20660,55 @@
         }
       },
       "score_histogram": {
-        "bucket_width": 10981585,
+        "bucket_width": 10994024,
         "counts": [
-          51996,
-          11121,
-          6159,
-          4116,
-          2932,
-          2150,
-          1583,
-          1186,
-          920,
-          757,
+          52836,
+          11281,
+          6266,
+          4181,
+          2952,
+          2183,
+          1596,
+          1197,
+          933,
+          763,
           585,
-          466,
-          382,
-          328,
-          243,
-          214,
+          472,
+          392,
+          324,
+          249,
+          212,
           160,
-          138,
-          140,
-          985
+          143,
+          143,
+          992
         ],
-        "cutoff_score": 219631693,
+        "cutoff_score": 219880474,
         "max_score": 1484534022
       }
     },
     "realistic": {
-      "total_runs": 2334,
+      "total_runs": 2327,
       "mode_split": {
-        "solo": 2201,
+        "solo": 2194,
         "crew": 133
       },
       "input_distribution": {
-        "0": 1878,
-        "1": 343,
+        "0": 1874,
+        "1": 340,
         "2": 113
       },
       "traffic_distribution": {
-        "Rush": 1107,
+        "Rush": 1106,
         "Heavy": 230,
-        "Realistic": 135,
-        "Light": 44
+        "Realistic": 137,
+        "Light": 42
       },
       "cars_tally": {
-        "nohesi_realistic_bmw_m4_g82_adro_chris": 441,
-        "nohesi_realistic_porsche_gt3rs_vlct": 9,
+        "nohesi_realistic_bmw_m4_g82_adro_chris": 439,
+        "nohesi_realistic_porsche_gt3rs_vlct": 8,
         "nohesi_realistic_toyota_supra_mk5_adro": 8,
-        "nohesi_realistic_porsche_992_gt3_adro": 129,
+        "nohesi_realistic_porsche_992_gt3_adro": 132,
         "nohesi_realistic_bmw_m3_e46": 118,
         "nohesi_realistic_mercedes_e63_w213": 38,
         "nohesi_realistic_honda_civic_fl5_typer_adro": 54,
@@ -20713,52 +20716,53 @@
         "nohesi_realistic_toyota_gr86_adro": 112,
         "nohesi_realistic_mercedes_c63_amg_w204_blackseries": 42,
         "nohesi_realistic_nissan_gtr_r35_vlct": 71,
-        "nohesi_realistic_bmw_g87_adro_v2": 335,
+        "nohesi_realistic_bmw_g87_adro_v2": 333,
         "nohesi_realistic_ford_mustang_gtd": 11,
-        "nohesi_realistic_audi_rs6_c8": 303,
+        "nohesi_realistic_audi_rs6_c8": 302,
         "nohesi_realistic_bmw_f82_m4lci_vlct": 111,
         "nohesi_realistic_lamborghini_urus_chris": 103,
         "nohesi_realistic_bmw_m3_g80_adro": 9,
-        "nohesi_realistic_ford_mustang_terminator_vlct": 100,
+        "nohesi_realistic_ford_mustang_terminator_vlct": 99,
         "nohesi_realistic_bmw_f90_m5cs_vlct": 57,
-        "nohesi_realistic_bmw_x3m_f97_adro": 25,
-        "nohesi_realistic_mercedes_gt63se": 85,
+        "nohesi_realistic_bmw_x3m_f97_adro": 23,
+        "nohesi_realistic_mercedes_gt63se": 84,
         "nohesi_realistic_range_rover_sv": 3,
         "nohesi_realistic_bmw_m5_g99": 7,
         "nohesi_realistic_bmw_m140": 4,
-        "nohesi_realistic_lexus_is500": 31,
+        "nohesi_realistic_lexus_is500": 30,
         "nohesi_realistic_toyota_yaris_gr": 2,
-        "nohesi_realistic_toyota_chaser_jzx100": 4
+        "nohesi_realistic_toyota_chaser_jzx100": 4,
+        "nohesi_realistic_audi_rs3_saloon_vlct": 1
       },
       "tyre_compound_distribution": {
-        "MICHELIN PILOT SPORT 4S": 1717,
-        "MICHELIN PILOT SPORT CUP 2 R": 325,
-        "MICHELIN PILOT SPORT CUP 2": 134,
+        "MICHELIN PILOT SPORT 4S": 1710,
+        "MICHELIN PILOT SPORT CUP 2 R": 327,
+        "MICHELIN PILOT SPORT CUP 2": 133,
         "PIRELLI P ZERO CORSA": 65,
-        "YOKOHAMA ADVAN NEOVA": 89,
+        "YOKOHAMA ADVAN NEOVA": 88,
         "BRIDGESTONE POTENZA": 4
       },
       "camera_distribution": {
-        "First Person Camera": 1544,
-        "Chase Camera": 452,
-        "Dashboard Camera": 202,
+        "First Person Camera": 1542,
+        "Chase Camera": 449,
+        "Dashboard Camera": 201,
         "Custom Camera": 11,
-        "Hood Camera": 104,
+        "Hood Camera": 103,
         "Meta Camera": 4,
         "Bumper Camera": 17
       },
       "run_time_histogram": [
-        718,
-        513,
-        312,
-        193,
+        714,
+        511,
+        311,
+        194,
         156,
-        442
+        441
       ],
       "rank_histogram": {
         "Listed": {
           "crew": 110,
-          "solo": 1891
+          "solo": 1884
         },
         "Noticed": {
           "crew": 16,
