@@ -16,7 +16,7 @@
       communicating bugs with the developers.
     </p>
     <p>
-      Our website has 4 main pages: User Search, Leaderboard, Ranks and the FAQ. Our website also
+      Our website has 3 main pages: User Search, Leaderboard and Ranks. Our website also
       has a scraper that runs through GitHub Actions each day.
     </p>
   </section>
@@ -51,14 +51,6 @@
       accurate, so instead, I am now just aggregating data from a JSON file that is created once a
       day from our scraper. This page allows users to see data about each rank in ways that No Hesi
       doesn't allow you to.
-    </p>
-  </section>
-
-  <section>
-    <h2>FAQ</h2>
-    <p>
-      This page contains a full list of the FAQ's that were created for No Hesi. It allows you to
-      search for any issue you may face while playing the game.
     </p>
   </section>
 </div>

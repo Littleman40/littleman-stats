@@ -1,10 +1,9 @@
 # Littleman Stats
 
-This is a data-driven website built as my Year 12 NSW Enterprise Computing Major Project. This project aims to use public API endpoints to enable users to filter the leaderboard, see leaderboard statistics, and to find users' personal bests through steamIDs or their username. It also contains a Help-FAQ section and the ability to see information regarding all ranks.
+This is a data-driven website built as my Year 12 NSW Enterprise Computing Major Project. This project aims to use public API endpoints to enable users to filter the leaderboard, see leaderboard statistics, and to find users' personal bests through steamIDs or their username. It also lets you see information regarding all ranks.
 
 ## Current Features
 - [x] Leaderboard Filters
-- [x] Searchable FAQ's
 - [x] Per User Search 
 - [x] Ranks
 - [x] Leaderboard Statistics

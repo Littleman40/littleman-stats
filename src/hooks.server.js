@@ -1,6 +1,5 @@
 const IMMUTABLE_PATH_PREFIXES = [
   '/vid/',
-  '/faqs-images/',
   '/icons/',
   '/img/',
 ];

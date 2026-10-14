@@ -8,7 +8,7 @@
     { href: '/user-search', label: 'User Search' },
     { href: '/leaderboard', label: 'Leaderboard' },
     { href: '/ranks', label: 'Ranks' },
-    { href: '/faq', label: 'FAQ' }
+    { href: '/servers', label: 'Servers' }
   ];
 
   let isMobileMenuOpen = $state(false);

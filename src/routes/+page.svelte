@@ -17,12 +17,6 @@
       title: 'Ranks',
       description: 'Percentile breakdown for all ranks, including lowest required scores, player counts and icons.',
       image: '/img/RanksPreview.png'
-    },
-    {
-      href: '/faq',
-      title: 'FAQ',
-      description: 'Searchable answers to the most common questions about No Hesi.',
-      image: '/img/FAQPreview.png'
     }
   ];
 </script>

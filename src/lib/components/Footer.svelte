@@ -4,7 +4,7 @@
     { href: '/user-search', label: 'User Stats' },
     { href: '/leaderboard', label: 'Leaderboard' },
     { href: '/ranks', label: 'Ranks' },
-    { href: '/faq', label: 'FAQ' }
+    { href: '/servers', label: 'Servers' }
   ];
 </script>
 
