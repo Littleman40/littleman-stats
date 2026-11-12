@@ -77,11 +77,11 @@ const KNOWN_BASE_RANKS = new Set([
   'Certified'
 ]);
 
-// the amount of buckets in the histogram. runs max out at 3 minutes (180s) this series, so 6 buckets of 30 seconds each
-const RUN_TIME_BUCKET_COUNT = 6;
+// the amount of buckets in the histogram. runs max out at 10 minutes (600s) this series, so 10 buckets of 1 minute each
+const RUN_TIME_BUCKET_COUNT = 10;
 
 // seconds covered by each run time bucket
-const RUN_TIME_BUCKET_SECONDS = 30;
+const RUN_TIME_BUCKET_SECONDS = 60;
 
 // caps how many crew scatter points get saved - the api is ordered by score, so this keeps the top crew runs and stops the stats file ballooning
 const PROX_SCATTER_MAX_POINTS = 5000;
@@ -280,16 +280,16 @@ function fnBumpAggregations(agg, rawRecord) {
     agg.traffic_distribution[trafficType] += 1;
   }
 
-  // run time is seconds, split into 30 second buckets since runs max out at 3 minutes this series
+  // run time is seconds, split into 1 minute buckets since runs max out at 10 minutes this series
   const runTimeSeconds = Number(rawRecord.run_time);
 
   // ensures the time is valid
   if (Number.isFinite(runTimeSeconds) && runTimeSeconds > 0) {
-    // rounds to the correct 30 second bucket
-    const thirtySecondBucket = Math.floor(runTimeSeconds / RUN_TIME_BUCKET_SECONDS);
+    // rounds down to the correct 1 minute bucket
+    const minuteBucket = Math.floor(runTimeSeconds / RUN_TIME_BUCKET_SECONDS);
 
-    // anything at or above the 3 minute cap lands in the very last bucket
-    const bucketIndex = Math.min(RUN_TIME_BUCKET_COUNT - 1, thirtySecondBucket);
+    // anything at or above the 10 minute cap lands in the very last bucket
+    const bucketIndex = Math.min(RUN_TIME_BUCKET_COUNT - 1, minuteBucket);
     agg.run_time_histogram[bucketIndex] += 1;
   }
 

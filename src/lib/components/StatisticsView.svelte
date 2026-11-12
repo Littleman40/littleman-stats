@@ -27,8 +27,8 @@
     2: 'Keyboard and Mouse'
   };
 
-  // the labels for all the run times - runs max out at 3 minutes this series, so 6 buckets of half a minute each
-  const RUN_TIME_LABELS = Array.from({ length: 6 }, (_, i) => `${i * 0.5}-${(i + 1) * 0.5}`);
+  // the labels for all the run times - runs max out at 10 minutes this series, so 10 buckets of one minute each
+  const RUN_TIME_LABELS = Array.from({ length: 10 }, (_, i) => `${i}-${i + 1}`);
 
   // colours for crew vs solo graphs
   const SERIES_COLOR_CREW = '#FF4069';
