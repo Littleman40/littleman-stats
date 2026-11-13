@@ -1,49 +1,50 @@
 {
-  "generated_at": "2026-11-12T03:15:56.966Z",
+  "generated_at": "2026-11-13T02:50:01.796Z",
   "map": "110",
   "map_api_name": "nohesi_110",
-  "total_records_scraped": 4966,
-  "upstream_total": 4966,
+  "total_records_scraped": 5675,
+  "upstream_total": 5675,
   "filters": {
     "all": {
-      "total_runs": 4966,
+      "total_runs": 5675,
       "mode_split": {
-        "solo": 4966,
+        "solo": 5675,
         "crew": 0
       },
       "input_distribution": {
-        "0": 3653,
-        "1": 1013,
-        "2": 300
+        "0": 4175,
+        "1": 1147,
+        "2": 353
       },
       "traffic_distribution": {
-        "Heavy": 2406,
-        "V2": 2555
+        "Heavy": 2347,
+        "V2": 3323
       },
       "cars_tally": {
-        "nohesi_toyota_supra_mk5": 855,
-        "nohesi_toyota_yaris_gr": 26,
+        "nohesi_toyota_supra_mk5": 971,
+        "nohesi_toyota_yaris_gr": 27,
         "nohesi_volkswagen_golf_r_mk8": 2,
-        "nohesi_porsche_gt3rs_vlct": 167,
-        "nohesi_bmw_m4_g82_adro_chris": 686,
-        "nohesi_ford_f150_super_shelby": 17,
-        "nohesi_bmw_m340i_g20_chris": 426,
-        "nohesi_lamborghini_urus_chris": 215,
-        "nohesi_lamborghini_huracan_stj": 19,
-        "nohesi_mercedes_a45_brabus": 126,
-        "nohesi_lamborghini_svj_63": 319,
-        "nohesi_lamborghini_huracan_lp610": 130,
+        "nohesi_porsche_gt3rs_vlct": 190,
+        "nohesi_bmw_m4_g82_adro_chris": 779,
+        "nohesi_ford_f150_super_shelby": 20,
+        "nohesi_bmw_m340i_g20_chris": 490,
+        "nohesi_lamborghini_urus_chris": 249,
+        "nohesi_lamborghini_huracan_stj": 26,
+        "nohesi_mercedes_a45_brabus": 120,
+        "nohesi_lexus_lc500": 332,
+        "nohesi_ferrari_812_nlargo": 289,
+        "nohesi_lamborghini_svj_63": 363,
+        "nohesi_lamborghini_huracan_lp610": 127,
         "nohesi_ford_mustang_gtd": 1,
-        "nohesi_mazda_rx7_fc_vlct": 185,
-        "nohesi_bmw_x3m_f97_adro": 339,
-        "nohesi_ferrari_812_nlargo": 236,
-        "nohesi_hellcat_charger": 213,
-        "nohesi_brabus_rocket_900": 418,
-        "nohesituned_dodge_viper": 272,
-        "nohesi_lexus_lc500": 292,
+        "nohesi_mazda_rx7_fc_vlct": 253,
+        "nohesi_bmw_x3m_f97_adro": 389,
+        "nohesi_audi_rs3_saloon_vlct": 1,
+        "nohesi_hellcat_charger": 233,
+        "nohesi_brabus_rocket_900": 483,
+        "nohesituned_dodge_viper": 308,
+        "nohesi_toyota_supra_mk5_adro": 1,
         "nohesi_range_rover_sv": 11,
         "nohesi_bimmerplug_m4": 1,
-        "nohesi_audi_rs3_saloon_vlct": 1,
         "nohesi_porsche_singer_abflug": 1,
         "nohesi_vw_golf_r": 1,
         "nohesi_bmw_340i_f30": 1,
@@ -55,57 +56,61 @@
         "nohesi_realistic_lamborghini_huracan_stj": 1
       },
       "tyre_compound_distribution": {
-        "GRIP": 4633,
-        "RAIN": 152,
-        "REALISTIC": 119,
-        "DRIFT": 61,
+        "GRIP": 5294,
+        "RAIN": 169,
+        "REALISTIC": 133,
+        "DRIFT": 78,
         "MICHELIN PILOT SPORT CUP 2 R": 1
       },
       "camera_distribution": {
-        "First Person Camera": 3232,
-        "Chase Camera": 1039,
-        "Meta Camera": 50,
-        "Bumper Camera": 66,
-        "Hood Camera": 279,
-        "Dashboard Camera": 262,
-        "Custom Camera": 38
+        "First Person Camera": 3686,
+        "Chase Camera": 1222,
+        "Meta Camera": 53,
+        "Bumper Camera": 70,
+        "Custom Camera": 42,
+        "Hood Camera": 303,
+        "Dashboard Camera": 299
       },
       "run_time_histogram": [
-        1465,
-        1244,
-        755,
-        425,
-        284,
-        793
+        3080,
+        1366,
+        528,
+        253,
+        144,
+        92,
+        55,
+        34,
+        38,
+        85
       ],
       "rank_histogram": {
         "Listed": {
           "crew": 0,
-          "solo": 2483
+          "solo": 2837
         },
         "Noticed": {
           "crew": 0,
-          "solo": 1241
+          "solo": 1419
         },
         "Marked": {
           "crew": 0,
-          "solo": 745
+          "solo": 851
         },
         "Licensed": {
           "crew": 0,
-          "solo": 248
+          "solo": 284
         },
         "Ghost": {
           "crew": 0,
-          "solo": 199
+          "solo": 227
         },
         "Sanctioned": {
           "crew": 0,
-          "solo": 45
+          "solo": 51
         },
         "Certified": {
           "crew": 0,
-          "solo": 5
+          "solo": 6
         }
       }
     },
@@ -126,49 +131,54 @@
         0,
         0,
         0,
+        0,
+        0,
+        0,
+        0,
         0
       ],
       "prox_scatter": []
     },
     "solo": {
-      "total_runs": 4966,
+      "total_runs": 5675,
       "mode_split": {
-        "solo": 4966,
+        "solo": 5675,
         "crew": 0
       },
       "input_distribution": {
-        "0": 3653,
-        "1": 1013,
-        "2": 300
+        "0": 4175,
+        "1": 1147,
+        "2": 353
       },
       "traffic_distribution": {
-        "Heavy": 2406,
-        "V2": 2555
+        "Heavy": 2347,
+        "V2": 3323
       },
       "cars_tally": {
-        "nohesi_toyota_supra_mk5": 855,
-        "nohesi_toyota_yaris_gr": 26,
+        "nohesi_toyota_supra_mk5": 971,
+        "nohesi_toyota_yaris_gr": 27,
         "nohesi_volkswagen_golf_r_mk8": 2,
-        "nohesi_porsche_gt3rs_vlct": 167,
-        "nohesi_bmw_m4_g82_adro_chris": 686,
-        "nohesi_ford_f150_super_shelby": 17,
-        "nohesi_bmw_m340i_g20_chris": 426,
-        "nohesi_lamborghini_urus_chris": 215,
-        "nohesi_lamborghini_huracan_stj": 19,
-        "nohesi_mercedes_a45_brabus": 126,
-        "nohesi_lamborghini_svj_63": 319,
-        "nohesi_lamborghini_huracan_lp610": 130,
+        "nohesi_porsche_gt3rs_vlct": 190,
+        "nohesi_bmw_m4_g82_adro_chris": 779,
+        "nohesi_ford_f150_super_shelby": 20,
+        "nohesi_bmw_m340i_g20_chris": 490,
+        "nohesi_lamborghini_urus_chris": 249,
+        "nohesi_lamborghini_huracan_stj": 26,
+        "nohesi_mercedes_a45_brabus": 120,
+        "nohesi_lexus_lc500": 332,
+        "nohesi_ferrari_812_nlargo": 289,
+        "nohesi_lamborghini_svj_63": 363,
+        "nohesi_lamborghini_huracan_lp610": 127,
         "nohesi_ford_mustang_gtd": 1,
-        "nohesi_mazda_rx7_fc_vlct": 185,
-        "nohesi_bmw_x3m_f97_adro": 339,
-        "nohesi_ferrari_812_nlargo": 236,
-        "nohesi_hellcat_charger": 213,
-        "nohesi_brabus_rocket_900": 418,
-        "nohesituned_dodge_viper": 272,
-        "nohesi_lexus_lc500": 292,
+        "nohesi_mazda_rx7_fc_vlct": 253,
+        "nohesi_bmw_x3m_f97_adro": 389,
+        "nohesi_audi_rs3_saloon_vlct": 1,
+        "nohesi_hellcat_charger": 233,
+        "nohesi_brabus_rocket_900": 483,
+        "nohesituned_dodge_viper": 308,
+        "nohesi_toyota_supra_mk5_adro": 1,
         "nohesi_range_rover_sv": 11,
         "nohesi_bimmerplug_m4": 1,
-        "nohesi_audi_rs3_saloon_vlct": 1,
         "nohesi_porsche_singer_abflug": 1,
         "nohesi_vw_golf_r": 1,
         "nohesi_bmw_340i_f30": 1,
@@ -180,84 +190,88 @@
         "nohesi_realistic_lamborghini_huracan_stj": 1
       },
       "tyre_compound_distribution": {
-        "GRIP": 4633,
-        "RAIN": 152,
-        "REALISTIC": 119,
-        "DRIFT": 61,
+        "GRIP": 5294,
+        "RAIN": 169,
+        "REALISTIC": 133,
+        "DRIFT": 78,
         "MICHELIN PILOT SPORT CUP 2 R": 1
       },
       "camera_distribution": {
-        "First Person Camera": 3232,
-        "Chase Camera": 1039,
-        "Meta Camera": 50,
-        "Bumper Camera": 66,
-        "Hood Camera": 279,
-        "Dashboard Camera": 262,
-        "Custom Camera": 38
+        "First Person Camera": 3686,
+        "Chase Camera": 1222,
+        "Meta Camera": 53,
+        "Bumper Camera": 70,
+        "Custom Camera": 42,
+        "Hood Camera": 303,
+        "Dashboard Camera": 299
       },
       "run_time_histogram": [
-        1465,
-        1244,
-        755,
-        425,
-        284,
-        793
+        3080,
+        1366,
+        528,
+        253,
+        144,
+        92,
+        55,
+        34,
+        38,
+        85
       ],
       "rank_histogram": {
         "Listed": {
           "crew": 0,
-          "solo": 2483
+          "solo": 2837
         },
         "Noticed": {
           "crew": 0,
-          "solo": 1241
+          "solo": 1419
         },
         "Marked": {
           "crew": 0,
-          "solo": 745
+          "solo": 851
         },
         "Licensed": {
           "crew": 0,
-          "solo": 248
+          "solo": 284
         },
         "Ghost": {
           "crew": 0,
-          "solo": 199
+          "solo": 227
         },
         "Sanctioned": {
           "crew": 0,
-          "solo": 45
+          "solo": 51
         },
         "Certified": {
           "crew": 0,
-          "solo": 5
+          "solo": 6
         }
       },
       "score_histogram": {
-        "bucket_width": 49360642,
+        "bucket_width": 49773890,
         "counts": [
-          4487,
-          169,
-          61,
-          51,
-          32,
-          21,
-          14,
+          5132,
+          200,
+          64,
+          57,
+          33,
+          25,
+          16,
+          15,
+          8,
           12,
-          6,
-          11,
+          8,
+          5,
           7,
           4,
-          6,
-          7,
           5,
-          8,
-          3,
-          3,
-          5,
-          54
+          10,
+          2,
+          2,
+          9,
+          61
         ],
-        "cutoff_score": 987212827,
+        "cutoff_score": 995477787,
         "max_score": 23029980772
       }
     },
@@ -284,6 +298,10 @@
       },
       "run_time_histogram": [
         1,
+        0,
+        0,
+        0,
+        0,
         0,
         0,
         0,
